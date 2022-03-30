@@ -1,5 +1,8 @@
 package domain;
 
+import domain.enums.BloodType;
+import domain.enums.Rh;
+
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -9,8 +12,8 @@ public class User implements Entity<Integer>, Serializable {
     private Integer userID;
     private String firstName;
     private String lastName;
-    private String bloodType;
-    private String Rh;
+    private BloodType bloodType;
+    private Rh Rh;
     private String email;
     private Integer height;
     private Double weight;
@@ -45,19 +48,19 @@ public class User implements Entity<Integer>, Serializable {
         this.lastName = lastName;
     }
 
-    public String getBloodType() {
+    public BloodType getBloodType() {
         return bloodType;
     }
 
-    public void setBloodType(String bloodType) {
+    public void setBloodType(BloodType bloodType) {
         this.bloodType = bloodType;
     }
 
-    public String getRh() {
+    public Rh getRh() {
         return Rh;
     }
 
-    public void setRh(String rh) {
+    public void setRh(Rh rh) {
         Rh = rh;
     }
 
