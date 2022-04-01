@@ -2,5 +2,6 @@ package domain.enums;
 
 public enum Rh {
     Positive,
-    Negative
+    Negative,
+    Neutral
 }
