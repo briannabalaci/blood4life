@@ -89,7 +89,7 @@ public class AddressRepository implements AddressRepositoryInterface {
     @Override
     public void save(Address address) {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.\"Adresses\"(county, city, street, number) VALUES (?, ?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.\"Addresses\"(county, city, street, number) VALUES (?, ?, ?, ?)");
             preparedStatement.setString(1, address.getCounty());
             preparedStatement.setString(2, address.getLocality());
             preparedStatement.setString(3, address.getStreet());
@@ -116,7 +116,7 @@ public class AddressRepository implements AddressRepositoryInterface {
     @Override
     public void update(Address address) {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE public.\"Adresses\" SET county = ?, city = ?, street = ?, number = ? WHERE id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE public.\"Addresses\" SET county = ?, city = ?, street = ?, number = ? WHERE id = ?");
             preparedStatement.setString(1, address.getCounty());
             preparedStatement.setString(2, address.getLocality());
             preparedStatement.setString(3, address.getStreet());
