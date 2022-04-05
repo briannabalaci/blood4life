@@ -6,42 +6,42 @@ import java.util.Date;
 
 public class Appointment implements Entity<Long>, Serializable {
     private Long appointmentId;
-    private Long userId;
-    private Long patientId;
-    private Long donationCentreId;
+    private User user;
+    private Patient patient;
+    private DonationCentre donationCentre;
     private Date date;
     private Time time;
 
-    public Appointment(Long userId, Long patientId, Long donationCentreId, Date date, Time time) {
-        this.userId = userId;
-        this.patientId = patientId;
-        this.donationCentreId = donationCentreId;
+    public Appointment(User user, Patient patient, DonationCentre donationCentre, Date date, Time time) {
+        this.user = user;
+        this.patient = patient;
+        this.donationCentre = donationCentre;
         this.date = date;
         this.time = time;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public Long getDonationCentreId() {
-        return donationCentreId;
+    public DonationCentre getDonationCentre() {
+        return donationCentre;
     }
 
-    public void setDonationCentreId(Long donationCentreId) {
-        this.donationCentreId = donationCentreId;
+    public void setDonationCentre(DonationCentre donationCentre) {
+        this.donationCentre = donationCentre;
     }
 
     public Date getDate() {
