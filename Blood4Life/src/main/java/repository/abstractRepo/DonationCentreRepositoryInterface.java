@@ -1,4 +1,4 @@
-package repository;
+package repository.abstractRepo;
 
 import domain.Address;
 import domain.DonationCentre;

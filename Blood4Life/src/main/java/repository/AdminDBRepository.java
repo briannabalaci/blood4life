@@ -1,16 +1,13 @@
 package repository;
 
 import domain.Admin;
-import domain.Patient;
-import domain.enums.BloodType;
-import domain.enums.Gravity;
-import domain.enums.Rh;
+import repository.abstractRepo.AdminRepositoryInterface;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminDBRepository implements AdminRepositoryInterface{
+public class AdminDBRepository implements AdminRepositoryInterface {
     private String url;
     private String username;
     private String password;

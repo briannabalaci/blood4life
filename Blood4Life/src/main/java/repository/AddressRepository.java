@@ -1,6 +1,7 @@
 package repository;
 
 import domain.Address;
+import repository.abstractRepo.AddressRepositoryInterface;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -2,6 +2,8 @@ package repository;
 
 import domain.Address;
 import domain.DonationCentre;
+import repository.abstractRepo.AddressRepositoryInterface;
+import repository.abstractRepo.DonationCentreRepositoryInterface;
 
 import java.sql.*;
 import java.util.ArrayList;

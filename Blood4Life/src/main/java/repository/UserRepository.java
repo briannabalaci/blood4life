@@ -3,6 +3,7 @@ package repository;
 import domain.User;
 import domain.enums.BloodType;
 import domain.enums.Rh;
+import repository.abstractRepo.UserRepositoryInterface;
 
 import java.sql.*;
 import java.time.Instant;

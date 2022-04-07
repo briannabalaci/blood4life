@@ -4,14 +4,14 @@ import domain.Patient;
 import domain.enums.BloodType;
 import domain.enums.Gravity;
 import domain.enums.Rh;
+import repository.abstractRepo.PatientRepositoryInterface;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class PatientDBRepository implements PatientRepositoryInterface{
+public class PatientDBRepository implements PatientRepositoryInterface {
 
     private String url;
     private String username;

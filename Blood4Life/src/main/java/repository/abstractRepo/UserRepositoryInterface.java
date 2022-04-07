@@ -1,8 +1,9 @@
-package repository;
+package repository.abstractRepo;
 
 import domain.User;
 import domain.enums.BloodType;
 import domain.enums.Rh;
+import repository.abstractRepo.RepositoryInterface;
 
 import java.util.List;
 
