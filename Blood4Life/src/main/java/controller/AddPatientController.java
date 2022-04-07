@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import service.Service;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class AddPatientController implements Initializable {
@@ -40,26 +41,19 @@ public class AddPatientController implements Initializable {
 
     private void setBloodTypes() {
         ObservableList<BloodType> bloodTypes = FXCollections.observableArrayList();
-        bloodTypes.add(BloodType.O);
-        bloodTypes.add(BloodType.A);
-        bloodTypes.add(BloodType.B);
-        bloodTypes.add(BloodType.AB);
+        bloodTypes.addAll(Arrays.asList(BloodType.values()));
         bloodTypeComboBox.setItems(bloodTypes);
     }
 
     private void setRhs() {
         ObservableList<Rh> rhs = FXCollections.observableArrayList();
-        rhs.add(Rh.Positive);
-        rhs.add(Rh.Negative);
-        rhs.add(Rh.Neutral);
+        rhs.addAll(Arrays.asList(Rh.values()));
         rhComboBox.setItems(rhs);
     }
 
     private void setSeverities() {
         ObservableList<Severity> severities = FXCollections.observableArrayList();
-        severities.add(Severity.Minimal);
-        severities.add(Severity.Medium);
-        severities.add(Severity.Severe);
+        severities.addAll(Arrays.asList(Severity.values()));
         severityComboBox.setItems(severities);
     }
 
