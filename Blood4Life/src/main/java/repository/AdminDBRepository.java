@@ -65,7 +65,7 @@ public class AdminDBRepository implements AdminRepositoryInterface{
         String sql = "insert into Admins (username, password) values (?,?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
-            preStm.setString(1, entity.getUsername());
+            preStm.setString(1, entity.getID());
             preStm.setString(2, entity.getPassword());
             int result = preStm.executeUpdate();
             //commonUtils.logger.trace("Saved instances {}",result);
@@ -99,7 +99,7 @@ public class AdminDBRepository implements AdminRepositoryInterface{
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
             preStm.setString(1, entity.getPassword());
-            preStm.setString(2, entity.getUsername());
+            preStm.setString(2, entity.getID());
             int result = preStm.executeUpdate();
             //logger.trace("Upadated instances {}",result);
         } catch (SQLException ex) {
