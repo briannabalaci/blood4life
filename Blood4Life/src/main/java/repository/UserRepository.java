@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository implements UserRepositoryInterface {
-    private String databaseURL;
-    private String databaseUsername;
-    private String databasePassword;
+    private final String databaseURL;
+    private final String databaseUsername;
+    private final String databasePassword;
 
     public UserRepository(String databaseURL, String databaseUsername, String databasePassword) {
         this.databaseURL = databaseURL;

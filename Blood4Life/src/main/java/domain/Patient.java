@@ -1,12 +1,11 @@
 package domain;
 
 import domain.enums.BloodType;
-import domain.enums.Gravity;
+import domain.enums.Severity;
 import domain.enums.Rh;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Patient implements Entity<Long>, Serializable {
     private Long patientId;
@@ -16,17 +15,17 @@ public class Patient implements Entity<Long>, Serializable {
     private LocalDate birthday;
     private BloodType bloodType;
     private Rh rh;
-    private Gravity gravity;
+    private Severity severity;
     private Integer bloodQuantityNeeded;
 
-    public Patient( String cnp, String firstName, String lastName, LocalDate birthday, BloodType bloodType, Rh rh, Gravity gravity, Integer bloodQuantityNeeded) {
+    public Patient(String cnp, String firstName, String lastName, LocalDate birthday, BloodType bloodType, Rh rh, Severity severity, Integer bloodQuantityNeeded) {
         this.cnp = cnp;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
         this.bloodType = bloodType;
         this.rh = rh;
-        this.gravity = gravity;
+        this.severity = severity;
         this.bloodQuantityNeeded = bloodQuantityNeeded;
     }
 
@@ -87,12 +86,12 @@ public class Patient implements Entity<Long>, Serializable {
         this.rh = rh;
     }
 
-    public Gravity getGravity() {
-        return gravity;
+    public Severity getSeverity() {
+        return severity;
     }
 
-    public void setGravity(Gravity gravity) {
-        this.gravity = gravity;
+    public void setGravity(Severity severity) {
+        this.severity = severity;
     }
 
     public Integer getBloodQuantityNeeded() {
@@ -113,7 +112,7 @@ public class Patient implements Entity<Long>, Serializable {
                 ", birthday=" + birthday +
                 ", bloodType=" + bloodType +
                 ", rh=" + rh +
-                ", gravity=" + gravity +
+                ", gravity=" + severity +
                 ", bloodQuantityNeeded=" + bloodQuantityNeeded +
                 '}';
     }

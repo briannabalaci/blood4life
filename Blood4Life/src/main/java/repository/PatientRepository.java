@@ -2,7 +2,7 @@ package repository;
 
 import domain.Patient;
 import domain.enums.BloodType;
-import domain.enums.Gravity;
+import domain.enums.Severity;
 import domain.enums.Rh;
 import repository.abstractRepo.PatientRepositoryInterface;
 
@@ -11,13 +11,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientDBRepository implements PatientRepositoryInterface {
+public class PatientRepository implements PatientRepositoryInterface {
 
-    private String url;
-    private String username;
-    private String password;
+    private final String url;
+    private final String username;
+    private final String password;
 
-    public PatientDBRepository(String url, String username, String password) {
+    public PatientRepository(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
@@ -39,10 +39,10 @@ public class PatientDBRepository implements PatientRepositoryInterface {
                 String cnp = result.getString("cnp");
                 LocalDate birthday =LocalDate.parse(result.getString("birthday"));
                 String severity = result.getString("severity");
-                patient = new Patient(cnp, firstName, lastName, birthday, BloodType.valueOf(bloodType), Rh.valueOf(rh), Gravity.valueOf(severity), bloodQuantity);
+                patient = new Patient(cnp, firstName, lastName, birthday, BloodType.valueOf(bloodType), Rh.valueOf(rh), Severity.valueOf(severity), bloodQuantity);
                 patient.setID(id);
                 patient.setBloodQuantityNeeded(bloodQuantity);
-                patient.setGravity(Gravity.valueOf(severity));
+                patient.setGravity(Severity.valueOf(severity));
                 patient.setBloodType(BloodType.valueOf(bloodType));
                 patient.setRh(Rh.valueOf(rh));
                 return patient;
@@ -71,10 +71,10 @@ public class PatientDBRepository implements PatientRepositoryInterface {
                 String cnp = result.getString("cnp");
                 LocalDate birthday = LocalDate.parse(result.getString("birthday"));
                 String severity = result.getString("severity");
-                Patient patient = new Patient(cnp, firstName, lastName, birthday, BloodType.valueOf(bloodType), Rh.valueOf(rh), Gravity.valueOf(severity), bloodQuantity);
+                Patient patient = new Patient(cnp, firstName, lastName, birthday, BloodType.valueOf(bloodType), Rh.valueOf(rh), Severity.valueOf(severity), bloodQuantity);
                 patient.setID(id);
                 patient.setBloodQuantityNeeded(bloodQuantity);
-                patient.setGravity(Gravity.valueOf(severity));
+                patient.setGravity(Severity.valueOf(severity));
                 patient.setBloodType(BloodType.valueOf(bloodType));
                 patient.setRh(Rh.valueOf(rh));
                 patients.add(patient);
@@ -99,7 +99,7 @@ public class PatientDBRepository implements PatientRepositoryInterface {
             preStm.setInt(5, entity.getBloodQuantityNeeded());
             preStm.setString(6, entity.getCnp());
             preStm.setDate(7, Date.valueOf(entity.getBirthday()));
-            preStm.setString(8, entity.getGravity().toString());
+            preStm.setString(8, entity.getSeverity().toString());
             int result = preStm.executeUpdate();
             //commonUtils.logger.trace("Saved instances {}",result);
         } catch (SQLException ex) {

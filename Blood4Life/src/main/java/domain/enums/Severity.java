@@ -1,6 +1,6 @@
 package domain.enums;
 
-public enum Gravity {
+public enum Severity {
     Minimal,
     Medium,
     Severe

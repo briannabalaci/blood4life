@@ -7,12 +7,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminDBRepository implements AdminRepositoryInterface {
+public class AdminRepository implements AdminRepositoryInterface {
     private String url;
     private String username;
     private String password;
 
-    public AdminDBRepository(String url, String username, String password) {
+    public AdminRepository(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
