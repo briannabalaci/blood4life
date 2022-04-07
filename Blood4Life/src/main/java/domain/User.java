@@ -7,9 +7,9 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDate;
 
-public class User implements Entity<Integer>, Serializable {
+public class User implements Entity<Long>, Serializable {
 
-    private Integer userID;
+    private Long userID;
     private String firstName;
     private String lastName;
     private BloodType bloodType;
@@ -22,14 +22,22 @@ public class User implements Entity<Integer>, Serializable {
     private String cnp;
     private Long points;
 
+    public User(String firstName, String lastName, LocalDate birthDate, String gender, String cnp) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.cnp = cnp;
+    }
+
     @Override
-    public Integer getID() {
+    public Long getID() {
         return userID;
     }
 
     @Override
-    public void setID(Integer integer) {
-        userID = integer;
+    public void setID(Long id) {
+        userID = id;
     }
 
     public String getFirstName() {

@@ -5,6 +5,7 @@ import domain.enums.Gravity;
 import domain.enums.Rh;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Patient implements Entity<Long>, Serializable {
@@ -12,17 +13,21 @@ public class Patient implements Entity<Long>, Serializable {
     private String cnp;
     private String firstName;
     private String lastName;
-    private Date birthday;
+    private LocalDate birthday;
     private BloodType bloodType;
     private Rh rh;
     private Gravity gravity;
     private Integer bloodQuantityNeeded;
 
-    public Patient(String cnp, String firstName, String lastName, Date birthday) {
+    public Patient( String cnp, String firstName, String lastName, LocalDate birthday, BloodType bloodType, Rh rh, Gravity gravity, Integer bloodQuantityNeeded) {
         this.cnp = cnp;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
+        this.bloodType = bloodType;
+        this.rh = rh;
+        this.gravity = gravity;
+        this.bloodQuantityNeeded = bloodQuantityNeeded;
     }
 
     @Override
@@ -58,11 +63,11 @@ public class Patient implements Entity<Long>, Serializable {
         this.lastName = lastName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -98,4 +103,18 @@ public class Patient implements Entity<Long>, Serializable {
         this.bloodQuantityNeeded = bloodQuantityNeeded;
     }
 
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "patientId=" + patientId +
+                ", cnp='" + cnp + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthday=" + birthday +
+                ", bloodType=" + bloodType +
+                ", rh=" + rh +
+                ", gravity=" + gravity +
+                ", bloodQuantityNeeded=" + bloodQuantityNeeded +
+                '}';
+    }
 }
