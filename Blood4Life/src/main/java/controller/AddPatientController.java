@@ -3,14 +3,12 @@ package controller;
 import domain.enums.BloodType;
 import domain.enums.Severity;
 import domain.enums.Rh;
+import exception.ValidationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import service.Service;
 
@@ -27,6 +25,7 @@ public class AddPatientController implements Initializable {
     public ComboBox<Severity> severityComboBox;
     public DatePicker birthdayDatePicker;
     public Button addPatientButton;
+    public TextArea errorsTextArea;
 
     private Service service;
     private Stage stage;
@@ -69,11 +68,24 @@ public class AddPatientController implements Initializable {
         setBloodTypes();
         setRhs();
         setSeverities();
+        errorsTextArea.setVisible(false);
+        errorsTextArea.setEditable(false);
     }
 
     public void onAddPatientButtonClick(ActionEvent actionEvent) {
-        service.addPatient(cnpTextField.getText(), firstNameTextField.getText(), lastNameTextField.getText(),
-                birthdayDatePicker.getValue(), bloodTypeComboBox.getValue(), rhComboBox.getValue(),
-                severityComboBox.getValue(), Integer.parseInt(bloodQuantityNeededTextField.getText()));
+        try {
+            int bloodQuantityNeeded = Integer.parseInt(bloodQuantityNeededTextField.getText());
+            try {
+                service.addPatient(cnpTextField.getText(), firstNameTextField.getText(), lastNameTextField.getText(),
+                        birthdayDatePicker.getValue(), bloodTypeComboBox.getValue(), rhComboBox.getValue(),
+                        severityComboBox.getValue(), bloodQuantityNeeded);
+            } catch (ValidationException validationException) {
+                errorsTextArea.setVisible(true);
+                errorsTextArea.setText(validationException.getMessage());
+            }
+        } catch (NumberFormatException numberFormatException) {
+            errorsTextArea.setVisible(true);
+            errorsTextArea.setText("Blood quantity must be a number");
+        }
     }
 }
