@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import service.Service;
 
 import java.net.URL;
@@ -28,9 +29,14 @@ public class AddPatientController implements Initializable {
     public Button addPatientButton;
 
     private Service service;
+    private Stage stage;
 
     public void setService(Service service) {
         this.service = service;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     private void setBloodTypes() {

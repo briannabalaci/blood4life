@@ -28,7 +28,7 @@ public class PatientRepository implements PatientRepositoryInterface {
         //commonUtils.logger.traceEntry();
         Patient patient;
         try(Connection connection = DriverManager.getConnection(url, username, password);
-            ResultSet result = connection.createStatement().executeQuery(String.format("select * from patients P where P.id =  '%d'", aLong))) {
+            ResultSet result = connection.createStatement().executeQuery(String.format("select * from \"Patients\" P where P.id =  '%d'", aLong))) {
             if(result.next()){
                 Long id = result.getLong("id");
                 String firstName = result.getString("firstname");
@@ -89,7 +89,7 @@ public class PatientRepository implements PatientRepositoryInterface {
     @Override
     public void save(Patient entity) {
         //commonUtils.logger.traceEntry("saving task {}",entity);
-        String sql = "insert into patients (firstname, lastname, bloodtype, rh, bloodquantity, cnp, birthday, severity) values (?,?,?,?,?,?,?,?)";
+        String sql = "insert into public.\"Patients\" (\"firstName\", \"lastName\", \"bloodType\", rh, \"bloodQuantity\", cnp, birthday, severity) values (?,?,?,?,?,?,?,?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
             preStm.setString(1, entity.getFirstName());
