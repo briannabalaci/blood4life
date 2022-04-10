@@ -25,7 +25,7 @@ public class AddPatientController implements Initializable {
     public ComboBox<Rh> rhComboBox;
     public ComboBox<Severity> severityComboBox;
     public DatePicker birthdayDatePicker;
-    public Button addPatientButton;
+    public Button submitAddPatientButton;
     public TextArea errorsTextArea;
 
     private Service service;

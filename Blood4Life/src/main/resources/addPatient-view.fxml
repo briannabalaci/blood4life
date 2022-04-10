@@ -11,8 +11,17 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddPatientController">
-   <children>
+<?import java.net.URL?>
+<AnchorPane fx:id="background" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddPatientController">
+    <stylesheets>
+        <URL value="@/styles/textAreas-style.css" />
+        <URL value="@/styles/backgrounds-style.css" />
+        <URL value="@/styles/textFileds-style.css" />
+        <URL value="@/styles/labels-style.css" />
+        <URL value="@/styles/comboBoxes-style.css" />
+        <URL value="@/styles/datePickers-style.css" />
+    </stylesheets>
+    <children>
       <GridPane layoutX="14.0" layoutY="14.0" prefHeight="373.0" prefWidth="572.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -46,7 +55,7 @@
             <ComboBox fx:id="rhComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <ComboBox fx:id="severityComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <DatePicker fx:id="birthdayDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button fx:id="addPatientButton" mnemonicParsing="false" onAction="#onAddPatientButtonClick" text="Add patient" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Button fx:id="submitAddPatientButton" mnemonicParsing="false" onAction="#onAddPatientButtonClick" text="Add patient" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <TextArea fx:id="errorsTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8" />
          </children>
       </GridPane>

@@ -18,6 +18,11 @@ import java.util.ResourceBundle;
 public class AdminMainPageController implements Initializable {
     public BorderPane mainPageBorderPane;
     public Button addPatientButton;
+    public Button showPatientsButton;
+    public Button showUsersButton;
+    public Button showDonationCentresButton;
+    public Button showAppointmentsButton;
+    public Button addDonationCentreButton;
 
     private Service service;
     private Stage stage;
@@ -52,5 +57,20 @@ public class AdminMainPageController implements Initializable {
         addPatientController.setService(service);
         addPatientController.setStage(stage);
         mainPageBorderPane.setCenter(view);
+    }
+
+    public void onShowPatientsButtonClick(ActionEvent actionEvent) {
+    }
+
+    public void onShowUsersButtonClick(ActionEvent actionEvent) {
+    }
+
+    public void onShowDonationCentresButtonnClick(ActionEvent actionEvent) {
+    }
+
+    public void onShowAppointmentsButtonClick(ActionEvent actionEvent) {
+    }
+
+    public void onAddDonationCentreButtonClick(ActionEvent actionEvent) {
     }
 }

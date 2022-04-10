@@ -1,0 +1,7 @@
+.text-field {
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-color: #630000;
+    -fx-background-color: transparent;
+    -fx-font-family: Ayuthaya;
+    -fx-font-size: 14;
+}
