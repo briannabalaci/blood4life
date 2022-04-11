@@ -8,3 +8,7 @@
 .combo-box .cell:hover {
     -fx-background-color: #D8B6A4;
 }
+
+.combo-box .scroll-bar {
+    -fx-background-color: #D8B6A4;
+}

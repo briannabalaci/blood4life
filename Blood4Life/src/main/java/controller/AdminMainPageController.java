@@ -55,7 +55,6 @@ public class AdminMainPageController implements Initializable {
         Pane view = fxmlLoader.load();
         AddPatientController addPatientController = fxmlLoader.getController();
         addPatientController.setService(service);
-        addPatientController.setStage(stage);
         mainPageBorderPane.setCenter(view);
     }
 
@@ -71,6 +70,11 @@ public class AdminMainPageController implements Initializable {
     public void onShowAppointmentsButtonClick(ActionEvent actionEvent) {
     }
 
-    public void onAddDonationCentreButtonClick(ActionEvent actionEvent) {
+    public void onAddDonationCentreButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../addDonationCentre-view.fxml"));
+        Pane view = fxmlLoader.load();
+        AddDonationCentreController addDonationCentreController = fxmlLoader.getController();
+        addDonationCentreController.setService(service);
+        mainPageBorderPane.setCenter(view);
     }
 }

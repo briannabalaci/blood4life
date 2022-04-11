@@ -16,7 +16,7 @@
     <stylesheets>
         <URL value="@/styles/textAreas-style.css" />
         <URL value="@/styles/backgrounds-style.css" />
-        <URL value="@/styles/textFileds-style.css" />
+        <URL value="@/styles/textFields-style.css" />
         <URL value="@/styles/labels-style.css" />
         <URL value="@/styles/comboBoxes-style.css" />
         <URL value="@/styles/datePickers-style.css" />

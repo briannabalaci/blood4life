@@ -1,6 +1,7 @@
 package repository;
 
 import domain.Address;
+import exception.DatabaseException;
 import repository.abstractRepo.AddressRepositoryInterface;
 
 import java.sql.*;
@@ -51,6 +52,25 @@ public class AddressRepository implements AddressRepositoryInterface {
     }
 
     @Override
+    public Address findOne(String county, String city, String street, int number) {
+        try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Addresses\" WHERE county = ? AND city = ? AND street = ? AND number = ?");
+            preparedStatement.setString(1, county);
+            preparedStatement.setString(2, city);
+            preparedStatement.setString(3, street);
+            preparedStatement.setInt(4, number);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next())
+                return null;
+            return getEntityFromDatabase(resultSet);
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+            System.exit(1);
+        }
+        return null;
+    }
+
+    @Override
     public Address findOne(Long id) {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Addresses\" WHERE id = ?");
@@ -89,6 +109,8 @@ public class AddressRepository implements AddressRepositoryInterface {
 
     @Override
     public void save(Address address) {
+        if (findOne(address.getCounty(), address.getLocality(), address.getStreet(), address.getNumber()) != null)
+            throw new DatabaseException("\nThe address is duplicated");
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.\"Addresses\"(county, city, street, number) VALUES (?, ?, ?, ?)");
             preparedStatement.setString(1, address.getCounty());

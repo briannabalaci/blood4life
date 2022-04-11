@@ -2,11 +2,14 @@ package repository;
 
 import domain.Address;
 import domain.DonationCentre;
+import exception.DatabaseException;
 import repository.abstractRepo.AddressRepositoryInterface;
 import repository.abstractRepo.DonationCentreRepositoryInterface;
 
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class DonationCentreRepository implements DonationCentreRepositoryInterface {
@@ -89,7 +92,11 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
 
     private DonationCentre getEntityFromDatabase(ResultSet resultSet) throws SQLException {
         Address address = addressRepository.findOne(resultSet.getLong("addressId"));
-        return new DonationCentre(address, resultSet.getString("name"), resultSet.getInt("capacity"), resultSet.getTime("openHour"), resultSet.getTime("closeHour"));
+        Time openHour = resultSet.getTime("openHour");
+        Time closeHour = resultSet.getTime("closeHour");
+        return new DonationCentre(address, resultSet.getString("name"), resultSet.getInt("capacity"),
+                LocalTime.of(openHour.getHours(), openHour.getMinutes()),
+                LocalTime.of(closeHour.getHours(), closeHour.getMinutes()));
     }
 
     @Override
@@ -110,16 +117,20 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
     @Override
     public void save(DonationCentre donationCentre) {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.\"DonationCentres\"(addressId, name, openHour, closeHour, capacity) VALUES (?, ?, ?, ?, ?)");
-            preparedStatement.setLong(1, donationCentre.getAddress().getID());
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.\"DonationCentres\"(\"addressId\", name, \"openHour\", \"closeHour\", capacity) VALUES (?, ?, ?, ?, ?)");
+            addressRepository.save(donationCentre.getAddress());
+            long addressId = addressRepository.findOne(donationCentre.getAddress().getCounty(),
+                    donationCentre.getAddress().getLocality(), donationCentre.getAddress().getStreet(),
+                    donationCentre.getAddress().getNumber()).getID();
+            preparedStatement.setLong(1, addressId);
             preparedStatement.setString(2, donationCentre.getName());
-            preparedStatement.setTime(3, donationCentre.getOpenHour());
-            preparedStatement.setTime(4, donationCentre.getCloseHour());
+            preparedStatement.setTime(3, Time.valueOf(donationCentre.getOpenHour()));
+            preparedStatement.setTime(4, Time.valueOf(donationCentre.getCloseHour()));
             preparedStatement.setInt(5, donationCentre.getMaximumCapacity());
             preparedStatement.execute();
         } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
-            System.exit(1);
+            throw new DatabaseException("\nThe donation centre cannot be added");
         }
     }
 
@@ -141,8 +152,8 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE public.\"DonationCentres\" SET addressId = ?, name = ?, openHour = ?, closeHour = ?, capacity = ? WHERE id = ?)");
             preparedStatement.setLong(1, donationCentre.getAddress().getID());
             preparedStatement.setString(2, donationCentre.getName());
-            preparedStatement.setTime(3, donationCentre.getOpenHour());
-            preparedStatement.setTime(4, donationCentre.getCloseHour());
+            preparedStatement.setTime(3, Time.valueOf(donationCentre.getOpenHour()));
+            preparedStatement.setTime(4, Time.valueOf(donationCentre.getCloseHour()));
             preparedStatement.setInt(5, donationCentre.getMaximumCapacity());
             preparedStatement.setLong(6, donationCentre.getID());
             preparedStatement.execute();

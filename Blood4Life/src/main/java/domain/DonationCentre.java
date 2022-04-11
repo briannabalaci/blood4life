@@ -4,6 +4,7 @@ import domain.Address;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Objects;
 
 public class DonationCentre implements Entity<Long>, Serializable {
@@ -11,8 +12,8 @@ public class DonationCentre implements Entity<Long>, Serializable {
     private Address address;
     private String name;
     private int maximumCapacity;
-    private Time openHour;
-    private Time closeHour;
+    private LocalTime openHour;
+    private LocalTime closeHour;
 
 
     @Override
@@ -25,7 +26,7 @@ public class DonationCentre implements Entity<Long>, Serializable {
         this.centreID = aLong;
     }
 
-    public DonationCentre(Address address, String name, int maximumCapacity, Time openHour, Time closeHour) {
+    public DonationCentre(Address address, String name, int maximumCapacity, LocalTime openHour, LocalTime closeHour) {
         this.address = address;
         this.name = name;
         this.maximumCapacity = maximumCapacity;
@@ -57,19 +58,19 @@ public class DonationCentre implements Entity<Long>, Serializable {
         this.maximumCapacity = maximumCapacity;
     }
 
-    public Time getOpenHour() {
+    public LocalTime getOpenHour() {
         return openHour;
     }
 
-    public void setOpenHour(Time openHour) {
+    public void setOpenHour(LocalTime openHour) {
         this.openHour = openHour;
     }
 
-    public Time getCloseHour() {
+    public LocalTime getCloseHour() {
         return closeHour;
     }
 
-    public void setCloseHour(Time closeHour) {
+    public void setCloseHour(LocalTime closeHour) {
         this.closeHour = closeHour;
     }
 }

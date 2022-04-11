@@ -29,14 +29,9 @@ public class AddPatientController implements Initializable {
     public TextArea errorsTextArea;
 
     private Service service;
-    private Stage stage;
 
     public void setService(Service service) {
         this.service = service;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 
     private void setBloodTypes() {
