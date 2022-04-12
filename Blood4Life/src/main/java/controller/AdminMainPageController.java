@@ -58,13 +58,18 @@ public class AdminMainPageController implements Initializable {
         mainPageBorderPane.setCenter(view);
     }
 
-    public void onShowPatientsButtonClick(ActionEvent actionEvent) {
+    public void onShowPatientsButtonClick(ActionEvent actionEvent) throws IOException {
     }
 
     public void onShowUsersButtonClick(ActionEvent actionEvent) {
     }
 
-    public void onShowDonationCentresButtonnClick(ActionEvent actionEvent) {
+    public void onShowDonationCentresButtonnClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../showDonationCentres-view.fxml"));
+        Pane view = fxmlLoader.load();
+        ShowDonationCentresController showDonationCentresController = fxmlLoader.getController();
+        showDonationCentresController.setService(service);
+        mainPageBorderPane.setCenter(view);
     }
 
     public void onShowAppointmentsButtonClick(ActionEvent actionEvent) {

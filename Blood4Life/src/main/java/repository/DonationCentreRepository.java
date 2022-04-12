@@ -105,7 +105,7 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"DonationCentres\"");
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (!resultSet.next())
+            while (resultSet.next())
                 donationCentres.add(getEntityFromDatabase(resultSet));
         } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
@@ -130,7 +130,7 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
             preparedStatement.execute();
         } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
-            throw new DatabaseException("\nThe donation centre cannot be added");
+            throw new DatabaseException("The donation centre cannot be added");
         }
     }
 

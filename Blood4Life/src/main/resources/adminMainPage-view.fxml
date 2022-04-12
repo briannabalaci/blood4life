@@ -12,7 +12,7 @@
 <BorderPane fx:id="mainPageBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminMainPageController">
    <stylesheets>
        <URL value="@/styles/backgrounds-style.css" />
-      <URL value="@/styles/buttons-style.css" />
+       <URL value="@/styles/buttons-style.css" />
    </stylesheets>
    <left>
       <GridPane prefHeight="400.0" prefWidth="58.0" BorderPane.alignment="CENTER">
@@ -45,7 +45,7 @@
             </Button>
             <Button fx:id="showDonationCentresButton" mnemonicParsing="false" onAction="#onShowDonationCentresButtonnClick" GridPane.rowIndex="4">
                 <tooltip>
-                    <Tooltip text="Show ddonation centres" />
+                    <Tooltip text="Show donation centres" />
                 </tooltip>
             </Button>
             <Button fx:id="showAppointmentsButton" mnemonicParsing="false" onAction="#onShowAppointmentsButtonClick" GridPane.rowIndex="5">

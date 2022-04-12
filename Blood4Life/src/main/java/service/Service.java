@@ -13,6 +13,7 @@ import validator.PatientValidator;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class Service {
     private final UserRepositoryInterface userRepository;
@@ -44,5 +45,9 @@ public class Service {
         DonationCentre donationCentre = new DonationCentre(address, name, maximumCapacity, openHour, closeHour);
         donationCentreValidator.validateDonationCentre(donationCentre);
         donationCentreRepository.save(donationCentre);
+    }
+
+    public List<DonationCentre> findAllDonationCentres() {
+        return donationCentreRepository.findAll();
     }
 }
