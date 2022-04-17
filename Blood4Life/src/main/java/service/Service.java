@@ -1,11 +1,13 @@
 package service;
 
 import domain.Address;
+import domain.Admin;
 import domain.DonationCentre;
 import domain.Patient;
 import domain.enums.BloodType;
 import domain.enums.Severity;
 import domain.enums.Rh;
+import exception.ServerException;
 import repository.abstractRepo.*;
 import validator.DonationCentreValidator;
 import validator.PatientValidator;
@@ -32,6 +34,14 @@ public class Service {
         this.adminRepository = adminRepository;
         this.patientValidator = patientValidator;
         this.donationCentreValidator = donationCentreValidator;
+    }
+
+    public void loginAdmin(String username, String password) {
+        Admin admin = adminRepository.findOne(username);
+        if(admin == null)
+            throw new ServerException("Invalid username!");
+        if(!admin.getPassword().equals(password))
+            throw new ServerException("Incorrect password!");
     }
 
     public void addPatient(String cnp, String firstName, String lastName, LocalDate birthday, BloodType bloodType, Rh rh, Severity severity, int bloodQuantityNeeded) {

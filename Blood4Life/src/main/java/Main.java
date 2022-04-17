@@ -1,6 +1,7 @@
-import controller.AdminMainPageController;
+import controller.LoginAdminController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import repository.*;
@@ -35,17 +36,13 @@ public class Main extends Application {
         AdminRepository adminRepository = new AdminRepository(databaseURL, databaseUsername, databasePassword);
         PatientRepository patientRepository = new PatientRepository(databaseURL, databaseUsername, databasePassword);
         AppointmentRepository appointmentRepository = new AppointmentRepository(databaseURL, databaseUsername, databasePassword, userRepository, patientRepository, donationCentreRepository);
+        Service service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, new PatientValidator(), new DonationCentreValidator(new AddressValidator()));
 
-        PatientValidator patientValidator = new PatientValidator();
-        AddressValidator addressValidator = new AddressValidator();
-        DonationCentreValidator donationCentreValidator = new DonationCentreValidator(addressValidator);
-        Service service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, patientValidator, donationCentreValidator);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("adminMainPage-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 700, 400);
-        AdminMainPageController adminMainPageController = fxmlLoader.getController();
-        adminMainPageController.setService(service);
-        adminMainPageController.setStage(stage);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginAdmin-view.fxml"));
+        Parent parent = fxmlLoader.load();
+        LoginAdminController loginAdminController = fxmlLoader.getController();
+        loginAdminController.setService(service);
+        Scene scene = new Scene(parent);
         stage.setTitle("Blood4Life");
         stage.setScene(scene);
         stage.show();
