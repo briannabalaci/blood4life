@@ -1,11 +1,13 @@
 import controller.AdminMainPageController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import repository.*;
 import service.Service;
+import validator.AddressValidator;
+import validator.DonationCentreValidator;
+import validator.PatientValidator;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -33,12 +35,17 @@ public class Main extends Application {
         AdminRepository adminRepository = new AdminRepository(databaseURL, databaseUsername, databasePassword);
         PatientRepository patientRepository = new PatientRepository(databaseURL, databaseUsername, databasePassword);
         AppointmentRepository appointmentRepository = new AppointmentRepository(databaseURL, databaseUsername, databasePassword, userRepository, patientRepository, donationCentreRepository);
-        Service service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("adminMainPage-view.fxml"));
+        PatientValidator patientValidator = new PatientValidator();
+        AddressValidator addressValidator = new AddressValidator();
+        DonationCentreValidator donationCentreValidator = new DonationCentreValidator(addressValidator);
+        Service service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, patientValidator, donationCentreValidator);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("adminMainPage-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 700, 400);
         AdminMainPageController adminMainPageController = fxmlLoader.getController();
         adminMainPageController.setService(service);
-        Scene scene = new Scene(fxmlLoader.load(), 588, 370);
+        adminMainPageController.setStage(stage);
         stage.setTitle("Blood4Life");
         stage.setScene(scene);
         stage.show();
