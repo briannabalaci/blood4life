@@ -23,7 +23,7 @@ public class AdminRepository implements AdminRepositoryInterface {
         //commonUtils.logger.traceEntry();
         Admin admin;
         try(Connection connection = DriverManager.getConnection(url, username, password);
-            ResultSet result = connection.createStatement().executeQuery(String.format("select * from admins P where P.username =  '%s'", s))) {
+            ResultSet result = connection.createStatement().executeQuery(String.format("select * from  \"Admins\" A where A.username =  '%s'", s))) {
             if(result.next()){
                     String username = result.getString("username");
                     String password = result.getString("password");

@@ -1,11 +1,14 @@
-import controller.AdminMainPageController;
+import controller.LoginAdminController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import repository.*;
 import service.Service;
+import validator.AddressValidator;
+import validator.DonationCentreValidator;
+import validator.PatientValidator;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -33,12 +36,13 @@ public class Main extends Application {
         AdminRepository adminRepository = new AdminRepository(databaseURL, databaseUsername, databasePassword);
         PatientRepository patientRepository = new PatientRepository(databaseURL, databaseUsername, databasePassword);
         AppointmentRepository appointmentRepository = new AppointmentRepository(databaseURL, databaseUsername, databasePassword, userRepository, patientRepository, donationCentreRepository);
-        Service service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository);
+        Service service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, new PatientValidator(), new DonationCentreValidator(new AddressValidator()));
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("adminMainPage-view.fxml"));
-        AdminMainPageController adminMainPageController = fxmlLoader.getController();
-        adminMainPageController.setService(service);
-        Scene scene = new Scene(fxmlLoader.load(), 588, 370);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginAdmin-view.fxml"));
+        Parent parent = fxmlLoader.load();
+        LoginAdminController loginAdminController = fxmlLoader.getController();
+        loginAdminController.setService(service);
+        Scene scene = new Scene(parent);
         stage.setTitle("Blood4Life");
         stage.setScene(scene);
         stage.show();

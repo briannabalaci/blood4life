@@ -2,3 +2,9 @@
     -fx-font-family: Ayuthaya;
     -fx-font-size: 14;
 }
+
+#errorLabel {
+    -fx-text-fill: red;
+    -fx-font-style: italic;
+    -fx-alignment: center;
+}
