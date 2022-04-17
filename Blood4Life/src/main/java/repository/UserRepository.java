@@ -129,6 +129,22 @@ public class UserRepository implements UserRepositoryInterface {
     }
 
     @Override
+    public User findUserByEmail(String email) {
+        try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Users\" WHERE email = ?");
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next())
+                return null;
+            return getUserFromResultSet(resultSet);
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+            System.exit(1);
+        }
+        return null;
+    }
+
+    @Override
     public List<User> findUsersByBloodTypeAndRh(BloodType bloodType, Rh rh) {
         List<User> users = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {

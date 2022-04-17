@@ -1,4 +1,9 @@
 import controller.LoginAdminController;
+import controller.LoginUserController;
+import controller.ShowPatientsController;
+import domain.enums.BloodType;
+import domain.enums.Rh;
+import domain.enums.Severity;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,10 +43,10 @@ public class Main extends Application {
         AppointmentRepository appointmentRepository = new AppointmentRepository(databaseURL, databaseUsername, databasePassword, userRepository, patientRepository, donationCentreRepository);
         Service service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, new PatientValidator(), new DonationCentreValidator(new AddressValidator()));
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginAdmin-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
         Parent parent = fxmlLoader.load();
-        LoginAdminController loginAdminController = fxmlLoader.getController();
-        loginAdminController.setService(service);
+        LoginUserController loginUserController = fxmlLoader.getController();
+        loginUserController.setService(service);
         Scene scene = new Scene(parent);
         stage.setTitle("Blood4Life");
         stage.setScene(scene);

@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface UserRepositoryInterface extends RepositoryInterface<Long, User> {
     User findUserByCNP(String cnp);
+    User findUserByEmail(String email);
     List<User> findUsersByBloodTypeAndRh(BloodType bloodType, Rh rh);
 }

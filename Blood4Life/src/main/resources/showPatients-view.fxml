@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowPatientsController">
+   <children>
+      <TableView fx:id="patientsTableView" prefHeight="400.0" prefWidth="600.0">
+        <columns>
+          <TableColumn fx:id="firstNameColumn" prefWidth="65.60003662109375" text="First Name" />
+          <TableColumn fx:id="lastNameColumn" prefWidth="67.20001220703125" text="Last Name" />
+            <TableColumn fx:id="bloodTypeColumn" prefWidth="70.39996337890625" text="Blood Type" />
+            <TableColumn fx:id="rhColumn" prefWidth="46.4000244140625" text="RH" />
+            <TableColumn fx:id="severityColumn" prefWidth="58.4000244140625" text="Severity" />
+            <TableColumn fx:id="bloodQuantityColumn" prefWidth="142.39996337890625" text="Blood Quantity Needed" />
+            <TableColumn fx:id="cnpColumn" prefWidth="66.4000244140625" text="Cnp" />
+            <TableColumn fx:id="birthdayColumn" prefWidth="78.4000244140625" text="Birthday" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

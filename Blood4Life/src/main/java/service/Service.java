@@ -1,9 +1,6 @@
 package service;
 
-import domain.Address;
-import domain.Admin;
-import domain.DonationCentre;
-import domain.Patient;
+import domain.*;
 import domain.enums.BloodType;
 import domain.enums.Severity;
 import domain.enums.Rh;
@@ -57,7 +54,20 @@ public class Service {
         donationCentreRepository.save(donationCentre);
     }
 
+    public void loginUser(String username, String cnp) {
+        User user = userRepository.findUserByEmail(username);
+        if(user == null)
+            throw new ServerException("Invalid email!");
+        if(!user.getCnp().equals(cnp))
+            throw new ServerException("Incorrect password!");
+    }
+
     public List<DonationCentre> findAllDonationCentres() {
         return donationCentreRepository.findAll();
     }
+    public List<Patient> findAllPatients() {
+        return patientRepository.findAll();
+    }
 }
+
+

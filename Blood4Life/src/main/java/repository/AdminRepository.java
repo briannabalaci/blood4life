@@ -42,7 +42,7 @@ public class AdminRepository implements AdminRepositoryInterface {
         List<Admin> admins = new ArrayList<>();
         try(Connection connection = DriverManager.getConnection(url, username, password);
 
-            PreparedStatement statement = connection.prepareStatement("select * from admins");
+            PreparedStatement statement = connection.prepareStatement("select * from \"Admins\"");
             ResultSet result = statement.executeQuery()){
             while( result.next() ){
                     String username = result.getString("username");
@@ -59,7 +59,7 @@ public class AdminRepository implements AdminRepositoryInterface {
     @Override
     public void save(Admin entity) {
         //commonUtils.logger.traceEntry("saving task {}",elem);
-        String sql = "insert into Admins (username, password) values (?,?)";
+        String sql = "insert into \"Admins\" (username, password) values (?,?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
             preStm.setString(1, entity.getID());
@@ -76,7 +76,7 @@ public class AdminRepository implements AdminRepositoryInterface {
     @Override
     public void delete(String s) {
         //commonUtils.logger.traceEntry();
-        String sql = "delete from admins where username = ?";
+        String sql = "delete from \"Admins\" where username = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
             preStm.setString(1,s);
@@ -92,7 +92,7 @@ public class AdminRepository implements AdminRepositoryInterface {
     @Override
     public void update(Admin entity) {
         //        logger.traceEntry();
-        String sql = "update admins set password = ?  where username = ?";
+        String sql = "update \"Admins\" set password = ?  where username = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
             preStm.setString(1, entity.getPassword());
