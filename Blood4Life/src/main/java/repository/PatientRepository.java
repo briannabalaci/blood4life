@@ -59,7 +59,7 @@ public class PatientRepository implements PatientRepositoryInterface {
         List<Patient> patients = new ArrayList<>();
         try(Connection connection = DriverManager.getConnection(url, username, password);
 
-            PreparedStatement statement = connection.prepareStatement("select * from Patients");
+            PreparedStatement statement = connection.prepareStatement("select * from \"Patients\"");
             ResultSet result = statement.executeQuery()){
             while( result.next() ){
                 Long id = result.getLong("id");
@@ -112,7 +112,7 @@ public class PatientRepository implements PatientRepositoryInterface {
     @Override
     public void delete(Long aLong) {
         //commonUtils.logger.traceEntry();
-        String sql = "delete from patients where id = ?";
+        String sql = "delete from \"Patients\" where id = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
             preStm.setLong(1,aLong);
@@ -128,7 +128,7 @@ public class PatientRepository implements PatientRepositoryInterface {
     @Override
     public void update(Patient entity) {
         //        logger.traceEntry();
-        String sql = "update patients set firstname = ? , lastname = ?   where id = ?";
+        String sql = "update \"Patients\" set firstname = ? , lastname = ?   where id = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
             preStm.setString(1, entity.getFirstName());
@@ -141,5 +141,85 @@ public class PatientRepository implements PatientRepositoryInterface {
             System.err.println("Error DB"+ex);
         }
         //logger.traceExit();
+    }
+
+
+    @Override
+    public Patient findPatientsByQuantity(Integer quantity) {
+        Patient patient;
+        try(Connection connection = DriverManager.getConnection(url, username, password);
+            ResultSet result = connection.createStatement().executeQuery(String.format("select * from \"Patients\" P where P.bloodquantity =  '%d'", quantity))) {
+            if(result.next()){
+                Long id = result.getLong("id");
+                String firstName = result.getString("firstname");
+                String lastName = result.getString("lastname");
+                String bloodType = result.getString("bloodtype");
+                String rh = result.getString("rh");
+                int bloodQuantity = result.getInt("bloodquantity");
+                String cnp = result.getString("cnp");
+                LocalDate birthday =LocalDate.parse(result.getString("birthday"));
+                String severity = result.getString("severity");
+                patient = new Patient(cnp, firstName, lastName, birthday, BloodType.valueOf(bloodType), Rh.valueOf(rh), Severity.valueOf(severity), bloodQuantity);
+                patient.setID(id);
+                patient.setBloodQuantityNeeded(bloodQuantity);
+                patient.setGravity(Severity.valueOf(severity));
+                patient.setBloodType(BloodType.valueOf(bloodType));
+                patient.setRh(Rh.valueOf(rh));
+                return patient;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Patient findPatientsBySeverity(Severity severity) {
+        Patient patient;
+        try(Connection connection = DriverManager.getConnection(url, username, password);
+            ResultSet result = connection.createStatement().executeQuery(String.format("select * from \"Patients\" P where P.severity =  '%s'", severity))) {
+            if(result.next()){
+                Long id = result.getLong("id");
+                String firstName = result.getString("firstname");
+                String lastName = result.getString("lastname");
+                String bloodType = result.getString("bloodtype");
+                String rh = result.getString("rh");
+                int bloodQuantity = result.getInt("bloodquantity");
+                String cnp = result.getString("cnp");
+                LocalDate birthday =LocalDate.parse(result.getString("birthday"));
+                String severity0 = result.getString("severity");
+                patient = new Patient(cnp, firstName, lastName, birthday, BloodType.valueOf(bloodType), Rh.valueOf(rh), Severity.valueOf(severity0), bloodQuantity);
+                patient.setID(id);
+                return patient;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Patient findPatientsByBloodTypeAndRh(BloodType bloodType, Rh rh) {
+        Patient patient;
+        try(Connection connection = DriverManager.getConnection(url, username, password);
+            ResultSet result = connection.createStatement().executeQuery(String.format("select * from \"Patients\" P where P.bloodtype =  '%s' and P.rh = '%s' ", bloodType,rh))) {
+            if(result.next()){
+                Long id = result.getLong("id");
+                String firstName = result.getString("firstname");
+                String lastName = result.getString("lastname");
+                String bloodType0 = result.getString("bloodtype");
+                String rh0 = result.getString("rh");
+                int bloodQuantity = result.getInt("bloodquantity");
+                String cnp = result.getString("cnp");
+                LocalDate birthday =LocalDate.parse(result.getString("birthday"));
+                String severity = result.getString("severity");
+                patient = new Patient(cnp, firstName, lastName, birthday, BloodType.valueOf(bloodType0), Rh.valueOf(rh0), Severity.valueOf(severity), bloodQuantity);
+                patient.setID(id);
+                return patient;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
