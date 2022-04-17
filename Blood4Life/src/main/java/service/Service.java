@@ -62,6 +62,11 @@ public class Service {
             throw new ServerException("Incorrect password!");
     }
 
+    public void addUser(String firstName, String lastName, String email, String cnp, LocalDate birthdate, String gender, BloodType bloodType, Rh rh, Double weight, Integer height){
+        User user = new User(firstName, lastName, bloodType, rh, email, height, weight, birthdate, gender, cnp);
+        userRepository.save(user);
+    }
+
     public List<DonationCentre> findAllDonationCentres() {
         return donationCentreRepository.findAll();
     }

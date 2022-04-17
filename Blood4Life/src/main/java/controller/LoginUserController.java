@@ -4,8 +4,10 @@ import exception.ServerException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -37,5 +39,23 @@ public class LoginUserController {
         } catch (ServerException exception) {
            messageLabel.setText(exception.getMessage());
         }
+    }
+
+    public void onSignUpButtonClick(ActionEvent actionEvent) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("signupUser-view.fxml"));
+        Parent parent = null;
+        Stage stage = new Stage();
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        SignupUserController signupUserController = fxmlLoader.getController();
+        signupUserController.setController(service, (Stage)((Node) actionEvent.getSource()).getScene().getWindow());
+
+        Scene scene = new Scene(parent);
+        stage.setTitle("Blood4Life");
+        stage.setScene(scene);
+        stage.show();
     }
 }

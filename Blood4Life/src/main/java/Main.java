@@ -4,6 +4,7 @@ import controller.ShowPatientsController;
 import domain.enums.BloodType;
 import domain.enums.Rh;
 import domain.enums.Severity;
+import controller.SignupUserController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +18,7 @@ import validator.PatientValidator;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Properties;
 
 public class Main extends Application {
@@ -47,6 +49,7 @@ public class Main extends Application {
         Parent parent = fxmlLoader.load();
         LoginUserController loginUserController = fxmlLoader.getController();
         loginUserController.setService(service);
+
         Scene scene = new Scene(parent);
         stage.setTitle("Blood4Life");
         stage.setScene(scene);

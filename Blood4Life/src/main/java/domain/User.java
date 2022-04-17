@@ -30,6 +30,20 @@ public class User implements Entity<Long>, Serializable {
         this.cnp = cnp;
     }
 
+    public User(String firstName, String lastName, BloodType bloodType, domain.enums.Rh rh, String email, Integer height, Double weight, LocalDate birthDate, String gender, String cnp) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.bloodType = bloodType;
+        Rh = rh;
+        this.email = email;
+        this.height = height;
+        this.weight = weight;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.cnp = cnp;
+        this.points = 0L;
+    }
+
     @Override
     public Long getID() {
         return userID;
