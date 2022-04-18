@@ -34,11 +34,11 @@ public class LoginAdminController {
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
             service.loginAdmin(username, password);
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginAdmin-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("adminMainPage-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 660, 500);
-            LoginAdminController loginAdminController = fxmlLoader.getController();
-            loginAdminController.setService(service);
-            loginAdminController.setStage(stage);
+            AdminMainPageController adminMainPageController = fxmlLoader.getController();
+            adminMainPageController.setService(service);
+            adminMainPageController.setStage(stage);
             stage.setTitle("Blood4Life");
             stage.setScene(scene);
             stage.show();
