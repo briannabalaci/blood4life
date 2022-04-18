@@ -1,12 +1,15 @@
 package controller;
 
 import domain.enums.BloodType;
+import domain.enums.Gender;
 import domain.enums.Rh;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -14,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import service.Service;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -21,9 +25,9 @@ import java.util.ResourceBundle;
 
 public class SignupUserController implements Initializable {
 
-    public ComboBox genderComboBox;
-    public ComboBox bloodTypeComboBox;
-    public ComboBox rhComboBox;
+    public ComboBox<Gender> genderComboBox;
+    public ComboBox<BloodType> bloodTypeComboBox;
+    public ComboBox<Rh> rhComboBox;
     public TextField cnpTextField;
     public TextField emailTextField;
     public DatePicker birthDatePicker;
@@ -38,7 +42,6 @@ public class SignupUserController implements Initializable {
     public void setController(Service service, Stage stage){
         this.service = service;
         this.root = stage;
-
     }
 
     @Override
@@ -61,36 +64,43 @@ public class SignupUserController implements Initializable {
     }
 
     private void setGender() {
-        ObservableList<String> genders = FXCollections.observableArrayList();
-        genders.add("Female");
-        genders.add("Male");
-        genders.add("Prefer not to say");
+        ObservableList<Gender> genders = FXCollections.observableArrayList();
+        genders.addAll(Arrays.asList(Gender.values()));
         genderComboBox.setItems(genders);
     }
 
-    public void onSignUpUserButtonClick(ActionEvent actionEvent) {
+    public void onSignUpUserButtonClick(ActionEvent actionEvent) throws IOException {
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
         String email = emailTextField.getText();
         String cnp = cnpTextField.getText();
-        BloodType bloodType = (BloodType) bloodTypeComboBox.getValue();
-        Rh rh = (Rh) rhComboBox.getValue();
-        String gender = (String) genderComboBox.getValue();
+        BloodType bloodType = bloodTypeComboBox.getValue();
+        Rh rh = rhComboBox.getValue();
+        Gender gender = genderComboBox.getValue();
         Double weight = Double.valueOf(weightTextField.getText());
         Integer height = Integer.valueOf(heightTextField.getText());
         LocalDate birthdate = birthDatePicker.getValue();
 
         service.addUser(firstName, lastName, email, cnp, birthdate, gender, bloodType, rh, weight, height);
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Blood4Life");
-        alert.setHeaderText("You signed up successfully!");
-        alert.showAndWait();
-
-        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
+        LoginUserController loginUserController = fxmlLoader.getController();
+        loginUserController.setService(service);
+        loginUserController.setStage(root);
+        root.setTitle("Blood4Life");
+        root.setScene(scene);
+        root.show();
     }
 
-    public void openLoginWindow(){
-
+    public void onBackButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
+        LoginUserController loginUserController = fxmlLoader.getController();
+        loginUserController.setService(service);
+        loginUserController.setStage(root);
+        root.setTitle("Blood4Life");
+        root.setScene(scene);
+        root.show();
     }
 }

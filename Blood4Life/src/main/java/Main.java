@@ -1,13 +1,6 @@
-import controller.LoginAdminController;
 import controller.LoginUserController;
-import controller.ShowPatientsController;
-import domain.enums.BloodType;
-import domain.enums.Rh;
-import domain.enums.Severity;
-import controller.SignupUserController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import repository.*;
@@ -18,7 +11,6 @@ import validator.PatientValidator;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Properties;
 
 public class Main extends Application {
@@ -46,11 +38,10 @@ public class Main extends Application {
         Service service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, new PatientValidator(), new DonationCentreValidator(new AddressValidator()));
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
-        Parent parent = fxmlLoader.load();
+        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
         LoginUserController loginUserController = fxmlLoader.getController();
         loginUserController.setService(service);
-
-        Scene scene = new Scene(parent);
+        loginUserController.setStage(stage);
         stage.setTitle("Blood4Life");
         stage.setScene(scene);
         stage.show();

@@ -2,6 +2,7 @@ package service;
 
 import domain.*;
 import domain.enums.BloodType;
+import domain.enums.Gender;
 import domain.enums.Severity;
 import domain.enums.Rh;
 import exception.ServerException;
@@ -62,7 +63,7 @@ public class Service {
             throw new ServerException("Incorrect password!");
     }
 
-    public void addUser(String firstName, String lastName, String email, String cnp, LocalDate birthdate, String gender, BloodType bloodType, Rh rh, Double weight, Integer height){
+    public void addUser(String firstName, String lastName, String email, String cnp, LocalDate birthdate, Gender gender, BloodType bloodType, Rh rh, Double weight, Integer height){
         User user = new User(firstName, lastName, bloodType, rh, email, height, weight, birthdate, gender, cnp);
         userRepository.save(user);
     }

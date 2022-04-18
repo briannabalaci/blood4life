@@ -2,6 +2,7 @@ package repository;
 
 import domain.User;
 import domain.enums.BloodType;
+import domain.enums.Gender;
 import domain.enums.Rh;
 import repository.abstractRepo.UserRepositoryInterface;
 
@@ -67,7 +68,7 @@ public class UserRepository implements UserRepositoryInterface {
             preparedStatement.setInt(6, user.getHeight());
             preparedStatement.setDouble(7, user.getWeight());
             preparedStatement.setDate(8, Date.valueOf(user.getBirthDate()));
-            preparedStatement.setString(9, user.getGender());
+            preparedStatement.setString(9, user.getGender().toString());
             preparedStatement.setString(10, user.getCnp());
             preparedStatement.setLong(11, user.getPoints());
             preparedStatement.execute();
@@ -101,7 +102,7 @@ public class UserRepository implements UserRepositoryInterface {
             preparedStatement.setInt(6, user.getHeight());
             preparedStatement.setDouble(7, user.getWeight());
             preparedStatement.setDate(8, Date.valueOf(user.getBirthDate()));
-            preparedStatement.setString(9, user.getGender());
+            preparedStatement.setString(9, user.getGender().toString());
             preparedStatement.setString(10, user.getCnp());
             preparedStatement.setLong(11, user.getPoints());
             preparedStatement.setLong(12, user.getID());
@@ -168,7 +169,7 @@ public class UserRepository implements UserRepositoryInterface {
     }
 
     private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
-        User user = new User(resultSet.getString("firstName"), resultSet.getString("lastName"), convertToLocalDate(resultSet.getDate("birthday")), resultSet.getString("gender"), resultSet.getString("cnp"));
+        User user = new User(resultSet.getString("firstName"), resultSet.getString("lastName"), convertToLocalDate(resultSet.getDate("birthday")), Gender.valueOf(resultSet.getString("gender")), resultSet.getString("cnp"));
         user.setID(resultSet.getLong("id"));
         user.setBloodType(BloodType.valueOf(resultSet.getString("bloodType")));
         user.setRh(Rh.valueOf(resultSet.getString("rh")));

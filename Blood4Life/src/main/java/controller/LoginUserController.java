@@ -21,14 +21,16 @@ public class LoginUserController {
     public TextField cnpTextField;
     public Label messageLabel;
 
-
-
     private Service service;
+    private Stage stage;
 
     public void setService(Service service) {
         this.service = service;
     }
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public void onUserLoginButtonClick(ActionEvent actionEvent) {
         try {
@@ -41,19 +43,22 @@ public class LoginUserController {
         }
     }
 
-    public void onSignUpButtonClick(ActionEvent actionEvent) {
+    public void onSignUpButtonClick(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("signupUser-view.fxml"));
-        Parent parent = null;
-        Stage stage = new Stage();
-        try {
-            parent = fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
         SignupUserController signupUserController = fxmlLoader.getController();
-        signupUserController.setController(service, (Stage)((Node) actionEvent.getSource()).getScene().getWindow());
+        signupUserController.setController(service, stage);
+        stage.setTitle("Blood4Life");
+        stage.setScene(scene);
+        stage.show();
+    }
 
-        Scene scene = new Scene(parent);
+    public void onLoginAsAdminButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginAdmin-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
+        LoginAdminController loginAdminController = fxmlLoader.getController();
+        loginAdminController.setService(service);
+        loginAdminController.setStage(stage);
         stage.setTitle("Blood4Life");
         stage.setScene(scene);
         stage.show();

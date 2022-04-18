@@ -1,6 +1,7 @@
 package domain;
 
 import domain.enums.BloodType;
+import domain.enums.Gender;
 import domain.enums.Rh;
 
 import java.io.Serializable;
@@ -18,11 +19,11 @@ public class User implements Entity<Long>, Serializable {
     private Integer height;
     private Double weight;
     private LocalDate birthDate;
-    private String gender;
+    private Gender gender;
     private String cnp;
     private Long points;
 
-    public User(String firstName, String lastName, LocalDate birthDate, String gender, String cnp) {
+    public User(String firstName, String lastName, LocalDate birthDate, Gender gender, String cnp) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -30,7 +31,7 @@ public class User implements Entity<Long>, Serializable {
         this.cnp = cnp;
     }
 
-    public User(String firstName, String lastName, BloodType bloodType, domain.enums.Rh rh, String email, Integer height, Double weight, LocalDate birthDate, String gender, String cnp) {
+    public User(String firstName, String lastName, BloodType bloodType, Rh rh, String email, Integer height, Double weight, LocalDate birthDate, Gender gender, String cnp) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.bloodType = bloodType;
@@ -118,11 +119,11 @@ public class User implements Entity<Long>, Serializable {
         this.birthDate = birthDate;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

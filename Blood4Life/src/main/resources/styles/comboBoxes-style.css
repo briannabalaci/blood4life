@@ -1,5 +1,6 @@
 .combo-box {
     -fx-background-color: #EEEBDD;
+    -fx-font-family: Ayuthaya;
 }
 
 .combo-box .cell {

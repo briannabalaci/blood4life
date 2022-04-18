@@ -15,12 +15,14 @@
       <URL value="@/styles/textFields-style.css" />
    </stylesheets>
    <children>
-      <Label layoutX="215.0" layoutY="146.0" text="Username" />
-      <TextField fx:id="usernameTextField" layoutX="295.0" layoutY="142.0" />
-      <Button layoutX="289.0" layoutY="254.0" mnemonicParsing="false" onAction="#onUserLoginButtonClick" text="Login" />
-      <Label fx:id="messageLabel" layoutX="203.0" layoutY="254.0" prefHeight="54.0" prefWidth="193.0" />
-      <PasswordField fx:id="cnpTextField" layoutX="295.0" layoutY="197.0" />
-      <Label layoutX="230.0" layoutY="201.0" text="CNP" />
-      <Button layoutX="163.0" layoutY="318.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" text="SignUp" />
+      <Label layoutX="167.0" layoutY="147.0" text="Username" />
+      <TextField fx:id="usernameTextField" layoutX="261.0" layoutY="143.0" />
+      <Button layoutX="397.0" layoutY="254.0" mnemonicParsing="false" onAction="#onUserLoginButtonClick" text="Login" />
+      <Label fx:id="messageLabel" layoutX="204.0" layoutY="303.0" prefHeight="54.0" prefWidth="193.0" />
+      <PasswordField fx:id="cnpTextField" layoutX="261.0" layoutY="198.0" />
+      <Label layoutX="182.0" layoutY="202.0" text="CNP" />
+      <Button layoutX="272.0" layoutY="254.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" text="Sign up" />
+      <Button layoutX="68.0" layoutY="254.0" mnemonicParsing="false" onAction="#onLoginAsAdminButtonClick" text="Login as admin" />
+      <Label layoutX="257.0" layoutY="78.0" text="Login as user" />
    </children>
 </AnchorPane>
