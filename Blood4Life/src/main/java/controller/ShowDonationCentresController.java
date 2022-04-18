@@ -1,6 +1,8 @@
 package controller;
 
 import domain.DonationCentre;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -42,10 +44,10 @@ public class ShowDonationCentresController implements Initializable {
         maximumCapacityTableColumn.setCellValueFactory(new PropertyValueFactory<>("maximumCapacity"));
         openHourTableColumn.setCellValueFactory(new PropertyValueFactory<>("openHour"));
         closeHourTableColumn.setCellValueFactory(new PropertyValueFactory<>("closeHour"));
-        countyTableColumn.setCellValueFactory(new PropertyValueFactory<>("county"));
-        cityTableColumn.setCellValueFactory(new PropertyValueFactory<>("city"));
-        streetTableColumn.setCellValueFactory(new PropertyValueFactory<>("street"));
-        numberTableColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+        countyTableColumn.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAddress().getCounty()));
+        cityTableColumn.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAddress().getLocality()));
+        streetTableColumn.setCellValueFactory(value -> new SimpleStringProperty(value.getValue().getAddress().getStreet()));
+        numberTableColumn.setCellValueFactory(value -> new SimpleObjectProperty<>(value.getValue().getAddress().getNumber()));
 
         donationCentresTableView.setItems(donationCentres);
     }

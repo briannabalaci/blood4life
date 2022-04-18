@@ -39,7 +39,6 @@ public class ShowPatientsController implements Initializable {
         patients.addAll(service.findAllPatients());
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -50,6 +49,7 @@ public class ShowPatientsController implements Initializable {
         bloodTypeColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         cnpColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         birthdayColumn.setCellValueFactory(new PropertyValueFactory<>("birthday"));
+        bloodQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("bloodQuantityNeeded"));
         patientsTableView.setItems(patients);
     }
 }

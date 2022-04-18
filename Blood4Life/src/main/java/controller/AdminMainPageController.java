@@ -37,17 +37,6 @@ public class AdminMainPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("../addPatient-view.fxml"));
-//        AddPatientController addPatientController = fxmlLoader.getController();
-//        addPatientController.setService(service);
-//        addPatientController.setStage(stage);
-//        Pane view = null;
-//        try {
-//            view = fxmlLoader.load();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        mainPageBorderPane.setCenter(view);
     }
 
     public void onAddPatientButtonClick(ActionEvent actionEvent) throws IOException {
@@ -59,6 +48,11 @@ public class AdminMainPageController implements Initializable {
     }
 
     public void onShowPatientsButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../showPatients-view.fxml"));
+        Pane view = fxmlLoader.load();
+        ShowPatientsController showPatientsController = fxmlLoader.getController();
+        showPatientsController.setService(service);
+        mainPageBorderPane.setCenter(view);
     }
 
     public void onShowUsersButtonClick(ActionEvent actionEvent) {
