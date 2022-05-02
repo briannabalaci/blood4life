@@ -8,3 +8,12 @@
     -fx-font-style: italic;
     -fx-alignment: center;
 }
+
+#emailErrorLabel, #cnpErrorLabel, #firstNameErrorLabel, #lastNameErrorLabel, #heightErrorLabel, #weightErrorLabel, #genderErrorLabel, #rhErrorLabel, #bloodTypeErrorLabel, #birthDateErrorLabel{
+    -fx-font-style: italic;
+}
+
+#signUpLabel{
+    -fx-font-weight: bold;
+    -fx-font-size: 18;
+}

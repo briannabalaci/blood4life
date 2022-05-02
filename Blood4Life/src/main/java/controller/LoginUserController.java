@@ -45,7 +45,7 @@ public class LoginUserController {
 
     public void onSignUpButtonClick(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("signupUser-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
+        Scene scene = new Scene(fxmlLoader.load(),660, 500);
         SignupUserController signupUserController = fxmlLoader.getController();
         signupUserController.setController(service, stage);
         stage.setTitle("Blood4Life");
