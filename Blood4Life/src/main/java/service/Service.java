@@ -74,6 +74,9 @@ public class Service {
     public List<Patient> findAllPatients() {
         return patientRepository.findAll();
     }
+    public List<Appointment> findAllAppointments() {
+        return appointmentRepository.findAll();
+    }
 }
 
 
