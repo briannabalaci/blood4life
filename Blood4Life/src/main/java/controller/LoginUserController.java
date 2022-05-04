@@ -35,7 +35,7 @@ public class LoginUserController {
     public void onUserLoginButtonClick(ActionEvent actionEvent) {
         try {
             String username = usernameTextField.getText();
-            String cnp =cnpTextField.getText();
+            String cnp = cnpTextField.getText();
             service.loginUser(username, cnp);
             messageLabel.setText("Logare cu succes!");
         } catch (ServerException exception) {
