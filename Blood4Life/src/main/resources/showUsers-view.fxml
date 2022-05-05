@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowUsersController">
+    <stylesheets>
+        <URL value="@/styles/backgrounds-style.css" />
+        <URL value="@/styles/tables-style.css" />
+    </stylesheets>
+   <children>
+      <TableView fx:id="usersTableView" prefHeight="400.0" prefWidth="600.0">
+        <columns>
+          <TableColumn fx:id="firstNameColumn" prefWidth="49.0" text="First Name" />
+          <TableColumn fx:id="lastNameColumn" prefWidth="47.0" text="Last Name" />
+            <TableColumn fx:id="emailColumn" prefWidth="61.0" text="Email" />
+            <TableColumn fx:id="cnpColumn" prefWidth="68.0" text="CNP" />
+            <TableColumn fx:id="birthdateColumn" prefWidth="70.0" text="Birth date" />
+            <TableColumn fx:id="genderColumn" prefWidth="62.0" text="Gender" />
+            <TableColumn fx:id="bloodTypeColumn" prefWidth="64.0" text="BloodType" />
+            <TableColumn fx:id="rhColumn" prefWidth="63.0" text="RH" />
+            <TableColumn fx:id="weightColumn" prefWidth="58.0" text="Weight" />
+            <TableColumn fx:id="heightColumn" prefWidth="57.0" text="Height" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

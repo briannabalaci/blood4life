@@ -109,6 +109,8 @@ public class Service {
     public List<Appointment> findAllAppointments() {
         return appointmentRepository.findAll();
     }
+
+    public List<User> findAllUsers() { return userRepository.findAll(); }
 }
 
 

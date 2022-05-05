@@ -55,7 +55,12 @@ public class AdminMainPageController implements Initializable {
         mainPageBorderPane.setCenter(view);
     }
 
-    public void onShowUsersButtonClick(ActionEvent actionEvent) {
+    public void onShowUsersButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../showUsers-view.fxml"));
+        Pane view = fxmlLoader.load();
+        ShowUsersController showUsersController = fxmlLoader.getController();
+        showUsersController.setService(service);
+        mainPageBorderPane.setCenter(view);
     }
 
     public void onShowDonationCentresButtonnClick(ActionEvent actionEvent) throws IOException {
