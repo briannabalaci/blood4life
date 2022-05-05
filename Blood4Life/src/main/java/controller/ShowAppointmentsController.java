@@ -24,7 +24,7 @@ public class ShowAppointmentsController implements Initializable {
     public TableColumn<Appointment, Time> hourTableColumn;
 
     private Service service;
-    private ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+    private final ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
     public void setService(Service service) {
         this.service = service;

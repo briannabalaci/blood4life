@@ -101,7 +101,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\"");
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (!resultSet.next())
+            while (resultSet.next())
                 appointments.add(getAppointmentFromDatabase(resultSet));
         } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
@@ -158,11 +158,11 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
     private Appointment getAppointmentFromDatabase(ResultSet resultSet) throws SQLException {
         long appointmentId = resultSet.getLong("id");
         long userId = resultSet.getLong("userId");
-        long pacientId = resultSet.getLong("pacientId");
+        long patientId = resultSet.getLong("patientId");
         long donationCentreId = resultSet.getLong("donationCentreId");
         Date date = resultSet.getDate("date");
         Time time = resultSet.getTime("time");
-        Appointment appointment = new Appointment(userRepository.findOne(userId), patientRepository.findOne(pacientId), donationCentreRepository.findOne(donationCentreId), date, time);
+        Appointment appointment = new Appointment(userRepository.findOne(userId), patientRepository.findOne(patientId), donationCentreRepository.findOne(donationCentreId), date, time);
         appointment.setID(appointmentId);
         return appointment;
     }
