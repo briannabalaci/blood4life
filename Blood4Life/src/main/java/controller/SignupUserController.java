@@ -10,14 +10,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import service.Service;
+import validator.UserValidator;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -35,13 +34,26 @@ public class SignupUserController implements Initializable {
     public TextField heightTextField;
     public TextField lastNameTextField;
     public TextField firstNameTextField;
+    public Label firstNameErrorLabel;
+    public Label lastNameErrorLabel;
+    public Label cnpErrorLabel;
+    public Label emailErrorLabel;
+    public Label heightErrorLabel;
+    public Label weightErrorLabel;
+    public Label signUpLabel;
+    public Label rhErrorLabel;
+    public Label bloodTypeErrorLabel;
+    public Label genderErrorLabel;
+    public Label birthDateErrorLabel;
 
     private Service service;
     private Stage root;
+    private UserValidator userValidator;
 
     public void setController(Service service, Stage stage){
         this.service = service;
         this.root = stage;
+        userValidator = new UserValidator();
     }
 
     @Override
@@ -49,6 +61,20 @@ public class SignupUserController implements Initializable {
         setBloodTypes();
         setRhs();
         setGender();
+        setVisibilityToFalse();
+    }
+
+    private void setVisibilityToFalse(){
+        firstNameErrorLabel.setVisible(false);
+        lastNameErrorLabel.setVisible(false);
+        cnpErrorLabel.setVisible(false);
+        emailErrorLabel.setVisible(false);
+        heightErrorLabel.setVisible(false);
+        weightErrorLabel.setVisible(false);
+        genderErrorLabel.setVisible(false);
+        rhErrorLabel.setVisible(false);
+        bloodTypeErrorLabel.setVisible(false);
+        birthDateErrorLabel.setVisible(false);
     }
 
     private void setBloodTypes() {
@@ -70,30 +96,144 @@ public class SignupUserController implements Initializable {
     }
 
     public void onSignUpUserButtonClick(ActionEvent actionEvent) throws IOException {
+        setVisibilityToFalse();
+        int countErrors = 0;
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
         String email = emailTextField.getText();
         String cnp = cnpTextField.getText();
+
+
         BloodType bloodType = bloodTypeComboBox.getValue();
+        if(bloodType == null){
+            bloodTypeErrorLabel.setText("Invalid blood type!");
+            bloodTypeErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
+
         Rh rh = rhComboBox.getValue();
+        if(rh == null){
+            rhErrorLabel.setText("Invalid Rh!");
+            rhErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
+
         Gender gender = genderComboBox.getValue();
-        Double weight = Double.valueOf(weightTextField.getText());
-        Integer height = Integer.valueOf(heightTextField.getText());
+        if(gender == null){
+            genderErrorLabel.setText("Invalid gender!");
+            genderErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
+
+        Double weight = null;
+        try{
+            weight = Double.valueOf(weightTextField.getText());
+            if(!userValidator.validateWeight(weight)){
+                weightErrorLabel.setText("Invalid weight!");
+                weightErrorLabel.setVisible(true);
+                countErrors = countErrors + 1;
+            }
+        }catch (NumberFormatException e){
+            weightErrorLabel.setText("Invalid weight!");
+            weightErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
+
+        Integer height = null;
+        try{
+            height = Integer.valueOf(heightTextField.getText());
+            if(!userValidator.validateHeight(height)){
+                heightErrorLabel.setText("Invalid height!");
+                heightErrorLabel.setVisible(true);
+                countErrors = countErrors + 1;
+            }
+        }catch (NumberFormatException e){
+            heightErrorLabel.setText("Invalid height!");
+            heightErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
+
+        if(!userValidator.validateName(firstName)) {
+            firstNameErrorLabel.setText("Invalid first name!");
+            firstNameErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
+
+        if(!userValidator.validateName(lastName)){
+            lastNameErrorLabel.setText("Invalid last name!");
+            lastNameErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
+
+        boolean okCNP = true;
+        if(!userValidator.validateCNP(cnp)){
+            okCNP = false;
+            cnpErrorLabel.setText("Invalid cnp!");
+            cnpErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
+
+        if(!userValidator.validateEmail(email)){
+            emailErrorLabel.setText("Invalid email!");
+            emailErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
+
         LocalDate birthdate = birthDatePicker.getValue();
+        boolean okDate = true;
+        if(birthdate == null || birthdate.isAfter(LocalDate.now())){
+            okDate = false;
+            birthDateErrorLabel.setText("Invalid birth date!");
+            birthDateErrorLabel.setVisible(true);
+            countErrors = countErrors + 1;
+        }
 
-        service.addUser(firstName, lastName, email, cnp, birthdate, gender, bloodType, rh, weight, height);
+        if(okCNP && okDate){
+            if(!userValidator.validateBirthDateCNP(birthdate, cnp)){
+                cnpErrorLabel.setText("Invalid cnp + birthdate\n combination!");
+                cnpErrorLabel.setVisible(true);
+                birthDateErrorLabel.setText("Invalid cnp + birthdate\n combination!");
+                birthDateErrorLabel.setVisible(true);
+                countErrors = countErrors + 1;
+            }
+        }
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
-        LoginUserController loginUserController = fxmlLoader.getController();
-        loginUserController.setService(service);
-        loginUserController.setStage(root);
-        root.setTitle("Blood4Life");
-        root.setScene(scene);
-        root.show();
+
+
+        if(countErrors == 0) {
+            service.addUser(firstName, lastName, email, cnp, birthdate, gender, bloodType, rh, weight, height);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Blood4Life");
+            alert.setHeaderText("SignUp success");
+            alert.setContentText("Your account has been created. You can login now!");
+            alert.showAndWait();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 660, 500);
+            LoginUserController loginUserController = fxmlLoader.getController();
+            loginUserController.setService(service);
+            loginUserController.setStage(root);
+            root.setTitle("Blood4Life");
+            root.setScene(scene);
+            root.show();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Blood4Life");
+            alert.setHeaderText("SignUp failure");
+            alert.setContentText("Verify your information and retry!");
+            alert.showAndWait();
+        }
     }
 
     public void onBackButtonClick(ActionEvent actionEvent) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Blood4Life");
+        alert.setHeaderText("Back to Login");
+        alert.setContentText("You will be redirected to the main login page!");
+        alert.showAndWait();
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 660, 500);
         LoginUserController loginUserController = fxmlLoader.getController();

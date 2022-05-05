@@ -56,12 +56,13 @@ public class Service {
         donationCentreRepository.save(donationCentre);
     }
 
-    public void loginUser(String username, String cnp) {
+    public User loginUser(String username, String cnp) {
         User user = userRepository.findUserByEmail(username);
         if(user == null)
             throw new ServerException("Invalid email!");
         if(!user.getCnp().equals(cnp))
             throw new ServerException("Incorrect password!");
+        return user;
     }
 
     public void addUser(String firstName, String lastName, String email, String cnp, LocalDate birthdate, Gender gender, BloodType bloodType, Rh rh, Double weight, Integer height){
@@ -82,20 +83,20 @@ public class Service {
     }
 
     public void addAppointment(User user, Patient patient, DonationCentre centre, Date date, Time time) {
-        if(appointmentRepository.findAppointmentsByUser(user).stream().anyMatch(a -> a.getDate().equals(date)))
+        if (appointmentRepository.findAppointmentsByUser(user).stream().anyMatch(a -> a.getDate().equals(date)))
             throw new ServerException("You already have an appointment on this\n day");
         Integer openHour = centre.getOpenHour().getHour();
-        if(centre.getOpenHour().getMinute() != 0)
+        if (centre.getOpenHour().getMinute() != 0)
             openHour++;
         Integer closeHour = centre.getCloseHour().getHour();
-        if(centre.getCloseHour().getMinute() != 0)
-            closeHour --;
+        if (centre.getCloseHour().getMinute() != 0)
+            closeHour--;
         Integer capacity = centre.getMaximumCapacity() * (closeHour - openHour);
-        if(appointmentRepository.findNumberAppointmentsAtCenterDate(centre, date) >= capacity)
+        if (appointmentRepository.findNumberAppointmentsAtCenterDate(centre, date) >= capacity)
             throw new ServerException("Please select another date");
-        if(time.before(Time.valueOf(centre.getOpenHour())) || time.after(Time.valueOf(centre.getCloseHour())))
+        if (time.before(Time.valueOf(centre.getOpenHour())) || time.after(Time.valueOf(centre.getCloseHour())))
             throw new ServerException("Please select another hour");
-        if(appointmentRepository.findNumberAppointmentsAtCenterDateTime(centre, date, time) >= centre.getMaximumCapacity())
+        if (appointmentRepository.findNumberAppointmentsAtCenterDateTime(centre, date, time) >= centre.getMaximumCapacity())
             throw new ServerException("Please select another hour");
         Appointment appointment = new Appointment(user, patient, centre, date, time);
         appointmentRepository.save(appointment);
@@ -103,6 +104,10 @@ public class Service {
         patientRepository.update(patient);
         user.setPoints(user.getPoints() + 100);
         userRepository.update(user);
+    }
+
+    public List<Appointment> findAllAppointments() {
+        return appointmentRepository.findAll();
     }
 }
 

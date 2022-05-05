@@ -11,7 +11,7 @@
 }
 
 .table-view .column-header-background{
-    -fx-background-color: #630000;
+    -fx-background-color: #D8B6A4;
     -fx-background-radius: 7px 7px 0px 0px;
     -fx-background-insets: 0 11px 0 0;
     -fx-padding: 0 0 5px 0;
@@ -37,7 +37,7 @@
     -fx-padding: 0.0em;
 }
 .table-row-cell:even{
-    -fx-background-color: #CECBC0;
+    -fx-background-color: #ded9cd;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }

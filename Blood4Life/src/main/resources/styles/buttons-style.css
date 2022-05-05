@@ -40,6 +40,20 @@
     -fx-pref-width: 48;
 }
 
+#showProfileButton {
+    -fx-background-image: url("../icons/users-red.png");
+    -fx-background-color: transparent;
+    -fx-pref-height: 48;
+    -fx-pref-width: 48;
+}
+
+#createAppointmentButton {
+    -fx-background-image: url("../icons/addDonationCentre-red.png");
+    -fx-background-color: transparent;
+    -fx-pref-height: 48;
+    -fx-pref-width: 48;
+}
+
 .button {
     -fx-background-size: 100% 100%;
     -fx-background-color: linear-gradient(#D8B6A4, #630000);

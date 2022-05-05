@@ -1,5 +1,6 @@
 package controller;
 
+import domain.User;
 import exception.ServerException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,17 +36,25 @@ public class LoginUserController {
     public void onUserLoginButtonClick(ActionEvent actionEvent) {
         try {
             String username = usernameTextField.getText();
-            String cnp =cnpTextField.getText();
-            service.loginUser(username, cnp);
-            messageLabel.setText("Logare cu succes!");
-        } catch (ServerException exception) {
+            String cnp = cnpTextField.getText();
+            User user = service.loginUser(username, cnp);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("userMainPage-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(),660, 500);
+            UserMainPageController userMainPageController = fxmlLoader.getController();
+            userMainPageController.setService(service);
+            userMainPageController.setUser(user);
+            userMainPageController.setStage(stage);
+            stage.setTitle("Blood4Life");
+            stage.setScene(scene);
+            stage.show();
+        } catch (ServerException | IOException exception) {
            messageLabel.setText(exception.getMessage());
         }
     }
 
     public void onSignUpButtonClick(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("signupUser-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
+        Scene scene = new Scene(fxmlLoader.load(),660, 500);
         SignupUserController signupUserController = fxmlLoader.getController();
         signupUserController.setController(service, stage);
         stage.setTitle("Blood4Life");
