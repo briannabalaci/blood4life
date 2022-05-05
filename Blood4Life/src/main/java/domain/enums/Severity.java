@@ -1,6 +1,6 @@
 package domain.enums;
 
-public enum Severity {
+public enum Severity implements Comparable<Severity>{
     Minimal,
     Medium,
     Severe

@@ -5,8 +5,10 @@ import domain.enums.BloodType;
 import domain.enums.Rh;
 import domain.enums.Severity;
 
+import java.util.List;
+
 public interface PatientRepositoryInterface extends RepositoryInterface<Long, Patient> {
     Patient findPatientsByQuantity(Integer quantity);
     Patient findPatientsBySeverity(Severity severity);
-    Patient findPatientsByBloodTypeAndRh(BloodType bloodType, Rh rh);
+    List<Patient> findPatientsByBloodTypeAndRh(BloodType bloodType, Rh rh);
 }

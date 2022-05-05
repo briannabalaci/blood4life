@@ -13,6 +13,7 @@ import validator.PatientValidator;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 public class Service {
@@ -71,8 +72,37 @@ public class Service {
     public List<DonationCentre> findAllDonationCentres() {
         return donationCentreRepository.findAll();
     }
+
     public List<Patient> findAllPatients() {
         return patientRepository.findAll();
+    }
+
+    public List<Patient> findAllCompatiblePatients(BloodType type, Rh rh) {
+        return patientRepository.findPatientsByBloodTypeAndRh(type, rh);
+    }
+
+    public void addAppointment(User user, Patient patient, DonationCentre centre, Date date, Time time) {
+        if(appointmentRepository.findAppointmentsByUser(user).stream().anyMatch(a -> a.getDate().equals(date)))
+            throw new ServerException("You already have an appointment on this\n day");
+        Integer openHour = centre.getOpenHour().getHour();
+        if(centre.getOpenHour().getMinute() != 0)
+            openHour++;
+        Integer closeHour = centre.getCloseHour().getHour();
+        if(centre.getCloseHour().getMinute() != 0)
+            closeHour --;
+        Integer capacity = centre.getMaximumCapacity() * (closeHour - openHour);
+        if(appointmentRepository.findNumberAppointmentsAtCenterDate(centre, date) >= capacity)
+            throw new ServerException("Please select another date");
+        if(time.before(Time.valueOf(centre.getOpenHour())) || time.after(Time.valueOf(centre.getCloseHour())))
+            throw new ServerException("Please select another hour");
+        if(appointmentRepository.findNumberAppointmentsAtCenterDateTime(centre, date, time) >= centre.getMaximumCapacity())
+            throw new ServerException("Please select another hour");
+        Appointment appointment = new Appointment(user, patient, centre, date, time);
+        appointmentRepository.save(appointment);
+        patient.setBloodQuantityNeeded(patient.getBloodQuantityNeeded() - 500);
+        patientRepository.update(patient);
+        user.setPoints(user.getPoints() + 100);
+        userRepository.update(user);
     }
 }
 

@@ -94,9 +94,11 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
         Address address = addressRepository.findOne(resultSet.getLong("addressId"));
         Time openHour = resultSet.getTime("openHour");
         Time closeHour = resultSet.getTime("closeHour");
-        return new DonationCentre(address, resultSet.getString("name"), resultSet.getInt("capacity"),
+        DonationCentre donationCentre = new DonationCentre(address, resultSet.getString("name"), resultSet.getInt("capacity"),
                 LocalTime.of(openHour.getHours(), openHour.getMinutes()),
                 LocalTime.of(closeHour.getHours(), closeHour.getMinutes()));
+        donationCentre.setID(resultSet.getLong("id"));
+        return donationCentre;
     }
 
     @Override

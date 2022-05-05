@@ -67,16 +67,49 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
     public List<Appointment> findAppointmentsByUser(User user) {
         List<Appointment> appointments = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE userId = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ?");
             preparedStatement.setLong(1, user.getID());
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (!resultSet.next())
+            while (resultSet.next())
                 appointments.add(getAppointmentFromDatabase(resultSet));
         } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
             System.exit(1);
         }
         return appointments;
+    }
+
+    @Override
+    public Integer findNumberAppointmentsAtCenterDate(DonationCentre donationCentre, Date date) {
+        try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM public.\"Appointments\" WHERE \"donationCentreId\" = ? and date = ?");
+            preparedStatement.setLong(1, donationCentre.getID());
+            preparedStatement.setDate(2, (java.sql.Date) date);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next())
+                return resultSet.getInt(1);
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+            System.exit(1);
+        }
+        return null;
+    }
+
+    @Override
+    public Integer findNumberAppointmentsAtCenterDateTime(DonationCentre donationCentre, Date date, Time time) {
+        try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM public.\"Appointments\" WHERE \"donationCentreId\" = ? and date = ? and time = ?");
+            preparedStatement.setLong(1, donationCentre.getID());
+            preparedStatement.setDate(2, (java.sql.Date) date);
+            preparedStatement.setTime(3, time);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next())
+                return resultSet.getInt(1);
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+            System.exit(1);
+        }
+        return null;
     }
 
     @Override
@@ -113,7 +146,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
     @Override
     public void save(Appointment appointment) {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.\"Appointments\"(userId, patientId, donationCentreId, date, time) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.\"Appointments\"(\"userId\", \"patientId\", \"donationCentreId\", date, time) VALUES (?, ?, ?, ?, ?)");
             setQueryStatement(appointment, preparedStatement);
             preparedStatement.execute();
         } catch (SQLException sqlException) {
@@ -158,7 +191,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
     private Appointment getAppointmentFromDatabase(ResultSet resultSet) throws SQLException {
         long appointmentId = resultSet.getLong("id");
         long userId = resultSet.getLong("userId");
-        long pacientId = resultSet.getLong("pacientId");
+        long pacientId = resultSet.getLong("patientId");
         long donationCentreId = resultSet.getLong("donationCentreId");
         Date date = resultSet.getDate("date");
         Time time = resultSet.getTime("time");

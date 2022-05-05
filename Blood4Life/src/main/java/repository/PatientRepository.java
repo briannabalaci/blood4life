@@ -128,12 +128,11 @@ public class PatientRepository implements PatientRepositoryInterface {
     @Override
     public void update(Patient entity) {
         //        logger.traceEntry();
-        String sql = "update \"Patients\" set firstname = ? , lastname = ?   where id = ?";
+        String sql = "update \"Patients\" set \"bloodQuantity\" = ? where id = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
-            preStm.setString(1, entity.getFirstName());
-            preStm.setString(2, entity.getLastName());
-            preStm.setLong(3,entity.getID());
+            preStm.setLong(1, entity.getBloodQuantityNeeded());
+            preStm.setLong(2,entity.getID());
             int result = preStm.executeUpdate();
             //logger.trace("Upadated instances {}",result);
         } catch (SQLException ex) {
@@ -199,27 +198,27 @@ public class PatientRepository implements PatientRepositoryInterface {
     }
 
     @Override
-    public Patient findPatientsByBloodTypeAndRh(BloodType bloodType, Rh rh) {
-        Patient patient;
+    public List<Patient> findPatientsByBloodTypeAndRh(BloodType bloodType, Rh rh) {
+        List<Patient> patients = new ArrayList<>();
         try(Connection connection = DriverManager.getConnection(url, username, password);
-            ResultSet result = connection.createStatement().executeQuery(String.format("select * from \"Patients\" P where P.bloodtype =  '%s' and P.rh = '%s' ", bloodType,rh))) {
-            if(result.next()){
+            ResultSet result = connection.createStatement().executeQuery(String.format("select * from \"Patients\"  where \"bloodType\" = '%s' and \"rh\" = '%s' ", bloodType,rh))) {
+            while(result.next()){
                 Long id = result.getLong("id");
                 String firstName = result.getString("firstname");
                 String lastName = result.getString("lastname");
-                String bloodType0 = result.getString("bloodtype");
+                String bloodType0 = result.getString("bloodType");
                 String rh0 = result.getString("rh");
-                int bloodQuantity = result.getInt("bloodquantity");
+                int bloodQuantity = result.getInt("bloodQuantity");
                 String cnp = result.getString("cnp");
                 LocalDate birthday =LocalDate.parse(result.getString("birthday"));
                 String severity = result.getString("severity");
-                patient = new Patient(cnp, firstName, lastName, birthday, BloodType.valueOf(bloodType0), Rh.valueOf(rh0), Severity.valueOf(severity), bloodQuantity);
+                Patient patient = new Patient(cnp, firstName, lastName, birthday, BloodType.valueOf(bloodType0), Rh.valueOf(rh0), Severity.valueOf(severity), bloodQuantity);
                 patient.setID(id);
-                return patient;
+                patients.add(patient);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return patients;
     }
 }

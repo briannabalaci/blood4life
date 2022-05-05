@@ -73,4 +73,9 @@ public class DonationCentre implements Entity<Long>, Serializable {
     public void setCloseHour(LocalTime closeHour) {
         this.closeHour = closeHour;
     }
+
+    @Override
+    public String toString() {
+        return name + " (" + address.getCounty() + ", " + address.getLocality() + ", " + address.getStreet() + ", " + address.getNumber() + ")";
+    }
 }

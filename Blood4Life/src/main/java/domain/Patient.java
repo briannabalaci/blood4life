@@ -104,16 +104,6 @@ public class Patient implements Entity<Long>, Serializable {
 
     @Override
     public String toString() {
-        return "Patient{" +
-                "patientId=" + patientId +
-                ", cnp='" + cnp + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthday=" + birthday +
-                ", bloodType=" + bloodType +
-                ", rh=" + rh +
-                ", gravity=" + severity +
-                ", bloodQuantityNeeded=" + bloodQuantityNeeded +
-                '}';
+        return firstName + " " + lastName + " (" + severity + " gravity, " + bloodQuantityNeeded + " ml blood needed)";
     }
 }
