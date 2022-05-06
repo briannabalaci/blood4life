@@ -5,3 +5,4 @@ gradlew.bat
 gradle
 build
 db.properties
+Server/src/main/resources/server.properties
