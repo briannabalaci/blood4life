@@ -3,6 +3,9 @@ package controller;
 import domain.DonationCentre;
 import domain.Patient;
 import domain.User;
+import domain.enums.BloodType;
+import domain.enums.Gender;
+import domain.enums.Rh;
 import exception.DatabaseException;
 import exception.ServerException;
 import exception.ValidationException;
@@ -32,6 +35,7 @@ public class AppointmentController implements Initializable {
 
     public void setService(ServiceInterface service) {
         this.service = service;
+        currentUser = new User("ana", "ana", BloodType.O, Rh.Positive, "ana@", 167, 45.9, LocalDate.now(), Gender.Female, "12345");
         patientComboBox.getItems().addAll(service.findAllCompatiblePatients(currentUser.getBloodType(), currentUser.getRh()));
         centreComboBox.getItems().addAll(service.findAllDonationCentres());
     }

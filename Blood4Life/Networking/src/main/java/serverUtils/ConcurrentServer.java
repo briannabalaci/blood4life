@@ -6,7 +6,7 @@ import service.ServiceInterface;
 import java.net.Socket;
 
 public class ConcurrentServer extends AbstractConcurrentServer {
-    private ServiceInterface server;
+    private final ServiceInterface server;
 
     public ConcurrentServer(Integer port, ServiceInterface server) {
         super(port);
@@ -17,8 +17,7 @@ public class ConcurrentServer extends AbstractConcurrentServer {
     @Override
     protected Thread createWorker(Socket client) {
         ClientWorker worker = new ClientWorker(server, client);
-        Thread thread = new Thread(worker);
-        return thread;
+        return new Thread(worker);
     }
 
     @Override

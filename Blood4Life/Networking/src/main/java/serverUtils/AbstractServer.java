@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public abstract class AbstractServer {
-    private Integer port;
+    private final Integer port;
     private ServerSocket serverSocket = null;
 
     public AbstractServer(Integer port) {

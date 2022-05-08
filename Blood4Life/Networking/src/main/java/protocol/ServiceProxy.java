@@ -27,24 +27,25 @@ public class ServiceProxy implements ServiceInterface {
     private final String host;
     private final int port;
     private ClientWorker client;
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
-    private Socket connection;
-    private final BlockingQueue<Response> qresponses;
+    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;
+    private Socket socket;
+    private final BlockingQueue<Response> responses;
     private volatile boolean finished;
 
     public ServiceProxy(String host, int port) {
         this.host = host;
         this.port = port;
-        qresponses = new LinkedBlockingQueue<>();
+        responses = new LinkedBlockingQueue<>();
+        initializeConnection();
     }
 
     private void closeConnection() {
         finished = true;
         try {
-            input.close();
-            output.close();
-            connection.close();
+            inputStream.close();
+            outputStream.close();
+            socket.close();
             client = null;
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,8 +54,8 @@ public class ServiceProxy implements ServiceInterface {
 
     private void sendRequest(Request request) throws ServerException {
         try {
-            output.writeObject(request);
-            output.flush();
+            outputStream.writeObject(request);
+            outputStream.flush();
         } catch (IOException e) {
             throw new ServerException("Error sending object " + e);
         }
@@ -63,8 +64,7 @@ public class ServiceProxy implements ServiceInterface {
     private Response readResponse() throws ServerException {
         Response response = null;
         try {
-            response = qresponses.take();
-
+            response = responses.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -73,10 +73,10 @@ public class ServiceProxy implements ServiceInterface {
 
     private void initializeConnection() throws ServerException {
         try {
-            connection = new Socket(host, port);
-            output = new ObjectOutputStream(connection.getOutputStream());
-            output.flush();
-            input = new ObjectInputStream(connection.getInputStream());
+            socket = new Socket(host, port);
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.flush();
+            inputStream = new ObjectInputStream(socket.getInputStream());
             finished = false;
             startReader();
         } catch (IOException e) {
@@ -131,8 +131,15 @@ public class ServiceProxy implements ServiceInterface {
     }
 
     @Override
-    public List<Patient> findAllCompatiblePatients(BloodType type, Rh rh) {
-        return null;
+    public List<Patient> findAllCompatiblePatients(BloodType bloodType, Rh rh) {
+        sendRequest(new FindCompatiblePatientsRequest(bloodType, rh));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindCompatiblePatientsResponse findCompatiblePatientsResponse = (FindCompatiblePatientsResponse) response;
+        return findCompatiblePatientsResponse.getPatients();
     }
 
     @Override
@@ -154,13 +161,13 @@ public class ServiceProxy implements ServiceInterface {
         public void run() {
             while (!finished) {
                 try {
-                    Object response = input.readObject();
-                    System.out.println("response received " + response);
+                    Object response = inputStream.readObject();
+                    System.out.println("Response received " + response);
                     if (response instanceof UpdateResponse) {
                         handleUpdate((UpdateResponse) response);
                     } else {
                         try {
-                            qresponses.put((Response) response);
+                            responses.put((Response) response);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

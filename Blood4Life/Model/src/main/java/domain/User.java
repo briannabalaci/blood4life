@@ -13,7 +13,7 @@ public class User implements Entity<Long>, Serializable {
     private String firstName;
     private String lastName;
     private BloodType bloodType;
-    private Rh Rh;
+    private Rh rh;
     private String email;
     private Integer height;
     private Double weight;
@@ -34,7 +34,7 @@ public class User implements Entity<Long>, Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.bloodType = bloodType;
-        Rh = rh;
+        this.rh = rh;
         this.email = email;
         this.height = height;
         this.weight = weight;
@@ -79,11 +79,11 @@ public class User implements Entity<Long>, Serializable {
     }
 
     public Rh getRh() {
-        return Rh;
+        return rh;
     }
 
     public void setRh(Rh rh) {
-        Rh = rh;
+        this.rh = rh;
     }
 
     public String getEmail() {

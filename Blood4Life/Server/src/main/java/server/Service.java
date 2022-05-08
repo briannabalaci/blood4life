@@ -79,7 +79,7 @@ public class Service implements ServiceInterface {
         return patientRepository.findAll();
     }
 
-    public List<Patient> findAllCompatiblePatients(BloodType type, Rh rh) {
+    public synchronized List<Patient> findAllCompatiblePatients(BloodType type, Rh rh) {
         return patientRepository.findPatientsByBloodTypeAndRh(type, rh);
     }
 
