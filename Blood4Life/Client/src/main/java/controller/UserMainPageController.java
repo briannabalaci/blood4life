@@ -35,13 +35,28 @@ public class UserMainPageController implements Initializable {
 
     public void setUser(User user) {
         this.currentUser = user;
+        try {
+            loadProfile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
     }
 
-    public void onShowProfileButtonClick(ActionEvent actionEvent) {
+    public void onShowProfileButtonClick(ActionEvent actionEvent) throws IOException {
+        loadProfile();
+    }
+
+    private void loadProfile() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../userProfilePage-view.fxml"));
+        Pane view = fxmlLoader.load();
+        UserProfileController userProfileController = fxmlLoader.getController();
+        userProfileController.setService(service, currentUser);
+        mainPageBorderPane.setCenter(view);
     }
 
     public void onCreateAppointmentButtonClick(ActionEvent actionEvent) throws IOException {
