@@ -37,7 +37,7 @@ public class AppointmentController implements Initializable {
         this.service = service;
         currentUser = new User("ana", "ana", BloodType.O, Rh.Positive, "ana@", 167, 45.9, LocalDate.now(), Gender.Female, "12345");
         patientComboBox.getItems().addAll(service.findAllCompatiblePatients(currentUser.getBloodType(), currentUser.getRh()));
-        centreComboBox.getItems().addAll(service.findAllDonationCentres());
+//        centreComboBox.getItems().addAll(service.findAllDonationCentres());
     }
 
     public void setUser(User user) {

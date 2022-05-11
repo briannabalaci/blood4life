@@ -1,11 +1,19 @@
 package protocol;
 
+import domain.Patient;
+import domain.User;
+import domain.enums.BloodType;
+import domain.enums.Gender;
+import domain.enums.Rh;
+import exception.ServerException;
 import service.ServiceInterface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.time.LocalDate;
+import java.util.List;
 
 public class ClientWorker implements Runnable {
     private final ServiceInterface server;
@@ -56,8 +64,40 @@ public class ClientWorker implements Runnable {
         }
     }
 
-    private Response handleRequest(Request request){
+    private Response handleRequest(Request request) {
         Response response = null;
+
+        if (request instanceof FindCompatiblePatientsRequest) {
+            FindCompatiblePatientsRequest findCompatiblePatientsRequest = (FindCompatiblePatientsRequest) request;
+            BloodType bloodType = findCompatiblePatientsRequest.getBloodType();
+            Rh rh = findCompatiblePatientsRequest.getRh();
+            try {
+                List<Patient> patients = server.findAllCompatiblePatients(bloodType, rh);
+                return new FindCompatiblePatientsResponse(patients);
+            } catch (ServerException serverException) {
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if (request instanceof AddUserRequest) {
+            AddUserRequest addUserRequest = (AddUserRequest) request;
+            String firstName = addUserRequest.getFirstName();
+            String lastName = addUserRequest.getLastName();
+            String cnp = addUserRequest.getCnp();
+            String email = addUserRequest.getEmail();
+            LocalDate birthday = addUserRequest.getBirthDate();
+            int height = addUserRequest.getHeight();
+            double weight = addUserRequest.getWeight();
+            BloodType bloodType = addUserRequest.getBloodType();
+            Rh rh = addUserRequest.getRh();
+            Gender gender = addUserRequest.getGender();
+            try {
+                server.addUser(firstName, lastName, email, cnp, birthday, gender, bloodType, rh, weight, height);
+                return new AddUserResponse();
+            } catch (ServerException serverException) {
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
 
         return response;
     }
