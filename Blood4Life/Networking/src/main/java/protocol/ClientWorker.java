@@ -66,7 +66,20 @@ public class ClientWorker implements Runnable {
 
     private Response handleRequest(Request request) {
         Response response = null;
-
+        if (request instanceof LoginUserRequest){
+            System.out.println("Login request ...");
+            LoginUserRequest loginUserRequest = (LoginUserRequest)request;
+            List<String> userInfo = loginUserRequest.getUserLoginInfo();
+            String email = userInfo.get(0);
+            String cnp = userInfo.get(1);
+            try {
+                User connectedUser = server.loginUser(email, cnp);
+                return new LoginUserOkResponse(connectedUser);
+            } catch (ServerException e) {
+                connected = false;
+                return new ErrorResponse(e.getMessage());
+            }
+        }
         if (request instanceof FindCompatiblePatientsRequest) {
             FindCompatiblePatientsRequest findCompatiblePatientsRequest = (FindCompatiblePatientsRequest) request;
             BloodType bloodType = findCompatiblePatientsRequest.getBloodType();

@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -37,7 +38,6 @@ public class ServiceProxy implements ServiceInterface {
         this.host = host;
         this.port = port;
         responses = new LinkedBlockingQueue<>();
-        initializeConnection();
     }
 
     private void closeConnection() {
@@ -112,7 +112,22 @@ public class ServiceProxy implements ServiceInterface {
 
     @Override
     public User loginUser(String username, String cnp) {
-        return null;
+        initializeConnection();
+        User connectedUser = null;
+        List<String> info = new ArrayList<>();
+        info.add(username);
+        info.add(cnp);
+        sendRequest(new LoginUserRequest(info));
+        Response response = readResponse();
+        if (response instanceof LoginUserOkResponse){
+            connectedUser = ((LoginUserOkResponse) response).getUser();
+        }
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            closeConnection();
+            throw new ServerException(errorResponse.getMessage());
+        }
+        return connectedUser;
     }
 
     @Override
