@@ -2,6 +2,8 @@ package domain;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 public class Appointment implements Entity<Long>, Serializable {
@@ -9,10 +11,10 @@ public class Appointment implements Entity<Long>, Serializable {
     private User user;
     private Patient patient;
     private DonationCentre donationCentre;
-    private Date date;
-    private Time time;
+    private LocalDate date;
+    private LocalTime time;
 
-    public Appointment(User user, Patient patient, DonationCentre donationCentre, Date date, Time time) {
+    public Appointment(User user, Patient patient, DonationCentre donationCentre, LocalDate date, LocalTime time) {
         this.user = user;
         this.patient = patient;
         this.donationCentre = donationCentre;
@@ -44,19 +46,19 @@ public class Appointment implements Entity<Long>, Serializable {
         this.donationCentre = donationCentre;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Time getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 

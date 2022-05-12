@@ -44,10 +44,10 @@ public class ShowAppointmentsController implements Initializable {
         Patient patient = new Patient("scwsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200);
         User user = new User("dwd", "csda", BloodType.B, Rh.Positive, "bcijes", 24, 23.5, LocalDate.now(), Gender.Female, "knceq");
 
-        appointments.add(new Appointment(user, patient, donationCentre, Date.from(Instant.now()), Time.valueOf(LocalTime.MAX)));
-        appointments.add(new Appointment(user, patient, donationCentre, Date.from(Instant.now()), Time.valueOf(LocalTime.MAX)));
-        appointments.add(new Appointment(user, patient, donationCentre, Date.from(Instant.now()), Time.valueOf(LocalTime.MAX)));
-        appointments.add(new Appointment(user, patient, donationCentre, Date.from(Instant.now()), Time.valueOf(LocalTime.MAX)));
+        appointments.add(new Appointment(user, patient, donationCentre, LocalDate.now(), LocalTime.now()));
+        appointments.add(new Appointment(user, patient, donationCentre, LocalDate.now(), LocalTime.now()));
+        appointments.add(new Appointment(user, patient, donationCentre, LocalDate.now(), LocalTime.now()));
+        appointments.add(new Appointment(user, patient, donationCentre, LocalDate.now(), LocalTime.now()));
 
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);

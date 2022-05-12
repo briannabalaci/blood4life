@@ -10,11 +10,9 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class StartClient extends Application {
-    private static Integer defaultPort = 55555;
-    private static String defaultServer = "localhost";
 
     @Override
-    public void start(Stage stage) throws Exception{
+    public void start(Stage stage) throws Exception {
         System.out.println("Start client");
         Properties clientProperties = new Properties();
         try {
@@ -26,12 +24,14 @@ public class StartClient extends Application {
             return;
         }
 
+        String defaultServer = "localhost";
         String serverIP = clientProperties.getProperty("server.host", defaultServer);
-        Integer serverPort = defaultPort;
+        int defaultPort = 55555;
+        int serverPort = defaultPort;
 
         try {
             serverPort = Integer.parseInt(clientProperties.getProperty("server.port"));
-        }catch (NumberFormatException nef){
+        } catch (NumberFormatException nef) {
             System.err.println("Wrong  Port Number " + nef.getMessage());
             System.err.println("Using default port " + defaultPort);
         }
