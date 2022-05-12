@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Logger;
 
 public class ServiceProxy implements ServiceInterface {
     private final String host;
@@ -33,11 +34,13 @@ public class ServiceProxy implements ServiceInterface {
     private Socket socket;
     private final BlockingQueue<Response> responses;
     private volatile boolean finished;
+    private final Logger logger = Logger.getLogger("logging.txt");
 
     public ServiceProxy(String host, int port) {
         this.host = host;
         this.port = port;
         responses = new LinkedBlockingQueue<>();
+        logger.info("Initializing ServiceProxy");
     }
 
     private void closeConnection() {
@@ -47,8 +50,11 @@ public class ServiceProxy implements ServiceInterface {
             outputStream.close();
             socket.close();
             client = null;
-        } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("Closing connection in ServiceProxy -> closeConnection");
+        } catch (IOException ioException) {
+            System.out.println(ioException.getMessage());
+            logger.severe("Exiting ServiceProxy -> closeConnection with IOException");
+            System.exit(1);
         }
     }
 
@@ -56,17 +62,20 @@ public class ServiceProxy implements ServiceInterface {
         try {
             outputStream.writeObject(request);
             outputStream.flush();
-        } catch (IOException e) {
-            throw new ServerException("Error sending object " + e);
+        } catch (IOException ioException) {
+            logger.severe("Exiting ServiceProxy -> sendRequest with IOException");
+            throw new ServerException("Error while sending object " + ioException.getMessage());
         }
     }
 
     private Response readResponse() throws ServerException {
-        Response response = null;
+        Response response;
         try {
             response = responses.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.info("Reading response in ServiceProxy -> readResponse");
+        } catch (InterruptedException interruptedException) {
+            logger.severe("Exiting ServiceProxy -> sendRequest with InterruptedException");
+            throw new ServerException("Error while reading response " + interruptedException.getMessage());
         }
         return response;
     }
@@ -78,10 +87,11 @@ public class ServiceProxy implements ServiceInterface {
             outputStream.flush();
             inputStream = new ObjectInputStream(socket.getInputStream());
             finished = false;
+            logger.info("Initializing connection in ServiceProxy -> initializeConnection");
             startReader();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+        } catch (IOException ioException) {
+            logger.severe("Exiting ServiceProxy -> initializeConnection with IOException");
+            System.exit(1);
         }
     }
 
@@ -90,24 +100,23 @@ public class ServiceProxy implements ServiceInterface {
         tw.start();
     }
 
-
     private void handleUpdate(UpdateResponse update) {
 
     }
 
     @Override
     public void loginAdmin(String username, String password) {
-
+        logger.info("Logging in admin in ServiceProxy -> loginAdmin");
     }
 
     @Override
     public void addPatient(String cnp, String firstName, String lastName, LocalDate birthday, BloodType bloodType, Rh rh, Severity severity, int bloodQuantityNeeded) {
-
+        logger.info("Adding patient in ServiceProxy -> addPatient");
     }
 
     @Override
     public void addDonationCentre(String county, String city, String street, int number, String name, int maximumCapacity, LocalTime openHour, LocalTime closeHour) {
-
+        logger.info("Adding donation centre in ServiceProxy -> addDonationCentre");
     }
 
     @Override
@@ -119,14 +128,14 @@ public class ServiceProxy implements ServiceInterface {
         info.add(cnp);
         sendRequest(new LoginUserRequest(info));
         Response response = readResponse();
-        if (response instanceof LoginUserOkResponse){
+        if (response instanceof LoginUserOkResponse)
             connectedUser = ((LoginUserOkResponse) response).getUser();
-        }
         if (response instanceof ErrorResponse) {
             ErrorResponse errorResponse = (ErrorResponse) response;
             closeConnection();
             throw new ServerException(errorResponse.getMessage());
         }
+        logger.info("Logging in user in ServiceProxy -> loginUser");
         return connectedUser;
     }
 
@@ -138,15 +147,18 @@ public class ServiceProxy implements ServiceInterface {
             ErrorResponse errorResponse = (ErrorResponse) response;
             throw new ServerException(errorResponse.getMessage());
         }
+        logger.info("Adding user in ServiceProxy -> addUser");
     }
 
     @Override
     public List<DonationCentre> findAllDonationCentres() {
+        logger.info("Finding donation centres in ServiceProxy -> findAllDonationCentres");
         return null;
     }
 
     @Override
     public List<Patient> findAllPatients() {
+        logger.info("Finding patients in ServiceProxy -> findAllPatients");
         return null;
     }
 
@@ -159,21 +171,24 @@ public class ServiceProxy implements ServiceInterface {
             throw new ServerException(errorResponse.getMessage());
         }
         FindCompatiblePatientsResponse findCompatiblePatientsResponse = (FindCompatiblePatientsResponse) response;
+        logger.info("Finding compatible patients in ServiceProxy -> findAllCompatiblePatients");
         return findCompatiblePatientsResponse.getPatients();
     }
 
     @Override
     public void addAppointment(User user, Patient patient, DonationCentre centre, Date date, Time time) {
-
+        logger.info("Adding appointment in ServiceProxy -> addAppointment");
     }
 
     @Override
     public List<Appointment> findAllAppointments() {
+        logger.info("Finding appointments in ServiceProxy -> findAllAppointments");
         return null;
     }
 
     @Override
     public List<User> findAllUsers() {
+        logger.info("Finding users in ServiceProxy -> findAllUsers");
         return null;
     }
 
@@ -182,18 +197,20 @@ public class ServiceProxy implements ServiceInterface {
             while (!finished) {
                 try {
                     Object response = inputStream.readObject();
-                    System.out.println("Response received " + response);
+                    logger.info("Receiving response " + response + " in ServiceProxy -> run");
                     if (response instanceof UpdateResponse) {
                         handleUpdate((UpdateResponse) response);
+                        logger.info("Handling update in ServiceProxy -> run");
                     } else {
                         try {
                             responses.put((Response) response);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            logger.info("Adding new response " + response);
+                        } catch (InterruptedException interruptedException) {
+                            logger.severe("Exiting ServiceProxy with InterruptedException");
                         }
                     }
                 } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("Reading error " + e);
+                    logger.severe("Exiting ServiceProxy with IOException or ClassNotFoundException");
                 }
             }
         }
