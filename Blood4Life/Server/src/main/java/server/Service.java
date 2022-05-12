@@ -66,7 +66,7 @@ public class Service implements ServiceInterface {
         return user;
     }
 
-    public void addUser(String firstName, String lastName, String email, String cnp, LocalDate birthdate, Gender gender, BloodType bloodType, Rh rh, Double weight, Integer height){
+    public void addUser(String firstName, String lastName, String email, String cnp, LocalDate birthdate, Gender gender, BloodType bloodType, Rh rh, Double weight, Integer height) {
         User user = new User(firstName, lastName, bloodType, rh, email, height, weight, birthdate, gender, cnp);
         userRepository.save(user);
     }
