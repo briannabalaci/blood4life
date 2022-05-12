@@ -8,17 +8,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CellPatientController implements Initializable {
-    public Label patientLabel;
+    public Label patientNameLabel;
+    public Label patientCNPLabel;
+    public Label patientSeverityLabel;
+    public Label patientBloodTypeLabel;
+    public Label patientRhLabel;
+    public Label patientBirthdayLabel;
+    public Label patientBloodNeededLabel;
 
     public void setPatient(Patient patient) {
-        patientLabel.setText("Name: " + patient.getFirstName()
-                + patient.getLastName()
-                + "\nCNP: " + patient.getCnp() + "\nBirthday: "
-                + patient.getBirthday() + "\nSeverity: "
-                + patient.getSeverity() + "\nBlood type: "
-                + patient.getBloodType()
-                + "\nRh: " + patient.getRh()
-                + "\nBlood needed: " + patient.getBloodQuantityNeeded());
+        patientNameLabel.setText(patient.getFirstName() + " " + patient.getLastName());
+        patientCNPLabel.setText(patient.getCnp());
+        patientBirthdayLabel.setText(patient.getBirthday().toString());
+        patientSeverityLabel.setText(patient.getSeverity().toString());
+        patientBloodTypeLabel.setText(patient.getBloodType().toString());
+        patientRhLabel.setText(patient.getRh().toString());
+        patientBloodNeededLabel.setText(patient.getBloodQuantityNeeded().toString() + "ml");
     }
 
     @Override

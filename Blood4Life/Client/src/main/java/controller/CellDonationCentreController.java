@@ -8,18 +8,26 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CellDonationCentreController implements Initializable {
-    public Label donationCentreLabel;
+    public Label donationCentreNameLabel;
+    public Label donationCentreOpenHourLabel;
+    public Label donationCentreCloseHourLabel;
+    public Label addressCountyLabel;
+    public Label addressCityLabel;
+    public Label addressStreetLabel;
+    public Label addressNumberLabel;
+    public Label donationCentreMaximumCapacityLabel;
 
     public void setDonationCentre(DonationCentre donationCentre) {
-        donationCentreLabel.setText("Name: " + donationCentre.getName()
-                + "\nOpens at: " + donationCentre.getOpenHour()
-                + "\nCloses at: " + donationCentre.getCloseHour()
-                + "\nMaximum capacity/hour: " + donationCentre.getMaximumCapacity()
-                + "\nCounty: " + donationCentre.getAddress().getCounty()
-                + "\nCity: " + donationCentre.getAddress().getLocality()
-                + "\nStreet: " + donationCentre.getAddress().getStreet()
-                + "\nNumber: " + donationCentre.getAddress().getNumber());
+        donationCentreNameLabel.setText(donationCentre.getName());
+        donationCentreOpenHourLabel.setText(donationCentre.getOpenHour().toString());
+        donationCentreCloseHourLabel.setText(donationCentre.getCloseHour().toString());
+        donationCentreMaximumCapacityLabel.setText(String.valueOf(donationCentre.getMaximumCapacity()));
+        addressCountyLabel.setText(donationCentre.getAddress().getCounty());
+        addressCityLabel.setText(donationCentre.getAddress().getLocality());
+        addressStreetLabel.setText(donationCentre.getAddress().getStreet());
+        addressNumberLabel.setText(String.valueOf(donationCentre.getAddress().getNumber()));
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

@@ -34,7 +34,7 @@ public class LoginAdminController {
             String password = passwordTextField.getText();
             service.loginAdmin(username, password);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("adminMainPage-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 660, 500);
+            Scene scene = new Scene(fxmlLoader.load(), 860, 600);
             AdminMainPageController adminMainPageController = fxmlLoader.getController();
             adminMainPageController.setService(service);
             adminMainPageController.setStage(stage);

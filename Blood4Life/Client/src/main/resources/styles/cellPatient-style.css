@@ -1,5 +1,4 @@
-#patientLabel {
-    -fx-font-family: Ayuthaya;
+#patientPane {
     -fx-border-radius: 10%;
     -fx-padding: 5;
     -fx-border-color: #630000;

@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class StartServer {
-    private static Integer defaultPort = 55555;
-
     public static void main(String[] args) {
         Properties properties = new Properties();
         try {
@@ -37,7 +35,8 @@ public class StartServer {
         Service service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, new PatientValidator(), new DonationCentreValidator(new AddressValidator()));
 
         try {
-            Integer serverPort = defaultPort;
+            int defaultPort = 55555;
+            int serverPort = defaultPort;
             try {
                 serverPort = Integer.parseInt(properties.getProperty("server.port"));
             } catch (NumberFormatException nef) {
@@ -61,7 +60,7 @@ public class StartServer {
             }
         }
         catch (Exception e) {
-            System.err.println("Exception "+e);
+            System.err.println("Exception " + e);
             e.printStackTrace();
         }
     }
