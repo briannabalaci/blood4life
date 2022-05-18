@@ -2,7 +2,7 @@ package domain;
 
 import java.io.Serializable;
 
-public class Admin implements Entity<String>, Serializable {
+public class Admin implements IEntity<String>, Serializable {
 
     private String username;
     private String password;

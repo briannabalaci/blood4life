@@ -1,10 +1,10 @@
 package repository.abstractRepo;
 
-import domain.Entity;
+import domain.IEntity;
 
 import java.util.List;
 
-public interface RepositoryInterface<ID, ENTITY extends Entity<ID>> {
+public interface RepositoryInterface<ID, ENTITY extends IEntity<ID>> {
     ENTITY findOne(ID id);
     List<ENTITY> findAll();
     void save(ENTITY entity);

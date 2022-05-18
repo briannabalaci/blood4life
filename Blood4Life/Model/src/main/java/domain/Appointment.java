@@ -1,12 +1,10 @@
 package domain;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
-public class Appointment implements Entity<Long>, Serializable {
+public class Appointment implements IEntity<Long>, Serializable {
     private Long appointmentId;
     private User user;
     private Patient patient;
