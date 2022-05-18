@@ -38,6 +38,7 @@ public class LoginAdminController {
             AdminMainPageController adminMainPageController = fxmlLoader.getController();
             adminMainPageController.setService(service);
             adminMainPageController.setStage(stage);
+            stage.close();
             stage.setTitle("Blood4Life");
             stage.setScene(scene);
             stage.show();

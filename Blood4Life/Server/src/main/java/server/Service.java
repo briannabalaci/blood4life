@@ -99,12 +99,12 @@ public class Service implements ServiceInterface {
             throw new ServerException("Please select another hour");
         if (appointmentRepository.findNumberAppointmentsAtCenterDateTime(centre, date, time) >= centre.getMaximumCapacity())
             throw new ServerException("Please select another hour");
-        Appointment appointment = new Appointment(user, patient, centre, date, time);
-        appointmentRepository.save(appointment);
-        patient.setBloodQuantityNeeded(patient.getBloodQuantityNeeded() - 500);
-        patientRepository.update(patient);
-        user.setPoints(user.getPoints() + 100);
-        userRepository.update(user);
+//        Appointment appointment = new Appointment(user, patient, centre, date, time);
+//        appointmentRepository.save(appointment);
+//        patient.setBloodQuantityNeeded(patient.getBloodQuantityNeeded() - 500);
+//        patientRepository.update(patient);
+//        user.setPoints(user.getPoints() + 100);
+//        userRepository.update(user);
     }
 
     public List<Appointment> findAllAppointments() {
@@ -112,6 +112,14 @@ public class Service implements ServiceInterface {
     }
 
     public List<User> findAllUsers() { return userRepository.findAll(); }
+
+    public List<Appointment> findPreviousAppointmentsByUser(User user) {
+        return appointmentRepository.findPreviousAppointmentsByUser(user);
+    }
+
+    public List<Appointment> findFutureAppointmentsByUser(User user) {
+        return appointmentRepository.findFutureAppointmentsByUser(user);
+    }
 }
 
 

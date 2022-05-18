@@ -192,6 +192,24 @@ public class ServiceProxy implements ServiceInterface {
         return null;
     }
 
+    @Override
+    public List<Appointment> findPreviousAppointmentsByUser(User user) {
+        sendRequest(new FindPreviousAppointmentsByUserRequest(user));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindPreviousAppointmentsByUserResponse findPreviousAppointmentsByUserResponse = (FindPreviousAppointmentsByUserResponse) response;
+        logger.info("Finding previous appointments of a user in ServiceProxy -> findPreviousAppointmentsByUser");
+        return findPreviousAppointmentsByUserResponse.getPatients();
+    }
+
+    @Override
+    public List<Appointment> findFutureAppointmentsByUser(User user) {
+        return null;
+    }
+
     private class ReaderThread implements Runnable {
         public void run() {
             while (!finished) {

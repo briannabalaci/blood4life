@@ -12,6 +12,8 @@ public interface AppointmentRepositoryInterface extends RepositoryInterface<Long
     List<Appointment> findAppointmentsByDateTime(Date date, Time time);
     List<Appointment> findAppointmentsByDonationCentre(DonationCentre donationCentre);
     List<Appointment> findAppointmentsByUser(User user);
+    List<Appointment> findPreviousAppointmentsByUser(User user);
+    List<Appointment> findFutureAppointmentsByUser(User user);
     Integer findNumberAppointmentsAtCenterDate(DonationCentre  donationCentre, Date date);
     Integer findNumberAppointmentsAtCenterDateTime(DonationCentre  donationCentre, Date date, Time time);
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="background" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserProfileController">
+<AnchorPane fx:id="background" prefHeight="542.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserProfileController">
     <stylesheets>
         <URL value="@/styles/textAreas-style.css" />
         <URL value="@/styles/backgrounds-style.css" />
@@ -20,130 +20,170 @@
         <URL value="@/styles/buttons-style.css" />
     </stylesheets>
     <children>
-    <Pane layoutX="22.0" prefHeight="500.0" prefWidth="554.0">
-        <Label layoutX="330.0" layoutY="86.0" text="💉 Blood type: " textFill="#630000">
+    <Pane layoutX="22.0" prefHeight="542.0" prefWidth="739.0">
+        <Label layoutX="446.0" layoutY="89.0" text="Blood type: " textFill="#630000">
             <font>
-                <Font name="Calibri" size="14.0" />
+                <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Label layoutX="30.0" layoutY="136.0" text="📅 Birth date: " textFill="#630000">
+        <Label layoutX="108.0" layoutY="179.0" text="Birth date:" textFill="#630000">
             <font>
-                <Font name="Calibri" size="14.0" />
+                <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Label layoutX="30.0" layoutY="111.0" text="📧 Email: " textFill="#630000">
+        <Label layoutX="109.0" layoutY="134.0" text="Email:" textFill="#630000">
             <font>
-                <Font name="Calibri" size="14.0" />
+                <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Label layoutX="330.0" layoutY="136.0" text="📏 Height: " textFill="#630000">
+        <Label layoutX="443.0" layoutY="179.0" text="Height: " textFill="#630000">
             <font>
-                <Font name="Calibri" size="14.0" />
+                <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Label layoutX="330.0" layoutY="111.0" text="❎ Rh: " textFill="#630000">
+        <Label layoutX="443.0" layoutY="134.0" text="Rh: " textFill="#630000">
             <font>
-                <Font name="Calibri" size="14.0" />
+                <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Label layoutX="30.0" layoutY="86.0" text="✨ CNP: " textFill="#630000">
+        <Label layoutX="109.0" layoutY="89.0" text="CNP:" textFill="#630000">
             <font>
-                <Font name="Calibri" size="14.0" />
+                <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Line endX="454.0" layoutX="100.0" layoutY="200.0" startX="-122.0" />
-        <Label fx:id="cnpCompleted" layoutX="80.0" layoutY="86.0" text="Label">
+        <Line endX="639.0" layoutX="103.0" layoutY="271.0" startX="-122.0" />
+        <Label fx:id="cnpCompleted" layoutX="161.0" layoutY="89.0" text="Label">
             <font>
-                <Font name="Calibri Italic" size="14.0" />
+                <Font name="Arial Italic" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="emailCompleted" layoutX="93.0" layoutY="111.0" text="Label">
+        <Label fx:id="emailCompleted" layoutX="164.0" layoutY="134.0" text="Label">
             <font>
-                <Font name="Calibri Italic" size="14.0" />
+                <Font name="Arial Italic" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="dateCompleted" layoutX="118.0" layoutY="136.0" text="Label">
+        <Label fx:id="dateCompleted" layoutX="192.0" layoutY="179.0" text="Label">
             <font>
-                <Font name="Calibri Italic" size="14.0" />
+                <Font name="Arial Italic" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="genderCompleted" layoutX="102.0" layoutY="161.0" text="Label">
+        <Label fx:id="genderCompleted" layoutX="180.0" layoutY="224.0" text="Label">
             <font>
-                <Font name="Calibri Italic" size="14.0" />
+                <Font name="Arial Italic" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="rhCompleted" layoutX="374.0" layoutY="111.0" text="Label">
+        <Label fx:id="rhCompleted" layoutX="478.0" layoutY="134.0" text="Label">
             <font>
-                <Font name="Calibri Italic" size="14.0" />
+                <Font name="Arial Italic" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="bloodTypeCompleted" layoutX="422.0" layoutY="86.0" text="Label">
+        <Label fx:id="bloodTypeCompleted" layoutX="538.0" layoutY="89.0" text="Label">
             <font>
-                <Font name="Calibri Italic" size="14.0" />
+                <Font name="Arial Italic" size="16.0" />
             </font>
         </Label>
-        <Label layoutX="176.0" layoutY="31.0" text="Welcome,">
+        <Label layoutX="209.0" layoutY="30.0" text="Welcome,">
             <font>
-                <Font name="Calibri Bold" size="18.0" />
+                <Font name="Arial Bold" size="24.0" />
             </font>
         </Label>
-        <Label layoutX="30.0" layoutY="161.0" text="🧑‍🤝‍🧑Gender: " textFill="#630000">
+        <Label layoutX="108.0" layoutY="224.0" text="Gender:" textFill="#630000">
             <font>
-                <Font name="Calibri" size="14.0" />
+                <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Label layoutX="330.0" layoutY="161.0" text="⚖ Weight: " textFill="#630000">
+        <Label layoutX="443.0" layoutY="224.0" text="Weight: " textFill="#630000">
             <font>
-                <Font name="Calibri" size="14.0" />
+                <Font name="Arial" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="heightCompleted" layoutX="399.0" layoutY="136.0" text="Label">
+        <Label fx:id="heightCompleted" layoutX="506.0" layoutY="179.0" text="Label">
             <font>
-                <Font name="Calibri Italic" size="14.0" />
+                <Font name="Arial Italic" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="weightCompleted" layoutX="399.0" layoutY="161.0" text="Label">
+        <Label fx:id="weightCompleted" layoutX="508.0" layoutY="224.0" text="Label">
             <font>
-                <Font name="Calibri Italic" size="14.0" />
+                <Font name="Arial Italic" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="nameCompleted" layoutX="258.0" layoutY="31.0" prefHeight="22.0" prefWidth="195.0" text="Label">
+        <Label fx:id="nameCompleted" layoutX="336.0" layoutY="30.0" prefHeight="22.0" prefWidth="195.0" text="Label">
             <font>
-                <Font name="Calibri Bold Italic" size="18.0" />
+                <Font name="Arial Bold Italic" size="24.0" />
             </font>
         </Label>
-         <ProgressBar fx:id="pointsBar" layoutX="118.0" layoutY="278.0" prefHeight="22.0" prefWidth="283.0" progress="0.07" style="-fx-background-color: #D8B6A4; -fx-accent: #D8B6A4;" />
-         <Label layoutX="162.0" layoutY="229.0" prefHeight="43.0" prefWidth="195.0" text="For every 300 points earned, you'll get a shopping voucher." textAlignment="CENTER" wrapText="true">
+         <ProgressBar fx:id="pointsBar" layoutX="192.0" layoutY="326.0" prefHeight="22.0" prefWidth="329.0" progress="0.07" style="-fx-background-color: #D8B6A4; -fx-accent: #D8B6A4;" />
+         <Label layoutX="251.0" layoutY="350.0" prefHeight="43.0" prefWidth="195.0" text="For every 300 points earned, you'll get a shopping voucher." textAlignment="CENTER" wrapText="true">
             <font>
                <Font name="Calibri Italic" size="13.0" />
             </font>
          </Label>
-         <Label layoutX="77.0" layoutY="434.0" text="Achieved vouchers">
+         <Label layoutX="129.0" layoutY="518.0" text="Achieved vouchers">
             <font>
                <Font name="Calibri Bold" size="14.0" />
             </font>
          </Label>
-         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="329.0" layoutY="434.0" prefHeight="17.0" prefWidth="132.0" text="Completed donations">
+         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="457.0" layoutY="518.0" prefHeight="17.0" prefWidth="132.0" text="Completed donations">
             <font>
                <Font name="Calibri Bold" size="14.0" />
             </font>
          </Label>
-        <ImageView fitHeight="69.0" fitWidth="75.0" layoutX="28.0" layoutY="231.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="69.0" fitWidth="75.0" layoutX="94.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@icons/blood-donation.png" />
         </ImageView>
-        <ImageView fitHeight="88.0" fitWidth="75.0" layoutX="416.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="88.0" fitWidth="75.0" layoutX="541.0" layoutY="311.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@icons/voucher.png" />
         </ImageView>
-         <Label fx:id="vouchersNumber" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="343.0" prefHeight="82.0" prefWidth="117.0" text="100" textFill="#630000">
+         <Label fx:id="vouchersNumber" alignment="CENTER" contentDisplay="CENTER" layoutX="125.0" layoutY="427.0" prefHeight="82.0" prefWidth="117.0" text="100" textFill="#630000">
             <font>
                <Font name="Calibri Bold" size="72.0" />
             </font>
          </Label>
-         <Label fx:id="patientsNumber" alignment="CENTER" contentDisplay="CENTER" layoutX="337.0" layoutY="343.0" prefHeight="82.0" prefWidth="117.0" text="100" textFill="#630000">
+         <Label fx:id="patientsNumber" alignment="CENTER" contentDisplay="CENTER" layoutX="464.0" layoutY="427.0" prefHeight="82.0" prefWidth="117.0" text="100" textFill="#630000">
             <font>
                <Font name="Calibri Bold" size="72.0" />
             </font>
          </Label>
+         <ImageView fitHeight="43.0" fitWidth="39.0" layoutX="397.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@icons/blood-types.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="397.0" layoutY="221.0" pickOnBounds="true">
+            <image>
+               <Image url="@icons/weight.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="43.0" fitWidth="39.0" layoutX="397.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@icons/height.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="43.0" fitWidth="39.0" layoutX="397.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@icons/rh.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="43.0" fitWidth="39.0" layoutX="62.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@icons/cnp.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="43.0" fitWidth="39.0" layoutX="62.0" layoutY="217.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@icons/gender.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="62.0" layoutY="172.0" pickOnBounds="true">
+            <image>
+               <Image url="@icons/birthdate.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="43.0" fitWidth="39.0" layoutX="62.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@icons/email.png" />
+            </image>
+         </ImageView>
     </Pane>
     </children>
 </AnchorPane>

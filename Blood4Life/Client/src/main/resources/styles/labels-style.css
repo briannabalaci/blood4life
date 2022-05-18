@@ -1,6 +1,6 @@
 .label {
-    -fx-font-family: Ayuthaya;
-    -fx-font-size: 14;
+    -fx-font-family: Arial;
+    -fx-font-size: 13;
 }
 
 #errorLabel {
@@ -16,4 +16,13 @@
 #signUpLabel{
     -fx-font-weight: bold;
     -fx-font-size: 18;
+}
+
+#loginLabel{
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+}
+
+#bloodTypeCompleted, #cnpCompleted, #emailCompleted, #dateCompleted, #heightCompleted, #weightCompleted, #genderCompleted, #rhCompleted{
+    -font-style: italic;
 }

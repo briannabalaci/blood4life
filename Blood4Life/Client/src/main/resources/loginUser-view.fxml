@@ -5,9 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="background" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginUserController">
+<AnchorPane fx:id="background" prefHeight="500.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginUserController">
    <stylesheets>
       <URL value="@/styles/backgrounds-style.css" />
       <URL value="@/styles/buttons-style.css" />
@@ -15,14 +18,28 @@
       <URL value="@/styles/textFields-style.css" />
    </stylesheets>
    <children>
-      <Label layoutX="167.0" layoutY="147.0" text="Username" />
-      <TextField fx:id="usernameTextField" layoutX="261.0" layoutY="143.0" />
-      <Button layoutX="397.0" layoutY="254.0" mnemonicParsing="false" onAction="#onUserLoginButtonClick" text="Login" />
-      <Label fx:id="messageLabel" layoutX="204.0" layoutY="303.0" prefHeight="54.0" prefWidth="193.0" />
-      <PasswordField fx:id="cnpTextField" layoutX="261.0" layoutY="198.0" />
-      <Label layoutX="182.0" layoutY="202.0" text="CNP" />
-      <Button layoutX="272.0" layoutY="254.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" text="Sign up" />
-      <Button layoutX="68.0" layoutY="254.0" mnemonicParsing="false" onAction="#onLoginAsAdminButtonClick" text="Login as admin" />
-      <Label layoutX="257.0" layoutY="78.0" text="Login as user" />
+      <ImageView fitHeight="494.0" fitWidth="674.0" layoutX="83.0" layoutY="2.0" opacity="0.24" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/login-icon.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="194.0" layoutY="141.0" text="Username">
+         <font>
+            <Font size="13.0" />
+         </font></Label>
+      <TextField fx:id="usernameTextField" layoutX="264.0" layoutY="138.0" prefHeight="25.0" prefWidth="178.0" />
+      <Button layoutX="307.0" layoutY="257.0" mnemonicParsing="false" onAction="#onUserLoginButtonClick" text="Login" />
+      <Label fx:id="messageLabel" layoutX="234.0" layoutY="295.0" prefHeight="54.0" prefWidth="193.0" />
+      <PasswordField fx:id="cnpTextField" layoutX="264.0" layoutY="185.0" prefHeight="25.0" prefWidth="178.0" />
+      <Label layoutX="209.0" layoutY="190.0" text="CNP">
+         <font>
+            <Font name="Arial" size="13.0" />
+         </font></Label>
+      <Button layoutX="413.0" layoutY="411.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" prefHeight="31.0" prefWidth="126.0" text="Sign up" />
+      <Button layoutX="131.0" layoutY="411.0" mnemonicParsing="false" onAction="#onLoginAsAdminButtonClick" prefHeight="31.0" prefWidth="126.0" text="Login as admin" />
+      <Label fx:id="loginLabel" layoutX="284.0" layoutY="76.0" text="Login as user">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font></Label>
    </children>
 </AnchorPane>

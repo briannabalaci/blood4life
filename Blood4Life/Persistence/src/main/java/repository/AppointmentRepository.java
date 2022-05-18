@@ -98,6 +98,46 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
     }
 
     @Override
+    public List<Appointment> findPreviousAppointmentsByUser(User user) {
+        List<Appointment> appointments = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
+            logger.info("Connecting to database in AppointmentRepository -> findPreviousAppointmentsByUser");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ? AND \"date\" < now()");
+            preparedStatement.setLong(1, user.getID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            logger.info("Executing query in AppointmentRepository -> findPreviousAppointmentsByUser");
+            while (resultSet.next())
+                appointments.add(getAppointmentFromDatabase(resultSet));
+            logger.info("Reading from database in AppointmentRepository -> findPreviousAppointmentsByUser");
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+            logger.severe("Exiting AppointmentRepository -> findPreviousAppointmentsByUser with SQLException");
+            System.exit(1);
+        }
+        return appointments;
+    }
+
+    @Override
+    public List<Appointment> findFutureAppointmentsByUser(User user) {
+        List<Appointment> appointments = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
+            logger.info("Connecting to database in AppointmentRepository -> findFutureAppointmentsByUser");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ?  AND \"date\" >= now()");
+            preparedStatement.setLong(1, user.getID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            logger.info("Executing query in AppointmentRepository -> findFutureAppointmentsByUser");
+            while (resultSet.next())
+                appointments.add(getAppointmentFromDatabase(resultSet));
+            logger.info("Reading from database in AppointmentRepository -> findFutureAppointmentsByUser");
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+            logger.severe("Exiting AppointmentRepository -> findFutureAppointmentsByUser with SQLException");
+            System.exit(1);
+        }
+        return appointments;
+    }
+
+    @Override
     public Integer findNumberAppointmentsAtCenterDate(DonationCentre donationCentre, Date date) {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             logger.info("Connecting to database in AppointmentRepository -> findNumberAppointmentsAtCenterDate");

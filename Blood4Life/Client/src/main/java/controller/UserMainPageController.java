@@ -18,7 +18,6 @@ public class UserMainPageController implements Initializable {
     public BorderPane mainPageBorderPane;
     public Button showProfileButton;
     public Button createAppointmentButton;
-    public Button showAppointmentsButton;
     
     private ServiceInterface service;
     private Stage stage;
@@ -68,6 +67,22 @@ public class UserMainPageController implements Initializable {
         mainPageBorderPane.setCenter(pane);
     }
 
-    public void onShowAppointmentsButtonClick(ActionEvent actionEvent) {
+    public void onShowFutureAppointmentsButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../showUpcomingAppointments-view.fxml"));
+        Pane view = fxmlLoader.load();
+        ShowFutureAppointmentsController showFutureAppointmentsController = fxmlLoader.getController();
+        showFutureAppointmentsController.setService(service, currentUser);
+        mainPageBorderPane.setCenter(view);
+    }
+
+    public void onShowPastAppointmentsButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../showPreviousAppointments-view.fxml"));
+        Pane view = fxmlLoader.load();
+        ShowPreviousAppointmentsController showPreviousAppointmentsController = fxmlLoader.getController();
+        showPreviousAppointmentsController.setService(service, currentUser);
+        mainPageBorderPane.setCenter(view);
+    }
+
+    public void onLogoutButtonClick(ActionEvent actionEvent) {
     }
 }

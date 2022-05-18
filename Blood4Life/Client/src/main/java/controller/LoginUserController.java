@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import service.ServiceInterface;
 
@@ -34,11 +35,12 @@ public class LoginUserController {
             String cnp = cnpTextField.getText();
             User user = service.loginUser(username, cnp);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("userMainPage-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(),660, 500);
+            Scene scene = new Scene(fxmlLoader.load(), 860, 600);
             UserMainPageController userMainPageController = fxmlLoader.getController();
             userMainPageController.setService(service);
             userMainPageController.setUser(user);
             userMainPageController.setStage(stage);
+            stage.close();
             stage.setTitle("Blood4Life");
             stage.setScene(scene);
             stage.show();
@@ -52,6 +54,7 @@ public class LoginUserController {
         Scene scene = new Scene(fxmlLoader.load(),660, 500);
         SignupUserController signupUserController = fxmlLoader.getController();
         signupUserController.setController(service, stage);
+        stage.getIcons().add(new Image("icons/stage-picture.png"));
         stage.setTitle("Blood4Life");
         stage.setScene(scene);
         stage.show();
@@ -63,6 +66,7 @@ public class LoginUserController {
         LoginAdminController loginAdminController = fxmlLoader.getController();
         loginAdminController.setService(service);
         loginAdminController.setStage(stage);
+        stage.getIcons().add(new Image("icons/stage-picture.png"));
         stage.setTitle("Blood4Life");
         stage.setScene(scene);
         stage.show();

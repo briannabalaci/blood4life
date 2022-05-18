@@ -1,5 +1,6 @@
 package protocol;
 
+import domain.Appointment;
 import domain.Patient;
 import domain.User;
 import domain.enums.BloodType;
@@ -98,6 +99,19 @@ public class ClientWorker implements Runnable {
                 List<Patient> patients = server.findAllCompatiblePatients(bloodType, rh);
                 logger.info("Sending FindCompatiblePatientsResponse in ClientWorker -> handleRequest");
                 return new FindCompatiblePatientsResponse(patients);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+        if (request instanceof FindPreviousAppointmentsByUserRequest) {
+            logger.info("Receiving FindPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
+            FindPreviousAppointmentsByUserRequest findPreviousAppointmentsByUserRequest = (FindPreviousAppointmentsByUserRequest) request;
+            User user = findPreviousAppointmentsByUserRequest.getUser();
+            try {
+                List<Appointment> appointments = server.findPreviousAppointmentsByUser(user);
+                logger.info("Sending FindPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
+                return new FindPreviousAppointmentsByUserResponse(appointments);
             } catch (ServerException serverException) {
                 logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
                 return new ErrorResponse(serverException.getMessage());

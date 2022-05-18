@@ -2,6 +2,7 @@ import controller.LoginUserController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import protocol.ServiceProxy;
 import service.ServiceInterface;
@@ -45,6 +46,7 @@ public class StartClient extends Application {
         LoginUserController loginUserController = fxmlLoader.getController();
         loginUserController.setService(service);
         loginUserController.setStage(stage);
+        stage.getIcons().add(new Image("icons/stage-picture.png"));
         stage.setTitle("Blood4Life");
         stage.setScene(scene);
         stage.show();

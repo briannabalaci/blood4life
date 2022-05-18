@@ -12,8 +12,22 @@
     -fx-pref-width: 48;
 }
 
-#showAppointmentsButton {
+#showAppointmentsButton, #showFutureAppointmentsButton {
     -fx-background-image: url("../icons/appointments-red.png");
+    -fx-background-color: transparent;
+    -fx-pref-height: 48;
+    -fx-pref-width: 48;
+}
+
+#showPastAppointmentsButton {
+    -fx-background-image: url("../icons/appointments-past.png");
+    -fx-background-color: transparent;
+    -fx-pref-height: 48;
+    -fx-pref-width: 48;
+}
+
+#logoutButton {
+    -fx-background-image: url("../icons/logout.png");
     -fx-background-color: transparent;
     -fx-pref-height: 48;
     -fx-pref-width: 48;
