@@ -34,23 +34,31 @@ public class ShowDonationCentresController implements Initializable {
     }
 
     private void getDonationCentres() {
-//        List<DonationCentre> donationCentreList = service.findAllDonationCentres();
-        List<DonationCentre> donationCentres = new ArrayList<>();
-        donationCentres.add(new DonationCentre(new Address("nbch", "bjcbuws", "bjucdbs", 3), "bujcw", 23, LocalTime.now(), LocalTime.now()));
-        donationCentres.add(new DonationCentre(new Address("nbch", "bjcbuws", "bjucdbs", 3), "buvfsdvjcw", 23, LocalTime.now(), LocalTime.now()));
-        donationCentres.add(new DonationCentre(new Address("nbch", "bjcbuws", "bjucdbs", 3), "bvdfsv efsrvsrvujcw", 23, LocalTime.now(), LocalTime.now()));
-        donationCentres.add(new DonationCentre(new Address("nbch", "bjcbuws", "bjucdbs", 3), "sfvdfvfsdd", 23, LocalTime.now(), LocalTime.now()));
+        //List<DonationCentre> donationCentreList = service.findAllDonationCentres();
+        //List<DonationCentre> donationCentres = new ArrayList<>();
+        List<DonationCentre> donationCentres = service.findAllDonationCentres();
 
-        for (int i = 0; i < donationCentres.size(); i++) {
-            DonationCentre donationCentre = donationCentres.get(i);
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../cellDonationCentre-view.fxml"));
-            try {
-                Pane view = fxmlLoader.load();
-                CellDonationCentreController cellDonationCentreController = fxmlLoader.getController();
-                cellDonationCentreController.setDonationCentre(donationCentre);
-                donationCentresGridPane.add(view, 2 * (i / 2), i % 2);
-            } catch (IOException ioException) {
-                System.out.println(ioException.getMessage());
+//        donationCentres.add(new DonationCentre(new Address("nbch", "bjcbuws", "bjucdbs", 3), "bujcw", 23, LocalTime.now(), LocalTime.now()));
+//        donationCentres.add(new DonationCentre(new Address("nbch", "bjcbuws", "bjucdbs", 3), "buvfsdvjcw", 23, LocalTime.now(), LocalTime.now()));
+//        donationCentres.add(new DonationCentre(new Address("nbch", "bjcbuws", "bjucdbs", 3), "bvdfsv efsrvsrvujcw", 23, LocalTime.now(), LocalTime.now()));
+//        donationCentres.add(new DonationCentre(new Address("nbch", "bjcbuws", "bjucdbs", 3), "sfvdfvfsdd", 23, LocalTime.now(), LocalTime.now()));
+
+//        for (DonationCentre donationCentre: donationCentres){
+//            donationCentres.add(donationCentre);
+//        }
+
+        if (donationCentres.size() != 0) {
+            for (int i = 0; i < donationCentres.size(); i++) {
+                DonationCentre donationCentre = donationCentres.get(i);
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../cellDonationCentre-view.fxml"));
+                try {
+                    Pane view = fxmlLoader.load();
+                    CellDonationCentreController cellDonationCentreController = fxmlLoader.getController();
+                    cellDonationCentreController.setDonationCentre(donationCentre);
+                    donationCentresGridPane.add(view, 2 * (i / 2), i % 2);
+                } catch (IOException ioException) {
+                    System.out.println(ioException.getMessage());
+                }
             }
         }
     }

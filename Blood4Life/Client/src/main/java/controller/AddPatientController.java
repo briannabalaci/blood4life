@@ -3,6 +3,7 @@ package controller;
 import domain.enums.BloodType;
 import domain.enums.Severity;
 import domain.enums.Rh;
+import exception.ServerException;
 import exception.ValidationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,7 +68,9 @@ public class AddPatientController implements Initializable {
                 service.addPatient(cnpTextField.getText(), firstNameTextField.getText(), lastNameTextField.getText(),
                         birthdayDatePicker.getValue(), bloodTypeComboBox.getValue(), rhComboBox.getValue(),
                         severityComboBox.getValue(), bloodQuantityNeeded);
-            } catch (ValidationException validationException) {
+                errorsTextArea.setVisible(true);
+                errorsTextArea.setText("Patient added successfully!");
+            } catch (ValidationException| ServerException validationException) {
                 errorsTextArea.setVisible(true);
                 errorsTextArea.setText(validationException.getMessage());
             }

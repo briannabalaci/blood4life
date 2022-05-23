@@ -1,12 +1,15 @@
 package protocol;
 
 import domain.Appointment;
+import domain.DonationCentre;
 import domain.Patient;
 import domain.User;
 import domain.enums.BloodType;
 import domain.enums.Gender;
 import domain.enums.Rh;
+import domain.enums.Severity;
 import exception.ServerException;
+import exception.ValidationException;
 import service.ServiceInterface;
 
 import java.io.IOException;
@@ -140,6 +143,55 @@ public class ClientWorker implements Runnable {
                 return new ErrorResponse(serverException.getMessage());
             }
         }
+
+        if (request instanceof AddPatientRequest) {
+            logger.info("Receiving AddPatientRequest in ClientWorker -> handleRequest");
+            AddPatientRequest addPatientRequest = (AddPatientRequest) request;
+            String cnp = addPatientRequest.getCnp();
+            String firstName = addPatientRequest.getFirstName();
+            String lastName = addPatientRequest.getLastName();
+            LocalDate birthday = addPatientRequest.getBirthday();
+            BloodType bloodType = addPatientRequest.getBloodType();
+            Rh rh = addPatientRequest.getRh();
+            Severity severity = addPatientRequest.getSeverity();
+            Integer bloodQuantityNeeded = addPatientRequest.getBloodQuantityNeeded();
+            try {
+                server.addPatient(cnp, firstName, lastName, birthday, bloodType, rh, severity, bloodQuantityNeeded);
+                logger.info("Sending AddPatientResponse in ClientWorker -> handleRequest");
+                return new AddUserResponse();
+            } catch (ServerException | ValidationException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+        if (request instanceof LoginAdminRequest) {
+            logger.info("Receiving LoginAdminRequest in ClientWorker -> handleRequest");
+            LoginAdminRequest loginAdminRequest = (LoginAdminRequest) request;
+            String username = loginAdminRequest.username;
+            String password = loginAdminRequest.password;
+            try {
+                server.loginAdmin(username,password);
+                logger.info("Sending LoginUserOkResponse in ClientWorker -> handleRequest");
+                return new LoginAdminOkResponse();
+            } catch (ServerException e) {
+                connected = false;
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(e.getMessage());
+            }
+        }
+        if (request instanceof FindDonationCentersRequest) {
+            logger.info("Receiving FindDonationCentersRequest in ClientWorker -> handleRequest");
+            FindDonationCentersRequest findDonationCentersRequest = (FindDonationCentersRequest) request;
+            try {
+                List<DonationCentre> patients = server.findAllDonationCentres();
+                logger.info("Sending FindCompatiblePatientsResponse in ClientWorker -> handleRequest");
+                return new FindDonationCenterResponse(patients);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
 
         return response;
     }
