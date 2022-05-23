@@ -1,14 +1,17 @@
 package domain;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 
-public class Address implements Entity<Long>, Serializable {
+@Entity
+@Table(name = "Addresses")
+public class Address implements IEntity<Long>, Serializable {
     private Long addressID;
     private String locality;
     private String county;
     private String street;
     private int number;
-
 
     @Override
     public Long getID() {
@@ -27,6 +30,7 @@ public class Address implements Entity<Long>, Serializable {
         this.number = number;
     }
 
+    @Column(name = "City")
     public String getLocality() {
         return locality;
     }
@@ -35,6 +39,7 @@ public class Address implements Entity<Long>, Serializable {
         this.locality = locality;
     }
 
+    @Column(name = "County")
     public String getCounty() {
         return county;
     }
@@ -43,6 +48,7 @@ public class Address implements Entity<Long>, Serializable {
         this.county = county;
     }
 
+    @Column(name = "Street")
     public String getStreet() {
         return street;
     }
@@ -51,6 +57,7 @@ public class Address implements Entity<Long>, Serializable {
         this.street = street;
     }
 
+    @Column(name = "Number")
     public int getNumber() {
         return number;
     }

@@ -7,7 +7,7 @@ import domain.enums.Rh;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class User implements Entity<Long>, Serializable {
+public class User implements IEntity<Long>, Serializable {
 
     private Long userID;
     private String firstName;

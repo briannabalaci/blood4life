@@ -1,9 +1,15 @@
 package domain;
 
+import javax.persistence.Column;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.time.LocalTime;
 
-public class DonationCentre implements Entity<Long>, Serializable {
+@Entity
+@Table(name = "DonationCentres")
+public class DonationCentre implements IEntity<Long>, Serializable {
     private Long centreID;
     private Address address;
     private String name;
@@ -30,6 +36,8 @@ public class DonationCentre implements Entity<Long>, Serializable {
         this.closeHour = closeHour;
     }
 
+    @OneToOne
+    @Column(name = "AddressId")
     public Address getAddress() {
         return address;
     }
@@ -38,6 +46,7 @@ public class DonationCentre implements Entity<Long>, Serializable {
         this.address = address;
     }
 
+    @Column(name = "Name")
     public String getName() {
         return name;
     }
@@ -46,6 +55,7 @@ public class DonationCentre implements Entity<Long>, Serializable {
         this.name = name;
     }
 
+    @Column(name = "MaximumCapacity")
     public int getMaximumCapacity() {
         return maximumCapacity;
     }
@@ -54,6 +64,7 @@ public class DonationCentre implements Entity<Long>, Serializable {
         this.maximumCapacity = maximumCapacity;
     }
 
+    @Column(name = "OpenHour")
     public LocalTime getOpenHour() {
         return openHour;
     }
@@ -62,6 +73,7 @@ public class DonationCentre implements Entity<Long>, Serializable {
         this.openHour = openHour;
     }
 
+    @Column(name = "CloseHour")
     public LocalTime getCloseHour() {
         return closeHour;
     }

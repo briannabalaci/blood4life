@@ -7,7 +7,7 @@ import domain.enums.Rh;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Patient implements Entity<Long>, Serializable {
+public class Patient implements IEntity<Long>, Serializable {
     private Long patientId;
     private String cnp;
     private String firstName;
