@@ -1,6 +1,7 @@
 package protocol;
 
 import domain.Appointment;
+import domain.DonationCentre;
 import domain.Patient;
 import domain.User;
 import domain.enums.BloodType;
@@ -13,7 +14,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -90,6 +94,7 @@ public class ClientWorker implements Runnable {
                 return new ErrorResponse(e.getMessage());
             }
         }
+
         if (request instanceof FindCompatiblePatientsRequest) {
             logger.info("Receiving FindCompatiblePatientsRequest in ClientWorker -> handleRequest");
             FindCompatiblePatientsRequest findCompatiblePatientsRequest = (FindCompatiblePatientsRequest) request;
@@ -104,6 +109,7 @@ public class ClientWorker implements Runnable {
                 return new ErrorResponse(serverException.getMessage());
             }
         }
+
         if (request instanceof FindPreviousAppointmentsByUserRequest) {
             logger.info("Receiving FindPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
             FindPreviousAppointmentsByUserRequest findPreviousAppointmentsByUserRequest = (FindPreviousAppointmentsByUserRequest) request;
@@ -135,6 +141,38 @@ public class ClientWorker implements Runnable {
                 server.addUser(firstName, lastName, email, cnp, birthday, gender, bloodType, rh, weight, height);
                 logger.info("Sending AddUserResponse in ClientWorker -> handleRequest");
                 return new AddUserResponse();
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if(request instanceof AddAppointmentRequest) {
+            logger.info("Receiving AddAppointmentRequest in ClientWorker -> handleRequest");
+            AddAppointmentRequest addAppointmentRequest = (AddAppointmentRequest) request;
+            User user = addAppointmentRequest.getUser();
+            Patient patient = addAppointmentRequest.getPatient();
+            DonationCentre donationCentre = addAppointmentRequest.getDonationCentre();
+            Date date = addAppointmentRequest.getDate();
+            Time time = addAppointmentRequest.getTime();
+            try {
+                server.addAppointment(user, patient, donationCentre, date, time);
+                logger.info("Sending AddUserResponse in ClientWorker -> handleRequest");
+                return new AddAppointmentResponse();
+            } catch (ServerException serverException) {
+                System.out.println(serverException.getMessage());
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if(request instanceof FindAllAppointmentsRequest) {
+            logger.info("Receiving FindAllAppointmentsRequest in ClientWorker -> handleRequest");
+            FindAllAppointmentsRequest findAllAppointmentsRequest = (FindAllAppointmentsRequest) request;
+            try {
+                List<Appointment> appointments = server.findAllAppointments();
+                logger.info("Sending FindAllAppointmentsRequest in ClientWorker -> handleRequest");
+                return new FindAllAppointmentsResponse(appointments);
             } catch (ServerException serverException) {
                 logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
                 return new ErrorResponse(serverException.getMessage());

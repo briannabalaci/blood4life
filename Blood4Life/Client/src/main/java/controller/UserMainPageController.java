@@ -4,6 +4,7 @@ import domain.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -61,9 +62,9 @@ public class UserMainPageController implements Initializable {
     public void onCreateAppointmentButtonClick(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("addAppointment-view.fxml"));
         Pane pane = fxmlLoader.load();
-        AppointmentController appointmentController = fxmlLoader.getController();
-        appointmentController.setUser(currentUser);
-        appointmentController.setService(service);
+        AddAppointmentController addAppointmentController = fxmlLoader.getController();
+        addAppointmentController.setUser(currentUser);
+        addAppointmentController.setService(service);
         mainPageBorderPane.setCenter(pane);
     }
 
@@ -83,6 +84,15 @@ public class UserMainPageController implements Initializable {
         mainPageBorderPane.setCenter(view);
     }
 
-    public void onLogoutButtonClick(ActionEvent actionEvent) {
+    public void onLogoutButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
+        LoginUserController loginUserController = fxmlLoader.getController();
+        loginUserController.setService(service);
+        loginUserController.setStage(stage);
+        stage.close();
+        stage.setTitle("Blood4Life");
+        stage.setScene(scene);
+        stage.show();
     }
 }

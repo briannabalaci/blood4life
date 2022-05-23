@@ -1,5 +1,6 @@
 package controller;
 
+import domain.Address;
 import domain.DonationCentre;
 import domain.Patient;
 import domain.User;
@@ -24,7 +25,7 @@ import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
-public class AppointmentController implements Initializable {
+public class AddAppointmentController implements Initializable {
     public TextArea errorsTextArea;
     public ComboBox<Patient> patientComboBox;
     public ComboBox<DonationCentre> centreComboBox;
@@ -36,7 +37,12 @@ public class AppointmentController implements Initializable {
     public void setService(ServiceInterface service) {
         this.service = service;
         patientComboBox.getItems().addAll(service.findAllCompatiblePatients(currentUser.getBloodType(), currentUser.getRh()));
-        centreComboBox.getItems().addAll(service.findAllDonationCentres());
+        Address address = new Address("Cluj-Napoca", "Cluj", "Calea Dorobantilor", 109);
+        address.setID(1L);
+        DonationCentre centre = new DonationCentre(address, "Centrul Regional de Transfuzie Cluj Napoca", 3, LocalTime.of(7, 30), LocalTime.of(17, 0));
+        centre.setID(1L);
+        centreComboBox.getItems().addAll(centre);
+//        centreComboBox.getItems().addAll(service.findAllDonationCentres());
     }
 
     public void setUser(User user) {
@@ -133,6 +139,7 @@ public class AppointmentController implements Initializable {
         LocalTime time = LocalTime.of(hour, 0, 0, 0);
         Time time1 = Time.valueOf(time);
         try {
+            System.out.println(Date.valueOf(date));
             service.addAppointment(currentUser, patient, centre, Date.valueOf(date), time1);
             errorsTextArea.setVisible(true);
             errorsTextArea.setText("The appointment was created \nsuccessfully");

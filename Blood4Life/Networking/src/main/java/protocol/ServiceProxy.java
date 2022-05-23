@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -177,13 +178,26 @@ public class ServiceProxy implements ServiceInterface {
 
     @Override
     public void addAppointment(User user, Patient patient, DonationCentre centre, Date date, Time time) {
+        sendRequest(new AddAppointmentRequest(user, patient, centre, date, time));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            System.out.println(errorResponse.getMessage());
+            throw new ServerException(errorResponse.getMessage());
+        }
         logger.info("Adding appointment in ServiceProxy -> addAppointment");
     }
 
     @Override
     public List<Appointment> findAllAppointments() {
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindAllAppointmentsResponse findAllAppointmentsResponse = (FindAllAppointmentsResponse) response;
         logger.info("Finding appointments in ServiceProxy -> findAllAppointments");
-        return null;
+        return findAllAppointmentsResponse.getAppointments();
     }
 
     @Override
