@@ -96,7 +96,7 @@ public class PatientRepository implements PatientRepositoryInterface {
 
     @Override
     public void save(Patient entity) {
-        String sql = "insert into public.\"Patients\" (\"firstName\", \"lastName\", \"bloodType\", rh, \"bloodQuantity\", cnp, birthday, severity) values (?,?,?,?,?,?,?,?)";
+        String sql = "insert into public.\"Patients\" (\"firstname\", \"lastname\", \"bloodtype\", rh, \"bloodquantity\", cnp, birthday, severity) values (?,?,?,?,?,?,?,?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
             logger.info("Connecting to database in PatientRepository -> save");
@@ -135,7 +135,7 @@ public class PatientRepository implements PatientRepositoryInterface {
 
     @Override
     public void update(Patient entity) {
-        String sql = "update \"Patients\" set \"bloodQuantity\" = ? where id = ?";
+        String sql = "update \"Patients\" set \"bloodquantity\" = ? where id = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preStm = connection.prepareStatement(sql)) {
             logger.info("Connecting to database in PatientRepository -> update");
@@ -226,9 +226,9 @@ public class PatientRepository implements PatientRepositoryInterface {
                 Long id = result.getLong("id");
                 String firstName = result.getString("firstname");
                 String lastName = result.getString("lastname");
-                String bloodType0 = result.getString("bloodType");
+                String bloodType0 = result.getString("bloodtype");
                 String rh0 = result.getString("rh");
-                int bloodQuantity = result.getInt("bloodQuantity");
+                int bloodQuantity = result.getInt("bloodquantity");
                 String cnp = result.getString("cnp");
                 LocalDate birthday =LocalDate.parse(result.getString("birthday"));
                 String severity = result.getString("severity");

@@ -108,11 +108,28 @@ public class ServiceProxy implements ServiceInterface {
     @Override
     public void loginAdmin(String username, String password) {
         logger.info("Logging in admin in ServiceProxy -> loginAdmin");
+        initializeConnection();
+        sendRequest(new LoginAdminRequest(username, password));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            closeConnection();
+            throw new ServerException(errorResponse.getMessage());
+        }
+        logger.info("Logging in user in ServiceProxy -> loginUser");
+
     }
 
     @Override
     public void addPatient(String cnp, String firstName, String lastName, LocalDate birthday, BloodType bloodType, Rh rh, Severity severity, int bloodQuantityNeeded) {
         logger.info("Adding patient in ServiceProxy -> addPatient");
+        sendRequest(new AddPatientRequest(cnp, firstName, lastName, birthday, bloodType, rh, severity, bloodQuantityNeeded));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        logger.info("Adding user in ServiceProxy -> addUser");
     }
 
     @Override
@@ -154,7 +171,15 @@ public class ServiceProxy implements ServiceInterface {
     @Override
     public List<DonationCentre> findAllDonationCentres() {
         logger.info("Finding donation centres in ServiceProxy -> findAllDonationCentres");
-        return null;
+        sendRequest(new FindDonationCentersRequest());
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindDonationCenterResponse findDonationCenterResponse = (FindDonationCenterResponse) response;
+        logger.info("Finding compatible patients in ServiceProxy -> findAllCompatiblePatients");
+        return findDonationCenterResponse.getDonationCentres();
     }
 
     @Override
