@@ -33,7 +33,7 @@ public class AddressValidator {
     public void validateAddress(Address address) {
         errors = "";
         errors = errors.concat(validateLocation(address.getCounty(), "County"));
-        errors = errors.concat(validateLocation(address.getLocality(), "City"));
+        errors = errors.concat(validateLocation(address.getCity(), "City"));
         errors = errors.concat(validateLocation(address.getStreet(), "Street"));
         if (!errors.isEmpty())
             throw new ValidationException(errors);

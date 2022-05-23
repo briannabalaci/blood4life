@@ -23,7 +23,7 @@ public class CellDonationCentreController implements Initializable {
         donationCentreCloseHourLabel.setText(donationCentre.getCloseHour().toString());
         donationCentreMaximumCapacityLabel.setText(String.valueOf(donationCentre.getMaximumCapacity()));
         addressCountyLabel.setText(donationCentre.getAddress().getCounty());
-        addressCityLabel.setText(donationCentre.getAddress().getLocality());
+        addressCityLabel.setText(donationCentre.getAddress().getCity());
         addressStreetLabel.setText(donationCentre.getAddress().getStreet());
         addressNumberLabel.setText(String.valueOf(donationCentre.getAddress().getNumber()));
     }

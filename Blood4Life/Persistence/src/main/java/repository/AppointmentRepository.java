@@ -63,7 +63,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             logger.info("Connecting to database in AppointmentRepository -> findAppointmentsByDonationCentre");
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE donationCentreId = ?");
-            preparedStatement.setLong(1, donationCentre.getID());
+            preparedStatement.setLong(1, donationCentre.getCentreID());
             ResultSet resultSet = preparedStatement.executeQuery();
             logger.info("Executing query in AppointmentRepository -> findAppointmentsByDonationCentre");
             while (resultSet.next())
@@ -142,7 +142,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             logger.info("Connecting to database in AppointmentRepository -> findNumberAppointmentsAtCenterDate");
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM public.\"Appointments\" WHERE \"donationCentreId\" = ? and date = ?");
-            preparedStatement.setLong(1, donationCentre.getID());
+            preparedStatement.setLong(1, donationCentre.getCentreID());
             preparedStatement.setDate(2, (java.sql.Date) date);
             ResultSet resultSet = preparedStatement.executeQuery();
             logger.info("Executing query in AppointmentRepository -> findNumberAppointmentsAtCenterDate");
@@ -163,7 +163,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             logger.info("Connecting to database in AppointmentRepository -> findNumberAppointmentsAtCenterDateTime");
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM public.\"Appointments\" WHERE \"donationCentreId\" = ? and date = ? and time = ?");
-            preparedStatement.setLong(1, donationCentre.getID());
+            preparedStatement.setLong(1, donationCentre.getCentreID());
             preparedStatement.setDate(2, (java.sql.Date) date);
             preparedStatement.setTime(3, time);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -267,7 +267,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
     private void setQueryStatement(Appointment appointment, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setLong(1, appointment.getUser().getID());
         preparedStatement.setLong(2, appointment.getPatient().getID());
-        preparedStatement.setLong(3, appointment.getDonationCentre().getID());
+        preparedStatement.setLong(3, appointment.getDonationCentre().getCentreID());
         preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.of(appointment.getDate(), LocalTime.now())));
         preparedStatement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), appointment.getTime())));
     }

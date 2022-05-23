@@ -37,12 +37,7 @@ public class AddAppointmentController implements Initializable {
     public void setService(ServiceInterface service) {
         this.service = service;
         patientComboBox.getItems().addAll(service.findAllCompatiblePatients(currentUser.getBloodType(), currentUser.getRh()));
-        Address address = new Address("Cluj-Napoca", "Cluj", "Calea Dorobantilor", 109);
-        address.setID(1L);
-        DonationCentre centre = new DonationCentre(address, "Centrul Regional de Transfuzie Cluj Napoca", 3, LocalTime.of(7, 30), LocalTime.of(17, 0));
-        centre.setID(1L);
-        centreComboBox.getItems().addAll(centre);
-//        centreComboBox.getItems().addAll(service.findAllDonationCentres());
+        centreComboBox.getItems().addAll(service.findAllDonationCentres());
     }
 
     public void setUser(User user) {

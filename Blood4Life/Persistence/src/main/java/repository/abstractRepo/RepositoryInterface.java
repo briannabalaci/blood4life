@@ -4,7 +4,7 @@ import domain.IEntity;
 
 import java.util.List;
 
-public interface RepositoryInterface<ID, ENTITY extends IEntity<ID>> {
+public interface RepositoryInterface<ID, ENTITY> {
     ENTITY findOne(ID id);
     List<ENTITY> findAll();
     void save(ENTITY entity);

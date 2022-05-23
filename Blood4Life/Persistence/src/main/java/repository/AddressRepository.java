@@ -21,13 +21,11 @@ public class AddressRepository implements AddressRepositoryInterface {
     private SessionFactory sessionFactory;
     private final Logger logger = Logger.getLogger("logging.txt");
 
-    public AddressRepository(String databaseURL, String databaseUsername, String databasePassword) {
+    public AddressRepository(String databaseURL, String databaseUsername, String databasePassword, SessionFactory sessionFactory) {
         this.databaseURL = databaseURL;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
-
-        Configuration configuration = new Configuration().configure();
-        sessionFactory = configuration.buildSessionFactory();
+        this.sessionFactory = sessionFactory;
 
         logger.info("Initializing AddressRepository");
     }
@@ -37,9 +35,9 @@ public class AddressRepository implements AddressRepositoryInterface {
         List<Address> addresses;
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<Address> query = session.createQuery("select address from Addresses as address where address.County=?1",
+            Query<Address> query = session.createQuery("select * from Address where county =:countyParam",
                     Address.class);
-            query.setParameter(1, county);
+            query.setParameter("countyParam", county);
             addresses = query.list();
             session.getTransaction().commit();
             return addresses;
@@ -51,9 +49,9 @@ public class AddressRepository implements AddressRepositoryInterface {
         List<Address> addresses;
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<Address> query = session.createQuery("select address from Addresses as address where address.City=?1",
+            Query<Address> query = session.createQuery("select * from Address where city =:cityParam",
                     Address.class);
-            query.setParameter(1, city);
+            query.setParameter("cityParam", city);
             addresses = query.list();
             session.getTransaction().commit();
             return addresses;
@@ -64,12 +62,12 @@ public class AddressRepository implements AddressRepositoryInterface {
     public Address findOne(String county, String city, String street, int number) {
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<Address> query = session.createQuery("select address from Addresses as address where address.County=?1 and address.City=?2 and address.Street=?3 and address.Number=?4",
+            Query<Address> query = session.createQuery("select * from Address where county=:countyParam and city=:cityParam and street=:streetParam and number=:numberParam",
                     Address.class);
-            query.setParameter(1, county);
-            query.setParameter(2, city);
-            query.setParameter(3, street);
-            query.setParameter(4, number);
+            query.setParameter("countyParam", county);
+            query.setParameter("cityParam", city);
+            query.setParameter("streetParam", street);
+            query.setParameter("numberParam", number);
             Address address = query.uniqueResult();
             session.getTransaction().commit();
             return address;
@@ -80,7 +78,7 @@ public class AddressRepository implements AddressRepositoryInterface {
     public Address findOne(Long id) {
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<Address> query = session.createQuery("select address from Addresses as address where address.Id=?1",
+            Query<Address> query = session.createQuery("select * from Address where address.id=?1",
                     Address.class);
             query.setParameter(1, id);
             Address address = query.uniqueResult();
@@ -94,7 +92,7 @@ public class AddressRepository implements AddressRepositoryInterface {
         List<Address> addresses;
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();
-            addresses = session.createQuery("from Addresses", Address.class).list();
+            addresses = session.createQuery("from Address", Address.class).list();
             session.getTransaction().commit();
         }
         return addresses;

@@ -4,6 +4,8 @@ import domain.enums.BloodType;
 import domain.enums.Severity;
 import domain.enums.Rh;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 

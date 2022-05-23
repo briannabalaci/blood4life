@@ -28,14 +28,12 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
     private final AddressRepositoryInterface addressRepository;
     private final Logger logger = Logger.getLogger("logging.txt");
 
-    public DonationCentreRepository(String databaseURL, String databaseUsername, String databasePassword, AddressRepositoryInterface addressRepository) {
+    public DonationCentreRepository(String databaseURL, String databaseUsername, String databasePassword, AddressRepositoryInterface addressRepository, SessionFactory sessionFactory) {
         this.databaseURL = databaseURL;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
         this.addressRepository = addressRepository;
-
-        Configuration configuration = new Configuration().configure();
-        sessionFactory = configuration.buildSessionFactory();
+        this.sessionFactory = sessionFactory;
 
         logger.info("Initializing DonationCentreRepository");
     }
@@ -45,9 +43,9 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
         List<DonationCentre> donationCentres;
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<DonationCentre> query = session.createQuery("select donationCentre from DonationCentres as donationCentre where donationCentre.Capacity=?1",
+            Query<DonationCentre> query = session.createQuery("select donationCentre from DonationCentre as donationCentre where donationCentre.maximumCapacity=:capacity",
                     DonationCentre.class);
-            query.setParameter(1, capacity);
+            query.setParameter("capacity", capacity);
             donationCentres = query.list();
             session.getTransaction().commit();
             return donationCentres;
@@ -59,10 +57,10 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
         List<DonationCentre> donationCentres;
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<DonationCentre> query = session.createQuery("select donationCentre from DonationCentres as donationCentre where donationCentre.OpenHour=?1 and donationCentre.closeHour=?2",
+            Query<DonationCentre> query = session.createQuery("select donationCentre from DonationCentre as donationCentre where donationCentre.openHour=:openHour and donationCentre.closeHour=:closeHour",
                     DonationCentre.class);
-            query.setParameter(1, openHour);
-            query.setParameter(2, closeHour);
+            query.setParameter("openHour", openHour);
+            query.setParameter("closeHour", closeHour);
             donationCentres = query.list();
             session.getTransaction().commit();
             return donationCentres;
@@ -73,9 +71,9 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
     public DonationCentre findDonationCentreByAddress(Address address) {
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<DonationCentre> query = session.createQuery("select donationCentre from DonationCentres as donationCentre where donationCentre.address=?1",
+            Query<DonationCentre> query = session.createQuery("select donationCentre from DonationCentre as donationCentre where donationCentre.address=:address",
                     DonationCentre.class);
-            query.setParameter(1, address);
+            query.setParameter("address", address);
             DonationCentre donationCentre = query.uniqueResult();
             session.getTransaction().commit();
             return donationCentre;
@@ -86,9 +84,9 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
     public DonationCentre findOne(Long id) {
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<DonationCentre> query = session.createQuery("select donationCentre from DonationCentres as donationCentre where donationCentre.Id=?1",
+            Query<DonationCentre> query = session.createQuery("select donationCentre from DonationCentre as donationCentre where donationCentre.id=:id",
                     DonationCentre.class);
-            query.setParameter(1, id);
+            query.setParameter("id", id);
             DonationCentre donationCentre = query.uniqueResult();
             session.getTransaction().commit();
             return donationCentre;
@@ -100,7 +98,7 @@ public class DonationCentreRepository implements DonationCentreRepositoryInterfa
         List<DonationCentre> donationCentres;
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();
-            donationCentres = session.createQuery("from DonationCentres", DonationCentre.class).list();
+            donationCentres = session.createQuery("from DonationCentre", DonationCentre.class).list();
             session.getTransaction().commit();
         }
         return donationCentres;

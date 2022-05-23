@@ -1,15 +1,14 @@
 package domain;
 
-import javax.persistence.Column;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Entity;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "DonationCentres")
-public class DonationCentre implements IEntity<Long>, Serializable {
+public class DonationCentre implements Serializable {
     private Long centreID;
     private Address address;
     private String name;
@@ -18,13 +17,15 @@ public class DonationCentre implements IEntity<Long>, Serializable {
     private LocalTime closeHour;
 
 
-    @Override
-    public Long getID() {
+    @Id
+    @Column(name = "addressId")
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(strategy = "increment", name = "increment")
+    public Long getCentreID() {
         return centreID;
     }
 
-    @Override
-    public void setID(Long aLong) {
+    public void setCentreID(Long aLong) {
         this.centreID = aLong;
     }
 
@@ -37,7 +38,6 @@ public class DonationCentre implements IEntity<Long>, Serializable {
     }
 
     @OneToOne
-    @Column(name = "AddressId")
     public Address getAddress() {
         return address;
     }
@@ -46,7 +46,7 @@ public class DonationCentre implements IEntity<Long>, Serializable {
         this.address = address;
     }
 
-    @Column(name = "Name")
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -55,7 +55,7 @@ public class DonationCentre implements IEntity<Long>, Serializable {
         this.name = name;
     }
 
-    @Column(name = "MaximumCapacity")
+    @Column(name = "capacity")
     public int getMaximumCapacity() {
         return maximumCapacity;
     }
@@ -64,7 +64,7 @@ public class DonationCentre implements IEntity<Long>, Serializable {
         this.maximumCapacity = maximumCapacity;
     }
 
-    @Column(name = "OpenHour")
+    @Column(name = "openHour")
     public LocalTime getOpenHour() {
         return openHour;
     }
@@ -73,7 +73,7 @@ public class DonationCentre implements IEntity<Long>, Serializable {
         this.openHour = openHour;
     }
 
-    @Column(name = "CloseHour")
+    @Column(name = "closeHour")
     public LocalTime getCloseHour() {
         return closeHour;
     }
@@ -84,6 +84,9 @@ public class DonationCentre implements IEntity<Long>, Serializable {
 
     @Override
     public String toString() {
-        return name + " (" + address.getCounty() + ", " + address.getLocality() + ", " + address.getStreet() + ", " + address.getNumber() + ")";
+        return name + " (" + address.getCounty() + ", " + address.getCity() + ", " + address.getStreet() + ", " + address.getNumber() + ")";
+    }
+
+    public DonationCentre() {
     }
 }
