@@ -23,6 +23,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
@@ -31,18 +32,14 @@ public class AddAppointmentController implements Initializable {
     public ComboBox<DonationCentre> centreComboBox;
     public DatePicker dayDatePicker;
     public ComboBox<String> hourComboBox;
+    public Button appointmentButton;
     private ServiceInterface service;
     private User currentUser;
 
     public void setService(ServiceInterface service) {
         this.service = service;
         patientComboBox.getItems().addAll(service.findAllCompatiblePatients(currentUser.getBloodType(), currentUser.getRh()));
-        Address address = new Address("Cluj-Napoca", "Cluj", "Calea Dorobantilor", 109);
-        address.setID(1L);
-        DonationCentre centre = new DonationCentre(address, "Centrul Regional de Transfuzie Cluj Napoca", 3, LocalTime.of(7, 30), LocalTime.of(17, 0));
-        centre.setID(1L);
-        centreComboBox.getItems().addAll(centre);
-//        centreComboBox.getItems().addAll(service.findAllDonationCentres());
+        centreComboBox.getItems().addAll(service.findAllDonationCentres());
     }
 
     public void setUser(User user) {
@@ -108,7 +105,15 @@ public class AddAppointmentController implements Initializable {
             return;
         }
         if(patient == null)
-            patient = findMostUrgent();
+            try {
+                patient = findMostUrgent();
+            }
+            catch(NoSuchElementException e){
+                errorsTextArea.setVisible(true);
+                errorsTextArea.setText("There are no patients at the moment");
+                appointmentButton.setDisable(true);
+                return;
+            }
         LocalDate date = dayDatePicker.getValue();
         if(date == null) {
             errorsTextArea.setVisible(true);

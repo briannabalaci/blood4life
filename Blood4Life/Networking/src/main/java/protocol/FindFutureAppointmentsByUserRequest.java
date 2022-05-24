@@ -2,12 +2,12 @@ package protocol;
 
 import domain.User;
 
-public class FindPreviousAppointmentsByUserRequest implements Request{
+public class FindFutureAppointmentsByUserRequest implements Request {
     private final User user;
     private final int startPosition;
     private final int pageSize;
 
-    public FindPreviousAppointmentsByUserRequest(User user, int startPosition, int pageSize) {
+    public FindFutureAppointmentsByUserRequest(User user, int startPosition, int pageSize) {
         this.user = user;
         this.startPosition = startPosition;
         this.pageSize = pageSize;

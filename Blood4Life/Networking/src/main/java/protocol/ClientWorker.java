@@ -133,10 +133,28 @@ public class ClientWorker implements Runnable {
             logger.info("Receiving FindPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
             FindPreviousAppointmentsByUserRequest findPreviousAppointmentsByUserRequest = (FindPreviousAppointmentsByUserRequest) request;
             User user = findPreviousAppointmentsByUserRequest.getUser();
+            int startPosition = findPreviousAppointmentsByUserRequest.getStartPosition();
+            int pageSize = findPreviousAppointmentsByUserRequest.getPageSize();
             try {
-                List<Appointment> appointments = server.findPreviousAppointmentsByUser(user);
+                List<Appointment> appointments = server.findPreviousAppointmentsByUser(user, startPosition, pageSize);
                 logger.info("Sending FindPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
                 return new FindPreviousAppointmentsByUserResponse(appointments);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if (request instanceof FindFutureAppointmentsByUserRequest) {
+            logger.info("Receiving FindPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
+            FindFutureAppointmentsByUserRequest findFutureAppointmentsByUserRequest = (FindFutureAppointmentsByUserRequest) request;
+            User user = findFutureAppointmentsByUserRequest.getUser();
+            int startPosition = findFutureAppointmentsByUserRequest.getStartPosition();
+            int pageSize = findFutureAppointmentsByUserRequest.getPageSize();
+            try {
+                List<Appointment> appointments = server.findFutureAppointmentsByUser(user, startPosition, pageSize);
+                logger.info("Sending FindFutureAppointmentsByUserRequest in ClientWorker -> handleRequest");
+                return new FindFutureAppointmentsByUserResponse(appointments);
             } catch (ServerException serverException) {
                 logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
                 return new ErrorResponse(serverException.getMessage());
@@ -212,6 +230,34 @@ public class ClientWorker implements Runnable {
                 List<Appointment> appointments = server.findAllAppointments();
                 logger.info("Sending FindAllAppointmentsRequest in ClientWorker -> handleRequest");
                 return new FindAllAppointmentsResponse(appointments);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if(request instanceof CountPreviousAppointmentsByUserRequest){
+            logger.info("Receiving CountPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
+            CountPreviousAppointmentsByUserRequest countPreviousAppointmentsByUserRequest = (CountPreviousAppointmentsByUserRequest) request;
+            User user = countPreviousAppointmentsByUserRequest.getUser();
+            try {
+                int number = server.countPreviousAppointmentsByUser(user);
+                logger.info("Sending CountPreviousAppointmentsByUserResponse in ClientWorker -> handleRequest");
+                return new CountPreviousAppointmentsByUserResponse(number);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if(request instanceof CountFutureAppointmentsByUserRequest){
+            logger.info("Receiving CountFutureAppointmentsByUserRequest in ClientWorker -> handleRequest");
+            CountFutureAppointmentsByUserRequest countFutureAppointmentsByUserRequest = (CountFutureAppointmentsByUserRequest) request;
+            User user = countFutureAppointmentsByUserRequest.getUser();
+            try {
+                int number = server.countFutureAppointmentsByUser(user);
+                logger.info("Sending CountFutureAppointmentsByUserResponse in ClientWorker -> handleRequest");
+                return new CountFutureAppointmentsByUserResponse(number);
             } catch (ServerException serverException) {
                 logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
                 return new ErrorResponse(serverException.getMessage());

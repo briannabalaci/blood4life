@@ -27,6 +27,8 @@ public interface ServiceInterface {
     void addAppointment(User user, Patient patient, DonationCentre centre, Date date, Time time);
     List<Appointment> findAllAppointments();
     List<User> findAllUsers();
-    List<Appointment> findPreviousAppointmentsByUser(User user);
-    List<Appointment> findFutureAppointmentsByUser(User user);
+    List<Appointment> findPreviousAppointmentsByUser(User user, int startPosition, int returnedRowsNo);
+    int countPreviousAppointmentsByUser(User user);
+    List<Appointment> findFutureAppointmentsByUser(User loggedUser, int i, int pageSize);
+    int countFutureAppointmentsByUser(User loggedUser);
 }

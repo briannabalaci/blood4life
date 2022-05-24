@@ -226,6 +226,7 @@ public class ServiceProxy implements ServiceInterface {
 
     @Override
     public List<Appointment> findAllAppointments() {
+        sendRequest(new FindAllAppointmentsRequest());
         Response response = readResponse();
         if (response instanceof ErrorResponse) {
             ErrorResponse errorResponse = (ErrorResponse) response;
@@ -243,8 +244,8 @@ public class ServiceProxy implements ServiceInterface {
     }
 
     @Override
-    public List<Appointment> findPreviousAppointmentsByUser(User user) {
-        sendRequest(new FindPreviousAppointmentsByUserRequest(user));
+    public List<Appointment> findPreviousAppointmentsByUser(User user, int startPosition, int pageSize) {
+        sendRequest(new FindPreviousAppointmentsByUserRequest(user, startPosition, pageSize));
         Response response = readResponse();
         if (response instanceof ErrorResponse) {
             ErrorResponse errorResponse = (ErrorResponse) response;
@@ -255,9 +256,43 @@ public class ServiceProxy implements ServiceInterface {
         return findPreviousAppointmentsByUserResponse.getPatients();
     }
 
+   @Override
+    public int countPreviousAppointmentsByUser(User user) {
+        sendRequest(new CountPreviousAppointmentsByUserRequest(user));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        CountPreviousAppointmentsByUserResponse countPreviousAppointmentsByUserResponse = (CountPreviousAppointmentsByUserResponse) response;
+        logger.info("Return the number of previous appointments of a user in ServiceProxy -> countPreviousAppointmentsByUser");
+        return countPreviousAppointmentsByUserResponse.getNoAppointments();
+    }
+
     @Override
-    public List<Appointment> findFutureAppointmentsByUser(User user) {
-        return null;
+    public List<Appointment> findFutureAppointmentsByUser(User loggedUser, int i, int pageSize) {
+        sendRequest(new FindFutureAppointmentsByUserRequest(loggedUser, i, pageSize));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindFutureAppointmentsByUserResponse findFutureAppointmentsByUserResponse = (FindFutureAppointmentsByUserResponse) response;
+        logger.info("Finding future appointments of a user in ServiceProxy -> findFutureAppointmentsByUser");
+        return findFutureAppointmentsByUserResponse.getPatients();
+    }
+
+    @Override
+    public int countFutureAppointmentsByUser(User loggedUser) {
+        sendRequest(new CountFutureAppointmentsByUserRequest(loggedUser));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        CountFutureAppointmentsByUserResponse countFutureAppointmentsByUserResponse = (CountFutureAppointmentsByUserResponse) response;
+        logger.info("Return the number of Future appointments of a user in ServiceProxy -> countPreviousAppointmentsByUser");
+        return countFutureAppointmentsByUserResponse.getNoAppointments();
     }
 
     private class ReaderThread implements Runnable {

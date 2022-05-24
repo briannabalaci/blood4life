@@ -219,7 +219,7 @@ public class PatientRepository implements PatientRepositoryInterface {
     public List<Patient> findPatientsByBloodTypeAndRh(BloodType bloodType, Rh rh) {
         List<Patient> patients = new ArrayList<>();
         try(Connection connection = DriverManager.getConnection(url, username, password);
-            ResultSet result = connection.createStatement().executeQuery(String.format("select * from \"Patients\"  where \"bloodType\" = '%s' and \"rh\" = '%s' ", bloodType,rh))) {
+            ResultSet result = connection.createStatement().executeQuery(String.format("select * from \"Patients\"  where \"bloodtype\" = '%s' and \"rh\" = '%s' ", bloodType,rh))) {
             logger.info("Connecting to database in PatientRepository -> findPatientsByBloodTypeAndRh");
             logger.info("Executing query in PatientRepository -> findPatientsByBloodTypeAndRh");
             while (result.next()) {

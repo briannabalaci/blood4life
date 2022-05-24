@@ -122,12 +122,20 @@ public class Service implements ServiceInterface {
 
     public List<User> findAllUsers() { return userRepository.findAll(); }
 
-    public List<Appointment> findPreviousAppointmentsByUser(User user) {
-        return appointmentRepository.findPreviousAppointmentsByUser(user);
+    public List<Appointment> findPreviousAppointmentsByUser(User user, int startPosition, int returnedRowsNo) {
+        return appointmentRepository.findPreviousAppointmentsByUser(user, startPosition, returnedRowsNo);
     }
 
-    public List<Appointment> findFutureAppointmentsByUser(User user) {
-        return appointmentRepository.findFutureAppointmentsByUser(user);
+    public int countPreviousAppointmentsByUser(User user) {
+       return appointmentRepository.countPreviousAppointmentsByUser(user);
+    }
+
+    public List<Appointment> findFutureAppointmentsByUser(User loggedUser, int i, int pageSize) {
+        return appointmentRepository.findFutureAppointmentsByUser(loggedUser, i, pageSize);
+    }
+
+    public int countFutureAppointmentsByUser(User loggedUser) {
+        return appointmentRepository.countFutureAppointmentsByUser(loggedUser);
     }
 }
 

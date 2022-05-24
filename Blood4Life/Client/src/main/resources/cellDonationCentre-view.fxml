@@ -8,12 +8,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CellDonationCentreController">
+<AnchorPane prefHeight="255.0" prefWidth="241.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CellDonationCentreController">
     <stylesheets>
         <URL value="@/styles/cellDonationCentre-style.css" />
     </stylesheets>
     <children>
-        <Pane fx:id="donationCentrePane" layoutX="40.0">
+        <Pane fx:id="donationCentrePane">
             <children>
                 <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="14.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -30,25 +30,25 @@
                         <Font name="Arial Bold" size="13.0" />
                     </font>
                 </Label>
-                <Label layoutX="62.0" layoutY="34.0" text="Name:" >
+                <Label layoutX="62.0" layoutY="34.0" text="Name:">
                     <font>
                         <Font name="Arial Bold" size="13.0" />
                     </font>
                 </Label>
                 <Label fx:id="donationCentreNameLabel" layoutX="110.0" layoutY="34.0" />
-                <Label layoutX="62.0" layoutY="54.0" text="Opens at:" >
+                <Label layoutX="62.0" layoutY="54.0" text="Opens at:">
                     <font>
                         <Font name="Arial Bold" size="13.0" />
                     </font>
                 </Label>
                 <Label fx:id="donationCentreOpenHourLabel" layoutX="125.0" layoutY="54.0" />
-                <Label layoutX="62.0" layoutY="74.0" text="Closes at: " >
+                <Label layoutX="62.0" layoutY="74.0" text="Closes at: ">
                     <font>
                         <Font name="Arial Bold" size="13.0" />
                     </font>
                 </Label>
                 <Label fx:id="donationCentreCloseHourLabel" layoutX="130.0" layoutY="74.0" />
-                <Label layoutX="62.0" layoutY="94.0" text="Maximum capacity/hour: " >
+                <Label layoutX="62.0" layoutY="94.0" text="Maximum capacity/hour: ">
                     <font>
                         <Font name="Arial Bold" size="13.0" />
                     </font>
@@ -59,22 +59,22 @@
                         <Font name="Arial Bold" size="13.0" />
                     </font>
                 </Label>
-                <Label layoutX="62.0" layoutY="154.0" text="County: " >
+                <Label layoutX="62.0" layoutY="154.0" text="County: ">
                     <font>
                         <Font name="Arial Bold" size="13.0" />
                     </font>
                 </Label>
-                <Label layoutX="62.0" layoutY="174.0" text="City: " >
+                <Label layoutX="62.0" layoutY="174.0" text="City: ">
                     <font>
                         <Font name="Arial Bold" size="13.0" />
                     </font>
                 </Label>
-                <Label layoutX="62.0" layoutY="194.0" text="Street: " >
+                <Label layoutX="62.0" layoutY="194.0" text="Street: ">
                     <font>
                         <Font name="Arial Bold" size="13.0" />
                     </font>
                 </Label>
-                <Label layoutX="62.0" layoutY="214.0" text="Number: " >
+                <Label layoutX="62.0" layoutY="214.0" text="Number: ">
                     <font>
                         <Font name="Arial Bold" size="13.0" />
                     </font>
