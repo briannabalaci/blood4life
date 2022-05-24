@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -107,16 +108,37 @@ public class ServiceProxy implements ServiceInterface {
     @Override
     public void loginAdmin(String username, String password) {
         logger.info("Logging in admin in ServiceProxy -> loginAdmin");
+        initializeConnection();
+        sendRequest(new LoginAdminRequest(username, password));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            closeConnection();
+            throw new ServerException(errorResponse.getMessage());
+        }
+        logger.info("Logging in user in ServiceProxy -> loginUser");
+
     }
 
     @Override
     public void addPatient(String cnp, String firstName, String lastName, LocalDate birthday, BloodType bloodType, Rh rh, Severity severity, int bloodQuantityNeeded) {
         logger.info("Adding patient in ServiceProxy -> addPatient");
+        sendRequest(new AddPatientRequest(cnp, firstName, lastName, birthday, bloodType, rh, severity, bloodQuantityNeeded));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
     }
 
     @Override
     public void addDonationCentre(String county, String city, String street, int number, String name, int maximumCapacity, LocalTime openHour, LocalTime closeHour) {
         logger.info("Adding donation centre in ServiceProxy -> addDonationCentre");
+        sendRequest(new AddDonationCentreRequest(county, city, street, number, name, maximumCapacity, openHour, closeHour));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse errorResponse) {
+            throw new ServerException(errorResponse.getMessage());
+        }
     }
 
     @Override
@@ -153,13 +175,28 @@ public class ServiceProxy implements ServiceInterface {
     @Override
     public List<DonationCentre> findAllDonationCentres() {
         logger.info("Finding donation centres in ServiceProxy -> findAllDonationCentres");
-        return null;
+        sendRequest(new FindDonationCentersRequest());
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindDonationCenterResponse findDonationCenterResponse = (FindDonationCenterResponse) response;
+        logger.info("Finding compatible patients in ServiceProxy -> findAllCompatiblePatients");
+        return findDonationCenterResponse.getDonationCentres();
     }
 
     @Override
     public List<Patient> findAllPatients() {
         logger.info("Finding patients in ServiceProxy -> findAllPatients");
-        return null;
+        sendRequest(new FindAllPatientsRequest());
+        Response response = readResponse();
+        List<Patient> allPatients = new ArrayList<>();
+        if (response instanceof ErrorResponse errorResponse) {
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindAllPatientsResponse findAllPatientsResponse = (FindAllPatientsResponse) response;
+        return findAllPatientsResponse.getPatients();
     }
 
     @Override
@@ -177,13 +214,26 @@ public class ServiceProxy implements ServiceInterface {
 
     @Override
     public void addAppointment(User user, Patient patient, DonationCentre centre, Date date, Time time) {
+        sendRequest(new AddAppointmentRequest(user, patient, centre, date, time));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            System.out.println(errorResponse.getMessage());
+            throw new ServerException(errorResponse.getMessage());
+        }
         logger.info("Adding appointment in ServiceProxy -> addAppointment");
     }
 
     @Override
     public List<Appointment> findAllAppointments() {
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindAllAppointmentsResponse findAllAppointmentsResponse = (FindAllAppointmentsResponse) response;
         logger.info("Finding appointments in ServiceProxy -> findAllAppointments");
-        return null;
+        return findAllAppointmentsResponse.getAppointments();
     }
 
     @Override

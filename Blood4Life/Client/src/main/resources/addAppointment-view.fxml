@@ -10,8 +10,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="background" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentController">
+<AnchorPane fx:id="background" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentController">
     <stylesheets>
         <URL value="@/styles/textAreas-style.css" />
         <URL value="@/styles/backgrounds-style.css" />
@@ -36,7 +37,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="17.0" prefWidth="227.0" text="Make an appointment" />
+            <Label prefHeight="27.0" prefWidth="268.0" text="Make an appointment">
+               <font>
+                  <Font name="Arial Bold" size="24.0" />
+               </font></Label>
             <Label text="Patient" GridPane.rowIndex="1" />
             <Label text="Centre" GridPane.rowIndex="2" />
             <Label text="Date" GridPane.rowIndex="3" />

@@ -12,10 +12,13 @@ import validator.DonationCentreValidator;
 import validator.PatientValidator;
 
 import java.sql.Time;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Service implements ServiceInterface {
     private final UserRepositoryInterface userRepository;
@@ -80,11 +83,15 @@ public class Service implements ServiceInterface {
     }
 
     public synchronized List<Patient> findAllCompatiblePatients(BloodType type, Rh rh) {
-        return patientRepository.findPatientsByBloodTypeAndRh(type, rh);
+        return patientRepository.findPatientsByBloodTypeAndRh(type, rh).stream().filter(patient ->
+            patient.getBloodQuantityNeeded() > 0
+        ).collect(Collectors.toList());
     }
 
     public void addAppointment(User user, Patient patient, DonationCentre centre, Date date, Time time) {
-        if (appointmentRepository.findAppointmentsByUser(user).stream().anyMatch(a -> a.getDate().equals(date)))
+        LocalDate localDate = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+        System.out.println(appointmentRepository.findAppointmentsByUser(user));
+        if (appointmentRepository.findAppointmentsByUser(user).stream().anyMatch(a -> a.getDate().equals(localDate)))
             throw new ServerException("You already have an appointment on this\n day");
         Integer openHour = centre.getOpenHour().getHour();
         if (centre.getOpenHour().getMinute() != 0)
@@ -99,12 +106,14 @@ public class Service implements ServiceInterface {
             throw new ServerException("Please select another hour");
         if (appointmentRepository.findNumberAppointmentsAtCenterDateTime(centre, date, time) >= centre.getMaximumCapacity())
             throw new ServerException("Please select another hour");
-//        Appointment appointment = new Appointment(user, patient, centre, date, time);
-//        appointmentRepository.save(appointment);
-//        patient.setBloodQuantityNeeded(patient.getBloodQuantityNeeded() - 500);
-//        patientRepository.update(patient);
-//        user.setPoints(user.getPoints() + 100);
-//        userRepository.update(user);
+        Appointment appointment = new Appointment(user, patient, centre, localDate, time.toLocalTime());
+        appointmentRepository.save(appointment);
+        if(patient.getBloodQuantityNeeded() < 500)
+            patient.setBloodQuantityNeeded(0);
+        patient.setBloodQuantityNeeded(patient.getBloodQuantityNeeded() - 500);
+        patientRepository.update(patient);
+        user.setPoints(user.getPoints() + 100);
+        userRepository.update(user);
     }
 
     public List<Appointment> findAllAppointments() {
