@@ -1,30 +1,18 @@
 package controller;
 
 import domain.*;
-import domain.enums.BloodType;
-import domain.enums.Gender;
-import domain.enums.Rh;
-import domain.enums.Severity;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
-import javafx.util.Callback;
 import service.ServiceInterface;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -61,14 +49,11 @@ public class ShowFutureAppointmentsController implements Initializable {
             pagination.setLayoutY(20.0);
             pagination.setPrefWidth(760);
             pagination.setPrefHeight(540);
-            pagination.setPageFactory(new Callback<Integer, Node>() {
-                @Override
-                public Node call(Integer pageIndex) {
-                    if (pageIndex >= pagesNumber) {
-                        return null;
-                    } else {
-                        return createPage(pageIndex);
-                    }
+            pagination.setPageFactory(pageIndex -> {
+                if (pageIndex >= pagesNumber) {
+                    return null;
+                } else {
+                    return createPage(pageIndex);
                 }
             });
             root.getChildren().add(pagination);
@@ -85,11 +70,11 @@ public class ShowFutureAppointmentsController implements Initializable {
 
         for (int i = 0; i < appointmentsToShow.size(); i++) {
             Appointment appointment = appointmentsToShow.get(i);
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../cellAppointment-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../cellFutureAppointment-view.fxml"));
             try {
                 Pane view = fxmlLoader.load();
-                CellAppointmentController cellAppointmentController = fxmlLoader.getController();
-                cellAppointmentController.setAppointment(appointment);
+                CellFutureAppointmentController cellFutureAppointmentController = fxmlLoader.getController();
+                cellFutureAppointmentController.setAppointment(appointment, service);
                 pane.add(view, 2 * (i / 2), i % 2);
             } catch (IOException ioException) {
                 System.out.println(ioException.getMessage());

@@ -31,4 +31,5 @@ public interface ServiceInterface {
     int countPreviousAppointmentsByUser(User user);
     List<Appointment> findFutureAppointmentsByUser(User loggedUser, int i, int pageSize);
     int countFutureAppointmentsByUser(User loggedUser);
+    void cancelAppointment(Appointment appointment);
 }

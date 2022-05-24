@@ -137,6 +137,11 @@ public class Service implements ServiceInterface {
     public int countFutureAppointmentsByUser(User loggedUser) {
         return appointmentRepository.countFutureAppointmentsByUser(loggedUser);
     }
+
+    @Override
+    public void cancelAppointment(Appointment appointment) {
+        appointmentRepository.delete(appointment.getID());
+    }
 }
 
 

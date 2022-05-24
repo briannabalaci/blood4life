@@ -5,10 +5,7 @@ import exception.ServerException;
 import exception.ValidationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import service.ServiceInterface;
 
 import java.net.URL;
@@ -83,6 +80,8 @@ public class AddDonationCentreController implements Initializable {
                                 number, nameTextField.getText(), maximumCapacity,
                                 LocalTime.of(openHourHour, openHourMinute),
                                 LocalTime.of(closeHourHour, closeHourMinute));
+                        errorsTextArea.setVisible(true);
+                        errorsTextArea.setText("Donation centre added successfully!");
                     } catch (ValidationException | ServerException | DatabaseException validationException) {
                         errorsTextArea.setVisible(true);
                         errorsTextArea.setText(validationException.getMessage());

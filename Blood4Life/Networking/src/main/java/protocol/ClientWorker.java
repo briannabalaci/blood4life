@@ -322,6 +322,18 @@ public class ClientWorker implements Runnable {
                 return new ErrorResponse(ex.getMessage());
             }
         }
+
+        if(request instanceof CancelAppointmentRequest cancelAppointmentRequest){
+            Appointment appointment = cancelAppointmentRequest.getAppointment();
+            try{
+                server.cancelAppointment(appointment);
+                return new OkResponse();
+            } catch (ServerException | ValidationException ex) {
+                return new ErrorResponse(ex.getMessage());
+            }
+
+        }
+
         return response;
     }
 

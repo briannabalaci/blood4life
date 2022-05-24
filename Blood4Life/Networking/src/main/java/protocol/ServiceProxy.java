@@ -302,6 +302,16 @@ public class ServiceProxy implements ServiceInterface {
         return countFutureAppointmentsByUserResponse.getNoAppointments();
     }
 
+    @Override
+    public void cancelAppointment(Appointment appointment) {
+        sendRequest(new CancelAppointmentRequest(appointment));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+    }
+
     private class ReaderThread implements Runnable {
         public void run() {
             while (!finished) {
