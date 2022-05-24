@@ -236,6 +236,19 @@ public class ClientWorker implements Runnable {
             }
         }
 
+        if(request instanceof FindAllUsersRequest) {
+            logger.info("Receiving FindAllUsersRequest in ClientWorker -> handleRequest");
+            FindAllUsersRequest findAllUsersRequest = (FindAllUsersRequest) request;
+            try {
+                List<User> users = server.findAllUsers();
+                logger.info("Sending FindAllUsersRequest in ClientWorker -> handleRequest");
+                return new FindAllUsersResponse(users);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
         if(request instanceof CountPreviousAppointmentsByUserRequest){
             logger.info("Receiving CountPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
             CountPreviousAppointmentsByUserRequest countPreviousAppointmentsByUserRequest = (CountPreviousAppointmentsByUserRequest) request;

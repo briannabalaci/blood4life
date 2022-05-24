@@ -240,7 +240,14 @@ public class ServiceProxy implements ServiceInterface {
     @Override
     public List<User> findAllUsers() {
         logger.info("Finding users in ServiceProxy -> findAllUsers");
-        return null;
+        sendRequest(new FindAllUsersRequest());
+        Response response = readResponse();
+        if (response instanceof ErrorResponse) {
+            ErrorResponse errorResponse = (ErrorResponse) response;
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindAllUsersResponse findAllUsersResponse = (FindAllUsersResponse) response;
+        return findAllUsersResponse.getUsers();
     }
 
     @Override

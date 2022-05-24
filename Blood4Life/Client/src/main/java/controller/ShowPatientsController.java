@@ -12,11 +12,13 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.util.Callback;
 import service.ServiceInterface;
 
@@ -29,7 +31,6 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ShowPatientsController implements Initializable {
-//    public GridPane patientsGridPane;
     public AnchorPane root;
     public Pagination pagination;
     private ServiceInterface service;
@@ -46,7 +47,12 @@ public class ShowPatientsController implements Initializable {
         int patientsNumber = patients.size();
         int pagesNumber = patientsNumber % pageSize != 0 ? (patientsNumber/pageSize + 1) : patientsNumber/pageSize;
         if(pagesNumber == 0){
-
+            Label label = new Label("No patients to show");
+            label.setLayoutX(250);
+            label.setLayoutY(150);
+            label.setFont(Font.font("Arial"));
+            label.setStyle("-fx-font-weight: bold; -fx-font-size: 18;");
+            root.getChildren().add(label);
         }
         else{
             pagination = new Pagination(pagesNumber, 0);
@@ -66,7 +72,6 @@ public class ShowPatientsController implements Initializable {
             });
             root.getChildren().add(pagination);
         }
-
     }
 
     private GridPane createPage(Integer pageIndex){
@@ -79,9 +84,7 @@ public class ShowPatientsController implements Initializable {
                 .limit(4)
                 .collect(Collectors.toList());
 
-        System.out.println(currentPatients.get(0));
         for (int i = 0; i < currentPatients.size(); i++) {
-            System.out.println("aici");
             Patient patient = currentPatients.get(i);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../cellPatient-view.fxml"));
             try {

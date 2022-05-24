@@ -10,10 +10,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.util.Callback;
 import service.ServiceInterface;
 
 import java.io.IOException;
@@ -26,11 +32,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ShowAppointmentsController implements Initializable {
-    public GridPane appointmentsGridPane;
-
+    public AnchorPane root;
+    public Pagination pagination;
     private ServiceInterface service;
+    private List<Appointment> appointments;
 
     public void setService(ServiceInterface service) {
         this.service = service;
@@ -38,29 +46,62 @@ public class ShowAppointmentsController implements Initializable {
     }
 
     private void getAppointments() {
-//        List<Appointment> appointments = service.findAllAppointments();
-        List<Appointment> appointments = new ArrayList<>();
-        DonationCentre donationCentre = new DonationCentre(new Address("nbch", "bjcbuws", "bjucdbs", 3), "bujcw", 23, LocalTime.now(), LocalTime.now());
-        Patient patient = new Patient("scwsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200);
-        User user = new User("dwd", "csda", BloodType.B, Rh.Positive, "bcijes", 24, 23.5, LocalDate.now(), Gender.Female, "knceq");
+        appointments = service.findAllAppointments();
+        root.getChildren().remove(pagination);
+        int pageSize = 4;
+        int appointmentsNumber = appointments.size();
+        int pagesNumber = appointmentsNumber % pageSize != 0 ? (appointmentsNumber/pageSize + 1) : appointmentsNumber/pageSize;
+        if(pagesNumber == 0){
+            Label label = new Label("No patients to show");
+            label.setLayoutX(250);
+            label.setLayoutY(150);
+            label.setFont(Font.font("Arial"));
+            label.setStyle("-fx-font-weight: bold; -fx-font-size: 18;");
+            root.getChildren().add(label);
+        }
+        else{
+            pagination = new Pagination(pagesNumber, 0);
+            pagination.setLayoutX(40.0);
+            pagination.setLayoutY(20.0);
+            pagination.setPrefWidth(760);
+            pagination.setPrefHeight(540);
+            pagination.setPageFactory(new Callback<Integer, Node>() {
+                @Override
+                public Node call(Integer pageIndex) {
+                    if (pageIndex >= pagesNumber) {
+                        return null;
+                    } else {
+                        return createPage(pageIndex);
+                    }
+                }
+            });
+            root.getChildren().add(pagination);
+        }
+    }
 
-        appointments.add(new Appointment(user, patient, donationCentre, LocalDate.now(), LocalTime.now()));
-        appointments.add(new Appointment(user, patient, donationCentre, LocalDate.now(), LocalTime.now()));
-        appointments.add(new Appointment(user, patient, donationCentre, LocalDate.now(), LocalTime.now()));
-        appointments.add(new Appointment(user, patient, donationCentre, LocalDate.now(), LocalTime.now()));
+    private GridPane createPage(Integer pageIndex){
+        GridPane pane = new GridPane();
+        pane.setPrefWidth(740);
+        pane.setPrefHeight(530);
 
-        for (int i = 0; i < appointments.size(); i++) {
-            Appointment appointment = appointments.get(i);
+        List<Appointment> currentAppointments = appointments.stream()
+                .skip(pageIndex  * 4)
+                .limit(4)
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < currentAppointments.size(); i++) {
+            Appointment appointment = currentAppointments.get(i);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../cellAppointment-view.fxml"));
             try {
                 Pane view = fxmlLoader.load();
                 CellAppointmentController cellAppointmentController = fxmlLoader.getController();
                 cellAppointmentController.setAppointment(appointment);
-                appointmentsGridPane.add(view, 2 * (i / 2), i % 2);
+                pane.add(view, 2 * (i / 2), i % 2);
             } catch (IOException ioException) {
                 System.out.println(ioException.getMessage());
             }
         }
+        return pane;
     }
 
     @Override

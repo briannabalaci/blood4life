@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="background" prefHeight="542.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowUsersController">
+<AnchorPane fx:id="root" prefHeight="542.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowUsersController">
     <stylesheets>
         <URL value="@/styles/backgrounds-style.css" />
     </stylesheets>
@@ -23,5 +23,6 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
         </GridPane>
+      <Pagination fx:id="pagination" layoutX="20.0" layoutY="20.0" prefHeight="542.0" prefWidth="760.0" />
     </children>
 </AnchorPane>
