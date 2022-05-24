@@ -129,12 +129,16 @@ public class ServiceProxy implements ServiceInterface {
             ErrorResponse errorResponse = (ErrorResponse) response;
             throw new ServerException(errorResponse.getMessage());
         }
-        logger.info("Adding user in ServiceProxy -> addUser");
     }
 
     @Override
     public void addDonationCentre(String county, String city, String street, int number, String name, int maximumCapacity, LocalTime openHour, LocalTime closeHour) {
         logger.info("Adding donation centre in ServiceProxy -> addDonationCentre");
+        sendRequest(new AddDonationCentreRequest(county, city, street, number, name, maximumCapacity, openHour, closeHour));
+        Response response = readResponse();
+        if (response instanceof ErrorResponse errorResponse) {
+            throw new ServerException(errorResponse.getMessage());
+        }
     }
 
     @Override
@@ -185,7 +189,14 @@ public class ServiceProxy implements ServiceInterface {
     @Override
     public List<Patient> findAllPatients() {
         logger.info("Finding patients in ServiceProxy -> findAllPatients");
-        return null;
+        sendRequest(new FindAllPatientsRequest());
+        Response response = readResponse();
+        List<Patient> allPatients = new ArrayList<>();
+        if (response instanceof ErrorResponse errorResponse) {
+            throw new ServerException(errorResponse.getMessage());
+        }
+        FindAllPatientsResponse findAllPatientsResponse = (FindAllPatientsResponse) response;
+        return findAllPatientsResponse.getPatients();
     }
 
     @Override

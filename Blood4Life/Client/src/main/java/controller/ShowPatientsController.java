@@ -37,23 +37,10 @@ public class ShowPatientsController implements Initializable {
 
     public void setService(ServiceInterface service) {
         this.service = service;
-        patients = new ArrayList<>();
         getPatients();
     }
     private void getPatients() {
-//        List<Patient> patients = service.findAllPatients();
-
-        patients.add(new Patient("scwsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwsvdesvvc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwedssvsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwssdvsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("AAAA", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scgfdsdfgfed", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwedssvsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwssdvsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("AAAA", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scgfdsdfgfed", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-
+        patients = service.findAllPatients();
         root.getChildren().remove(pagination);
         int pageSize = 4;
         int patientsNumber = patients.size();
@@ -92,7 +79,9 @@ public class ShowPatientsController implements Initializable {
                 .limit(4)
                 .collect(Collectors.toList());
 
+        System.out.println(currentPatients.get(0));
         for (int i = 0; i < currentPatients.size(); i++) {
+            System.out.println("aici");
             Patient patient = currentPatients.get(i);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../cellPatient-view.fxml"));
             try {

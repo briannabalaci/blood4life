@@ -1,6 +1,7 @@
 package controller;
 
 import exception.DatabaseException;
+import exception.ServerException;
 import exception.ValidationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -82,7 +83,7 @@ public class AddDonationCentreController implements Initializable {
                                 number, nameTextField.getText(), maximumCapacity,
                                 LocalTime.of(openHourHour, openHourMinute),
                                 LocalTime.of(closeHourHour, closeHourMinute));
-                    } catch (ValidationException | DatabaseException validationException) {
+                    } catch (ValidationException | ServerException | DatabaseException validationException) {
                         errorsTextArea.setVisible(true);
                         errorsTextArea.setText(validationException.getMessage());
                     }

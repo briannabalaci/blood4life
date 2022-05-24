@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import service.ServiceInterface;
-import validator.UserValidatorInterface;
+import validator.UserValidator;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,12 +46,12 @@ public class SignupUserController implements Initializable {
 
     private ServiceInterface service;
     private Stage root;
-    private UserValidatorInterface userValidator;
+    private UserValidator userValidator;
 
     public void setController(ServiceInterface service, Stage stage) {
         this.service = service;
         this.root = stage;
-//        userValidator = new UserValidator();
+        userValidator = new UserValidator();
     }
 
     @Override

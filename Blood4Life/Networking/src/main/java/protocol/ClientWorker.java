@@ -56,7 +56,11 @@ public class ClientWorker implements Runnable {
                    sendResponse(response);
                    logger.info("Sending response " + response + " in ClientWorker -> run");
                 }
-            } catch (IOException | ClassNotFoundException exception) {
+            }
+//            catch(ValidationException e){
+//                throw new ValidationException(e.getMessage());
+//            }
+            catch (IOException | ClassNotFoundException exception) {
                 logger.severe("Exiting ClientWorker -> run with IOException or ClassNotFoundException");
                 System.exit(1);
             }
@@ -90,10 +94,23 @@ public class ClientWorker implements Runnable {
                 User connectedUser = server.loginUser(email, cnp);
                 logger.info("Sending LoginUserOkResponse in ClientWorker -> handleRequest");
                 return new LoginUserOkResponse(connectedUser);
-            } catch (ServerException e) {
+            } catch (ServerException serverException) {
                 connected = false;
                 logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
-                return new ErrorResponse(e.getMessage());
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if (request instanceof FindAllPatientsRequest) {
+            logger.info("Receiving FindAllPatientsRequest in ClientWorker -> handleRequest");
+            FindAllPatientsRequest findAllPatientsRequest = (FindAllPatientsRequest) request;
+            try {
+                List<Patient> patients = server.findAllPatients();
+                logger.info("Sending FindAllPatientsRequest in ClientWorker -> handleRequest");
+                return new FindAllPatientsResponse(patients);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
             }
         }
 
@@ -230,6 +247,22 @@ public class ClientWorker implements Runnable {
             }
         }
 
+        if(request instanceof AddDonationCentreRequest addDonationCentreRequest){
+            String county = addDonationCentreRequest.getCounty();
+            String city = addDonationCentreRequest.getCity();
+            String street = addDonationCentreRequest.getStreet();
+            int number = addDonationCentreRequest.getNumber();
+            String name = addDonationCentreRequest.getName();
+            int maximumCapacity = addDonationCentreRequest.getMaximumCapacity();
+            LocalTime openHour = addDonationCentreRequest.getOpenHour();
+            LocalTime closeHour = addDonationCentreRequest.getCloseHour();
+            try{
+                server.addDonationCentre(county, city, street, number, name, maximumCapacity, openHour, closeHour);
+                return new OkResponse();
+            } catch (ServerException | ValidationException ex) {
+                return new ErrorResponse(ex.getMessage());
+            }
+        }
         return response;
     }
 
