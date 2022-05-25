@@ -21,7 +21,7 @@ public class StartServer {
     public static void main(String[] args) {
         Properties properties = new Properties();
         try {
-            properties.load(StartServer.class.getResourceAsStream("/server.properties"));
+            properties.load(StartServer.class.getResourceAsStream("server.properties"));
             System.out.println("Properties set.");
             properties.list(System.out);
         } catch (IOException e) {

@@ -14,7 +14,6 @@
    <stylesheets>
       <URL value="@/styles/backgrounds-style.css" />
       <URL value="@/styles/buttons-style.css" />
-      <URL value="@/styles/labels-style.css" />
       <URL value="@/styles/textFields-style.css" />
    </stylesheets>
    <children>
@@ -23,22 +22,29 @@
             <Image url="@icons/login-icon.png" />
          </image>
       </ImageView>
-      <Label layoutX="185.0" layoutY="141.0" text="Username">
+      <TextField fx:id="usernameTextField" layoutX="264.0" layoutY="175.0" promptText="Username" />
+      <PasswordField fx:id="passwordTextField" layoutX="264.0" layoutY="224.0" promptText="Password" />
+      <Button layoutX="390.0" layoutY="322.0" mnemonicParsing="false" onAction="#onAdminLoginButtonClick" text="Login" />
+      <Label fx:id="errorLabel" layoutX="221.0" layoutY="262.0" prefHeight="32.0" prefWidth="189.0" />
+      <Label layoutX="240.0" layoutY="98.0" text="Admin Account">
          <font>
-            <Font size="13.0" />
+            <Font name="Arial Bold" size="18.0" />
          </font></Label>
-      <Label layoutX="187.0" layoutY="190.0" text="Password">
-         <font>
-            <Font size="13.0" />
-         </font></Label>
-      <TextField fx:id="usernameTextField" layoutX="264.0" layoutY="138.0" />
-      <PasswordField fx:id="passwordTextField" layoutX="265.0" layoutY="187.0" />
-      <Button layoutX="391.0" layoutY="278.0" mnemonicParsing="false" onAction="#onAdminLoginButtonClick" text="Login" />
-      <Label fx:id="errorLabel" layoutX="225.0" layoutY="233.0" prefHeight="32.0" prefWidth="189.0" />
-      <Label layoutX="284.0" layoutY="76.0" text="Login as admin">
-         <font>
-            <Font name="Arial Bold" size="14.0" />
-         </font></Label>
-      <Button layoutX="244.0" layoutY="278.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="Back" />
+      <Button layoutX="223.0" layoutY="322.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="Back" />
+      <ImageView fitHeight="46.0" fitWidth="55.0" layoutX="373.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/admin.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="40.0" fitWidth="38.0" layoutX="214.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons/username.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="32.0" fitWidth="38.0" layoutX="214.0" layoutY="218.0" pickOnBounds="true">
+         <image>
+            <Image url="@icons/password.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

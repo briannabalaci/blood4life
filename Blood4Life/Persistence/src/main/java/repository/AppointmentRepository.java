@@ -98,12 +98,14 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
     }
 
     @Override
-    public List<Appointment> findPreviousAppointmentsByUser(User user) {
+    public List<Appointment> findPreviousAppointmentsByUser(User user, int startPosition, int returnedRowsNo) {
         List<Appointment> appointments = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             logger.info("Connecting to database in AppointmentRepository -> findPreviousAppointmentsByUser");
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ? AND \"date\" < now()");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ? AND \"date\" < now() LIMIT ? OFFSET ?");
             preparedStatement.setLong(1, user.getUserID());
+            preparedStatement.setInt(2, returnedRowsNo);
+            preparedStatement.setInt(3, startPosition);
             ResultSet resultSet = preparedStatement.executeQuery();
             logger.info("Executing query in AppointmentRepository -> findPreviousAppointmentsByUser");
             while (resultSet.next())
@@ -118,12 +120,54 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
     }
 
     @Override
-    public List<Appointment> findFutureAppointmentsByUser(User user) {
+    public int countPreviousAppointmentsByUser(User user) {
+        try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
+            logger.info("Connecting to database in AppointmentRepository -> countPreviousAppointmentsByUser");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM public.\"Appointments\" WHERE \"userId\" = ? AND \"date\" < now()");
+            preparedStatement.setLong(1, user.getUserID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            logger.info("Executing query in AppointmentRepository -> countPreviousAppointmentsByUser");
+            if (resultSet.next()) {
+                logger.info("Reading from database in AppointmentRepository -> countPreviousAppointmentsByUser");
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+            logger.severe("Exiting AppointmentRepository -> countPreviousAppointmentsByUser with SQLException");
+            System.exit(1);
+        }
+        return 0;
+    }
+
+    @Override
+    public int countFutureAppointmentsByUser(User user) {
+        try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
+            logger.info("Connecting to database in AppointmentRepository -> countPreviousAppointmentsByUser");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM public.\"Appointments\" WHERE \"userId\" = ? AND \"date\" >= now()");
+            preparedStatement.setLong(1, user.getUserID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            logger.info("Executing query in AppointmentRepository -> countFutureAppointmentsByUser");
+            if (resultSet.next()) {
+                logger.info("Reading from database in AppointmentRepository -> countFutureAppointmentsByUser");
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+            logger.severe("Exiting AppointmentRepository -> countFutureAppointmentsByUser with SQLException");
+            System.exit(1);
+        }
+        return 0;
+    }
+
+    @Override
+    public List<Appointment> findFutureAppointmentsByUser(User user, int startPosition, int returnedRowsNo) {
         List<Appointment> appointments = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             logger.info("Connecting to database in AppointmentRepository -> findFutureAppointmentsByUser");
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ?  AND \"date\" >= now()");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ?  AND \"date\" >= now() LIMIT ? OFFSET ?");
             preparedStatement.setLong(1, user.getUserID());
+            preparedStatement.setInt(2, returnedRowsNo);
+            preparedStatement.setInt(3, startPosition);
             ResultSet resultSet = preparedStatement.executeQuery();
             logger.info("Executing query in AppointmentRepository -> findFutureAppointmentsByUser");
             while (resultSet.next())

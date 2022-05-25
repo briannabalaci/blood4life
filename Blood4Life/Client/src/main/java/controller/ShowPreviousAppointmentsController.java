@@ -9,12 +9,15 @@ import javafx.scene.control.Pagination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.util.Callback;
 import service.ServiceInterface;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -24,7 +27,6 @@ public class ShowPreviousAppointmentsController implements Initializable {
 
     private ServiceInterface service;
     private User loggedUser;
-    private List<Appointment> appointments;
     private final int pageSize = 4;
 
     public void setService(ServiceInterface service, User loggedUser) {
@@ -34,12 +36,16 @@ public class ShowPreviousAppointmentsController implements Initializable {
     }
 
     private void getAppointments() {
-        appointments = service.findPreviousAppointmentsByUser(loggedUser);
         root.getChildren().remove(pagination);
-        int appointmentsNumber = appointments.size();
+        int appointmentsNumber = service.countPreviousAppointmentsByUser(loggedUser);
+
         int pagesNumber = appointmentsNumber % pageSize != 0 ? (appointmentsNumber/pageSize + 1) : appointmentsNumber/pageSize;
         if(pagesNumber == 0){
-            Label label = new Label("You didn't had any appointments");
+            Label label = new Label("No appointments to show");
+            label.setLayoutX(250);
+            label.setLayoutY(150);
+            label.setFont(Font.font("Arial"));
+            label.setStyle("-fx-font-weight: bold; -fx-font-size: 18;");
             root.getChildren().add(label);
         }
         else{
@@ -68,10 +74,7 @@ public class ShowPreviousAppointmentsController implements Initializable {
         pane.setPrefHeight(530);
         pane.setStyle("-fx-background-color: #EEEBDD");
 
-        List<Appointment> appointmentsToShow = appointments.stream()
-                .skip(pageIndex  * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
+        List<Appointment> appointmentsToShow = service.findPreviousAppointmentsByUser(loggedUser, pageIndex * pageSize, pageSize);
 
         for (int i = 0; i < appointmentsToShow.size(); i++) {
             Appointment appointment = appointmentsToShow.get(i);

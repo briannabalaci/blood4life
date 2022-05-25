@@ -12,11 +12,13 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.util.Callback;
 import service.ServiceInterface;
 
@@ -29,7 +31,6 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ShowPatientsController implements Initializable {
-//    public GridPane patientsGridPane;
     public AnchorPane root;
     public Pagination pagination;
     private ServiceInterface service;
@@ -37,29 +38,21 @@ public class ShowPatientsController implements Initializable {
 
     public void setService(ServiceInterface service) {
         this.service = service;
-        patients = new ArrayList<>();
         getPatients();
     }
     private void getPatients() {
-//        List<Patient> patients = service.findAllPatients();
-
-        patients.add(new Patient("scwsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwsvdesvvc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwedssvsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwssdvsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("AAAA", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scgfdsdfgfed", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwedssvsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scwssdvsc", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("AAAA", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-        patients.add(new Patient("scgfdsdfgfed", "cesec", "casece", LocalDate.now(), BloodType.B, Rh.Positive, Severity.Severe, 200));
-
+        patients = service.findAllPatients();
         root.getChildren().remove(pagination);
         int pageSize = 4;
         int patientsNumber = patients.size();
         int pagesNumber = patientsNumber % pageSize != 0 ? (patientsNumber/pageSize + 1) : patientsNumber/pageSize;
         if(pagesNumber == 0){
-
+            Label label = new Label("No patients to show");
+            label.setLayoutX(250);
+            label.setLayoutY(150);
+            label.setFont(Font.font("Arial"));
+            label.setStyle("-fx-font-weight: bold; -fx-font-size: 18;");
+            root.getChildren().add(label);
         }
         else{
             pagination = new Pagination(pagesNumber, 0);
@@ -79,7 +72,6 @@ public class ShowPatientsController implements Initializable {
             });
             root.getChildren().add(pagination);
         }
-
     }
 
     private GridPane createPage(Integer pageIndex){

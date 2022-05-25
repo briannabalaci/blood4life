@@ -23,6 +23,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
@@ -31,6 +32,7 @@ public class AddAppointmentController implements Initializable {
     public ComboBox<DonationCentre> centreComboBox;
     public DatePicker dayDatePicker;
     public ComboBox<String> hourComboBox;
+    public Button appointmentButton;
     private ServiceInterface service;
     private User currentUser;
 
@@ -103,7 +105,15 @@ public class AddAppointmentController implements Initializable {
             return;
         }
         if(patient == null)
-            patient = findMostUrgent();
+            try {
+                patient = findMostUrgent();
+            }
+            catch(NoSuchElementException e){
+                errorsTextArea.setVisible(true);
+                errorsTextArea.setText("There are no patients at the moment");
+                appointmentButton.setDisable(true);
+                return;
+            }
         LocalDate date = dayDatePicker.getValue();
         if(date == null) {
             errorsTextArea.setVisible(true);

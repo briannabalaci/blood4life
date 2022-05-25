@@ -33,10 +33,10 @@ public class UserValidator {
         if(year >= 0 && year <= 9)
             yearFromCNP = Integer.parseInt("200" + year);
         else
-            if(year >= 10 && year <= 22)
-                yearFromCNP = Integer.parseInt("20" + year);
-            else
-                yearFromCNP = Integer.parseInt("19" + year);
+        if(year >= 10 && year <= 22)
+            yearFromCNP = Integer.parseInt("20" + year);
+        else
+            yearFromCNP = Integer.parseInt("19" + year);
         int monthFromCNP = Integer.parseInt(cnp.substring(3, 5));
         int dayFromCNP = Integer.parseInt(cnp.substring(5, 7));
         int yearFromDate = date.getYear();

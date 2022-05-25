@@ -56,7 +56,11 @@ public class ClientWorker implements Runnable {
                    sendResponse(response);
                    logger.info("Sending response " + response + " in ClientWorker -> run");
                 }
-            } catch (IOException | ClassNotFoundException exception) {
+            }
+//            catch(ValidationException e){
+//                throw new ValidationException(e.getMessage());
+//            }
+            catch (IOException | ClassNotFoundException exception) {
                 logger.severe("Exiting ClientWorker -> run with IOException or ClassNotFoundException");
                 System.exit(1);
             }
@@ -90,10 +94,23 @@ public class ClientWorker implements Runnable {
                 User connectedUser = server.loginUser(email, cnp);
                 logger.info("Sending LoginUserOkResponse in ClientWorker -> handleRequest");
                 return new LoginUserOkResponse(connectedUser);
-            } catch (ServerException e) {
+            } catch (ServerException serverException) {
                 connected = false;
                 logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
-                return new ErrorResponse(e.getMessage());
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if (request instanceof FindAllPatientsRequest) {
+            logger.info("Receiving FindAllPatientsRequest in ClientWorker -> handleRequest");
+            FindAllPatientsRequest findAllPatientsRequest = (FindAllPatientsRequest) request;
+            try {
+                List<Patient> patients = server.findAllPatients();
+                logger.info("Sending FindAllPatientsRequest in ClientWorker -> handleRequest");
+                return new FindAllPatientsResponse(patients);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
             }
         }
 
@@ -116,10 +133,28 @@ public class ClientWorker implements Runnable {
             logger.info("Receiving FindPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
             FindPreviousAppointmentsByUserRequest findPreviousAppointmentsByUserRequest = (FindPreviousAppointmentsByUserRequest) request;
             User user = findPreviousAppointmentsByUserRequest.getUser();
+            int startPosition = findPreviousAppointmentsByUserRequest.getStartPosition();
+            int pageSize = findPreviousAppointmentsByUserRequest.getPageSize();
             try {
-                List<Appointment> appointments = server.findPreviousAppointmentsByUser(user);
+                List<Appointment> appointments = server.findPreviousAppointmentsByUser(user, startPosition, pageSize);
                 logger.info("Sending FindPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
                 return new FindPreviousAppointmentsByUserResponse(appointments);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if (request instanceof FindFutureAppointmentsByUserRequest) {
+            logger.info("Receiving FindPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
+            FindFutureAppointmentsByUserRequest findFutureAppointmentsByUserRequest = (FindFutureAppointmentsByUserRequest) request;
+            User user = findFutureAppointmentsByUserRequest.getUser();
+            int startPosition = findFutureAppointmentsByUserRequest.getStartPosition();
+            int pageSize = findFutureAppointmentsByUserRequest.getPageSize();
+            try {
+                List<Appointment> appointments = server.findFutureAppointmentsByUser(user, startPosition, pageSize);
+                logger.info("Sending FindFutureAppointmentsByUserRequest in ClientWorker -> handleRequest");
+                return new FindFutureAppointmentsByUserResponse(appointments);
             } catch (ServerException serverException) {
                 logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
                 return new ErrorResponse(serverException.getMessage());
@@ -201,6 +236,47 @@ public class ClientWorker implements Runnable {
             }
         }
 
+        if(request instanceof FindAllUsersRequest) {
+            logger.info("Receiving FindAllUsersRequest in ClientWorker -> handleRequest");
+            FindAllUsersRequest findAllUsersRequest = (FindAllUsersRequest) request;
+            try {
+                List<User> users = server.findAllUsers();
+                logger.info("Sending FindAllUsersRequest in ClientWorker -> handleRequest");
+                return new FindAllUsersResponse(users);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if(request instanceof CountPreviousAppointmentsByUserRequest){
+            logger.info("Receiving CountPreviousAppointmentsByUserRequest in ClientWorker -> handleRequest");
+            CountPreviousAppointmentsByUserRequest countPreviousAppointmentsByUserRequest = (CountPreviousAppointmentsByUserRequest) request;
+            User user = countPreviousAppointmentsByUserRequest.getUser();
+            try {
+                int number = server.countPreviousAppointmentsByUser(user);
+                logger.info("Sending CountPreviousAppointmentsByUserResponse in ClientWorker -> handleRequest");
+                return new CountPreviousAppointmentsByUserResponse(number);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
+        if(request instanceof CountFutureAppointmentsByUserRequest){
+            logger.info("Receiving CountFutureAppointmentsByUserRequest in ClientWorker -> handleRequest");
+            CountFutureAppointmentsByUserRequest countFutureAppointmentsByUserRequest = (CountFutureAppointmentsByUserRequest) request;
+            User user = countFutureAppointmentsByUserRequest.getUser();
+            try {
+                int number = server.countFutureAppointmentsByUser(user);
+                logger.info("Sending CountFutureAppointmentsByUserResponse in ClientWorker -> handleRequest");
+                return new CountFutureAppointmentsByUserResponse(number);
+            } catch (ServerException serverException) {
+                logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
+                return new ErrorResponse(serverException.getMessage());
+            }
+        }
+
         if (request instanceof LoginAdminRequest) {
             logger.info("Receiving LoginAdminRequest in ClientWorker -> handleRequest");
             LoginAdminRequest loginAdminRequest = (LoginAdminRequest) request;
@@ -228,6 +304,34 @@ public class ClientWorker implements Runnable {
                 logger.severe("Sending ErrorResponse in ClientWorker -> handleRequest");
                 return new ErrorResponse(serverException.getMessage());
             }
+        }
+
+        if(request instanceof AddDonationCentreRequest addDonationCentreRequest){
+            String county = addDonationCentreRequest.getCounty();
+            String city = addDonationCentreRequest.getCity();
+            String street = addDonationCentreRequest.getStreet();
+            int number = addDonationCentreRequest.getNumber();
+            String name = addDonationCentreRequest.getName();
+            int maximumCapacity = addDonationCentreRequest.getMaximumCapacity();
+            LocalTime openHour = addDonationCentreRequest.getOpenHour();
+            LocalTime closeHour = addDonationCentreRequest.getCloseHour();
+            try{
+                server.addDonationCentre(county, city, street, number, name, maximumCapacity, openHour, closeHour);
+                return new OkResponse();
+            } catch (ServerException | ValidationException ex) {
+                return new ErrorResponse(ex.getMessage());
+            }
+        }
+
+        if(request instanceof CancelAppointmentRequest cancelAppointmentRequest){
+            Appointment appointment = cancelAppointmentRequest.getAppointment();
+            try{
+                server.cancelAppointment(appointment);
+                return new OkResponse();
+            } catch (ServerException | ValidationException ex) {
+                return new ErrorResponse(ex.getMessage());
+            }
+
         }
 
         return response;

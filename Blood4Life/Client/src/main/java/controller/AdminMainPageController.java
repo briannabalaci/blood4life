@@ -84,4 +84,7 @@ public class AdminMainPageController implements Initializable {
         addDonationCentreController.setService(service);
         mainPageBorderPane.setCenter(view);
     }
+
+    public void onLogoutAdminButtonClick(ActionEvent actionEvent) {
+    }
 }

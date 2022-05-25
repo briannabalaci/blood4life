@@ -20,7 +20,6 @@ public class AddressRepository implements AddressRepositoryInterface {
 
     public AddressRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-
         logger.info("Initializing AddressRepository");
     }
 
