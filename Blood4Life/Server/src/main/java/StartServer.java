@@ -36,15 +36,14 @@ public class StartServer {
 
         try {
             initialize();
-            AddressRepository addressRepository = new AddressRepository(databaseURL, databaseUsername, databasePassword, sessionFactory);
-            DonationCentreRepository donationCentreRepository = new DonationCentreRepository(databaseURL, databaseUsername, databasePassword, addressRepository, sessionFactory);
-            UserRepository userRepository = new UserRepository(databaseURL, databaseUsername, databasePassword);
+            AddressRepository addressRepository = new AddressRepository(sessionFactory);
+            DonationCentreRepository donationCentreRepository = new DonationCentreRepository(addressRepository, sessionFactory);
+            UserRepository userRepository = new UserRepository(sessionFactory);
             AdminRepository adminRepository = new AdminRepository(databaseURL, databaseUsername, databasePassword);
-            PatientRepository patientRepository = new PatientRepository(databaseURL, databaseUsername, databasePassword);
+            PatientRepository patientRepository = new PatientRepository(sessionFactory);
             AppointmentRepository appointmentRepository = new AppointmentRepository(databaseURL, databaseUsername, databasePassword, userRepository, patientRepository, donationCentreRepository);
             ServiceInterface service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, new PatientValidator(), new DonationCentreValidator(new AddressValidator()));
 
-            addressRepository.findAll().forEach(System.out::println);
             try {
                 int defaultPort = 55555;
                 int serverPort = defaultPort;
@@ -72,9 +71,11 @@ public class StartServer {
             } catch (Exception e) {
                 System.err.println("Exception " + e);
                 e.printStackTrace();
+            } finally {
+                close();
             }
-        } finally {
-            close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 

@@ -18,7 +18,7 @@ public class DonationCentre implements Serializable {
 
 
     @Id
-    @Column(name = "addressId")
+    @Column(name = "id")
     @GeneratedValue(generator = "increment")
     @GenericGenerator(strategy = "increment", name = "increment")
     public Long getCentreID() {
@@ -37,7 +37,7 @@ public class DonationCentre implements Serializable {
         this.closeHour = closeHour;
     }
 
-    @OneToOne
+    @ManyToOne
     public Address getAddress() {
         return address;
     }

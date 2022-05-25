@@ -21,20 +21,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class DonationCentreRepository implements DonationCentreRepositoryInterface {
-    private final String databaseURL;
-    private final String databaseUsername;
-    private final String databasePassword;
     private SessionFactory sessionFactory;
     private final AddressRepositoryInterface addressRepository;
     private final Logger logger = Logger.getLogger("logging.txt");
 
-    public DonationCentreRepository(String databaseURL, String databaseUsername, String databasePassword, AddressRepositoryInterface addressRepository, SessionFactory sessionFactory) {
-        this.databaseURL = databaseURL;
-        this.databaseUsername = databaseUsername;
-        this.databasePassword = databasePassword;
+    public DonationCentreRepository(AddressRepositoryInterface addressRepository, SessionFactory sessionFactory) {
         this.addressRepository = addressRepository;
         this.sessionFactory = sessionFactory;
-
         logger.info("Initializing DonationCentreRepository");
     }
 

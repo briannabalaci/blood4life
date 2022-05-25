@@ -2,5 +2,8 @@ package domain.enums;
 
 public enum Gender {
     Female,
-    Male
+    Male;
+
+    Gender() {
+    }
 }

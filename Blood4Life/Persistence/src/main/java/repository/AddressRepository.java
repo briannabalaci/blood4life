@@ -15,16 +15,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class AddressRepository implements AddressRepositoryInterface {
-    private final String databaseURL;
-    private final String databaseUsername;
-    private final String databasePassword;
     private SessionFactory sessionFactory;
     private final Logger logger = Logger.getLogger("logging.txt");
 
-    public AddressRepository(String databaseURL, String databaseUsername, String databasePassword, SessionFactory sessionFactory) {
-        this.databaseURL = databaseURL;
-        this.databaseUsername = databaseUsername;
-        this.databasePassword = databasePassword;
+    public AddressRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
 
         logger.info("Initializing AddressRepository");
@@ -35,7 +29,7 @@ public class AddressRepository implements AddressRepositoryInterface {
         List<Address> addresses;
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<Address> query = session.createQuery("select * from Address where county =:countyParam",
+            Query<Address> query = session.createQuery("from Address where county =:countyParam",
                     Address.class);
             query.setParameter("countyParam", county);
             addresses = query.list();
@@ -49,7 +43,7 @@ public class AddressRepository implements AddressRepositoryInterface {
         List<Address> addresses;
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<Address> query = session.createQuery("select * from Address where city =:cityParam",
+            Query<Address> query = session.createQuery("from Address where city =:cityParam",
                     Address.class);
             query.setParameter("cityParam", city);
             addresses = query.list();
@@ -62,7 +56,7 @@ public class AddressRepository implements AddressRepositoryInterface {
     public Address findOne(String county, String city, String street, int number) {
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<Address> query = session.createQuery("select * from Address where county=:countyParam and city=:cityParam and street=:streetParam and number=:numberParam",
+            Query<Address> query = session.createQuery("from Address where county=:countyParam and city=:cityParam and street=:streetParam and number=:numberParam",
                     Address.class);
             query.setParameter("countyParam", county);
             query.setParameter("cityParam", city);
@@ -78,7 +72,7 @@ public class AddressRepository implements AddressRepositoryInterface {
     public Address findOne(Long id) {
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Query<Address> query = session.createQuery("select * from Address where address.id=?1",
+            Query<Address> query = session.createQuery("from Address where id=?1",
                     Address.class);
             query.setParameter(1, id);
             Address address = query.uniqueResult();

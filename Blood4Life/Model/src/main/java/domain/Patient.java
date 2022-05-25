@@ -3,13 +3,15 @@ package domain;
 import domain.enums.BloodType;
 import domain.enums.Severity;
 import domain.enums.Rh;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Patient implements IEntity<Long>, Serializable {
+@Entity
+@Table(name="Patients")
+public class Patient implements Serializable {
     private Long patientId;
     private String cnp;
     private String firstName;
@@ -31,15 +33,22 @@ public class Patient implements IEntity<Long>, Serializable {
         this.bloodQuantityNeeded = bloodQuantityNeeded;
     }
 
-    @Override
-    public Long getID() {
+    public Patient() {
+    }
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(strategy = "increment", name = "increment")
+    public Long getPatientId() {
         return patientId;
     }
 
-    @Override
-    public void setID(Long patientId) {
+    public void setPatientId(Long patientId) {
         this.patientId = patientId;
     }
+
+    @Column(name = "cnp")
     public String getCnp() {
         return cnp;
     }
@@ -48,6 +57,7 @@ public class Patient implements IEntity<Long>, Serializable {
         this.cnp = cnp;
     }
 
+    @Column(name = "first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -56,6 +66,7 @@ public class Patient implements IEntity<Long>, Serializable {
         this.firstName = firstName;
     }
 
+    @Column(name = "last_name")
     public String getLastName() {
         return lastName;
     }
@@ -64,6 +75,7 @@ public class Patient implements IEntity<Long>, Serializable {
         this.lastName = lastName;
     }
 
+    @Column(name = "birthday")
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -72,6 +84,7 @@ public class Patient implements IEntity<Long>, Serializable {
         this.birthday = birthday;
     }
 
+    @Enumerated(EnumType.STRING)
     public BloodType getBloodType() {
         return bloodType;
     }
@@ -80,6 +93,7 @@ public class Patient implements IEntity<Long>, Serializable {
         this.bloodType = bloodType;
     }
 
+    @Enumerated(EnumType.STRING)
     public Rh getRh() {
         return rh;
     }
@@ -88,14 +102,16 @@ public class Patient implements IEntity<Long>, Serializable {
         this.rh = rh;
     }
 
+    @Enumerated(EnumType.STRING)
     public Severity getSeverity() {
         return severity;
     }
 
-    public void setGravity(Severity severity) {
+    public void setSeverity(Severity severity) {
         this.severity = severity;
     }
 
+    @Column(name = "blood_quantity")
     public Integer getBloodQuantityNeeded() {
         return bloodQuantityNeeded;
     }

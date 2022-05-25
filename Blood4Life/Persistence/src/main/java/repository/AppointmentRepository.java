@@ -83,7 +83,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             logger.info("Connecting to database in AppointmentRepository -> findAppointmentsByUser");
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ?");
-            preparedStatement.setLong(1, user.getID());
+            preparedStatement.setLong(1, user.getUserID());
             ResultSet resultSet = preparedStatement.executeQuery();
             logger.info("Executing query in AppointmentRepository -> findAppointmentsByUser");
             while (resultSet.next())
@@ -103,7 +103,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             logger.info("Connecting to database in AppointmentRepository -> findPreviousAppointmentsByUser");
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ? AND \"date\" < now()");
-            preparedStatement.setLong(1, user.getID());
+            preparedStatement.setLong(1, user.getUserID());
             ResultSet resultSet = preparedStatement.executeQuery();
             logger.info("Executing query in AppointmentRepository -> findPreviousAppointmentsByUser");
             while (resultSet.next())
@@ -123,7 +123,7 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
         try (Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword)) {
             logger.info("Connecting to database in AppointmentRepository -> findFutureAppointmentsByUser");
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM public.\"Appointments\" WHERE \"userId\" = ?  AND \"date\" >= now()");
-            preparedStatement.setLong(1, user.getID());
+            preparedStatement.setLong(1, user.getUserID());
             ResultSet resultSet = preparedStatement.executeQuery();
             logger.info("Executing query in AppointmentRepository -> findFutureAppointmentsByUser");
             while (resultSet.next())
@@ -265,8 +265,8 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
     }
 
     private void setQueryStatement(Appointment appointment, PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setLong(1, appointment.getUser().getID());
-        preparedStatement.setLong(2, appointment.getPatient().getID());
+        preparedStatement.setLong(1, appointment.getUser().getUserID());
+        preparedStatement.setLong(2, appointment.getPatient().getPatientId());
         preparedStatement.setLong(3, appointment.getDonationCentre().getCentreID());
         preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.of(appointment.getDate(), LocalTime.now())));
         preparedStatement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), appointment.getTime())));

@@ -16,7 +16,7 @@ public class Address implements Serializable {
     private int number;
 
     @Id
-    @Column(name = "addressId")
+    @Column(name = "id")
     @GeneratedValue(generator = "increment")
     @GenericGenerator(strategy = "increment", name = "increment")
     public Long getAddressID() {
