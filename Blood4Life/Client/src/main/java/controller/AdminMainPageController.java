@@ -3,6 +3,7 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -85,6 +86,15 @@ public class AdminMainPageController implements Initializable {
         mainPageBorderPane.setCenter(view);
     }
 
-    public void onLogoutAdminButtonClick(ActionEvent actionEvent) {
+    public void onLogoutAdminButtonClick(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 660, 500);
+        LoginUserController loginUserController = fxmlLoader.getController();
+        loginUserController.setService(service);
+        loginUserController.setStage(stage);
+        stage.close();
+        stage.setTitle("Blood4Life");
+        stage.setScene(scene);
+        stage.show();
     }
 }

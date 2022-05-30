@@ -163,6 +163,7 @@ public class ServiceProxy implements ServiceInterface {
 
     @Override
     public void addUser(String firstName, String lastName, String email, String cnp, LocalDate birthdate, Gender gender, BloodType bloodType, Rh rh, Double weight, Integer height) {
+        initializeConnection();
         sendRequest(new AddUserRequest(firstName, lastName, bloodType, rh, email, height, weight, birthdate, gender, cnp));
         Response response = readResponse();
         if (response instanceof ErrorResponse) {

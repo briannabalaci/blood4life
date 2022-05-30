@@ -1,18 +1,24 @@
 package domain;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import org.hibernate.annotations.GenericGenerator;
 
-public class Appointment implements IEntity<Long>, Serializable {
+import java.io.Serializable;
+import java.sql.Time;
+import java.util.Date;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "Appointments")
+public class Appointment implements Serializable {
     private Long appointmentId;
     private User user;
     private Patient patient;
     private DonationCentre donationCentre;
-    private LocalDate date;
-    private LocalTime time;
+    private Date date;
+    private Time time;
 
-    public Appointment(User user, Patient patient, DonationCentre donationCentre, LocalDate date, LocalTime time) {
+    public Appointment(User user, Patient patient, DonationCentre donationCentre, Date date, Time time) {
         this.user = user;
         this.patient = patient;
         this.donationCentre = donationCentre;
@@ -20,6 +26,7 @@ public class Appointment implements IEntity<Long>, Serializable {
         this.time = time;
     }
 
+    @ManyToOne
     public User getUser() {
         return user;
     }
@@ -28,6 +35,7 @@ public class Appointment implements IEntity<Long>, Serializable {
         this.user = user;
     }
 
+    @ManyToOne
     public Patient getPatient() {
         return patient;
     }
@@ -36,6 +44,7 @@ public class Appointment implements IEntity<Long>, Serializable {
         this.patient = patient;
     }
 
+    @ManyToOne
     public DonationCentre getDonationCentre() {
         return donationCentre;
     }
@@ -44,29 +53,36 @@ public class Appointment implements IEntity<Long>, Serializable {
         this.donationCentre = donationCentre;
     }
 
-    public LocalDate getDate() {
+    @Column(name = "date")
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    @Column(name = "time")
+    public Time getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 
-    @Override
-    public Long getID() {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(strategy = "increment", name = "increment")
+    public Long getAppointmentId() {
         return appointmentId;
     }
 
-    @Override
-    public void setID(Long appointmentId) {
+    public void setAppointmentId(Long appointmentId) {
         this.appointmentId = appointmentId;
+    }
+
+    public Appointment() {
     }
 }

@@ -20,5 +20,7 @@
         <mapping class="domain.DonationCentre"/>
         <mapping class="domain.Patient"/>
         <mapping class="domain.User"/>
+        <mapping class="domain.Admin"/>
+        <mapping class="domain.Appointment"/>
     </session-factory>
 </hibernate-configuration>

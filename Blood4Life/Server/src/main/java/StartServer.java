@@ -39,10 +39,10 @@ public class StartServer {
             AddressRepository addressRepository = new AddressRepository(sessionFactory);
             DonationCentreRepository donationCentreRepository = new DonationCentreRepository(addressRepository, sessionFactory);
             UserRepository userRepository = new UserRepository(sessionFactory);
-            AdminRepository adminRepository = new AdminRepository(databaseURL, databaseUsername, databasePassword);
+            AdminRepository adminRepository = new AdminRepository(sessionFactory);
             PatientRepository patientRepository = new PatientRepository(sessionFactory);
-            AppointmentRepository appointmentRepository = new AppointmentRepository(databaseURL, databaseUsername, databasePassword, userRepository, patientRepository, donationCentreRepository);
-            ServiceInterface service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, new PatientValidator(), new DonationCentreValidator(new AddressValidator()));
+            AppointmentRepository appointmentRepository = new AppointmentRepository(sessionFactory);
+            ServiceInterface service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, new PatientValidator(), new DonationCentreValidator(new AddressValidator()), addressRepository);
 
             try {
                 int defaultPort = 55555;
@@ -56,7 +56,7 @@ public class StartServer {
                 System.out.println("Starting server on port: " + serverPort);
 
                 AbstractServer server = new ConcurrentServer(serverPort, service);
-
+                System.out.println(donationCentreRepository.findOne(1L));
                 try {
                     server.start();
                 } catch (ServerException e) {

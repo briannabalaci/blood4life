@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,10 +27,11 @@ public class Service implements ServiceInterface {
     private final DonationCentreRepositoryInterface donationCentreRepository;
     private final PatientRepositoryInterface patientRepository;
     private final AdminRepositoryInterface adminRepository;
+    private final AddressRepositoryInterface addressRepository;
     private final PatientValidator patientValidator;
     private final DonationCentreValidator donationCentreValidator;
 
-    public Service(UserRepositoryInterface userRepository, AppointmentRepositoryInterface appointmentRepository, DonationCentreRepositoryInterface donationCentreRepository, PatientRepositoryInterface patientRepository, AdminRepositoryInterface adminRepository, PatientValidator patientValidator, DonationCentreValidator donationCentreValidator) {
+    public Service(UserRepositoryInterface userRepository, AppointmentRepositoryInterface appointmentRepository, DonationCentreRepositoryInterface donationCentreRepository, PatientRepositoryInterface patientRepository, AdminRepositoryInterface adminRepository, PatientValidator patientValidator, DonationCentreValidator donationCentreValidator, AddressRepositoryInterface addressRepository) {
         this.userRepository = userRepository;
         this.appointmentRepository = appointmentRepository;
         this.donationCentreRepository = donationCentreRepository;
@@ -37,6 +39,7 @@ public class Service implements ServiceInterface {
         this.adminRepository = adminRepository;
         this.patientValidator = patientValidator;
         this.donationCentreValidator = donationCentreValidator;
+        this.addressRepository = addressRepository;
     }
 
     public void loginAdmin(String username, String password) {
@@ -54,7 +57,7 @@ public class Service implements ServiceInterface {
     }
 
     public void addDonationCentre(String county, String city, String street, int number, String name, int maximumCapacity, LocalTime openHour, LocalTime closeHour) {
-        Address address = new Address(city, county, street, number);
+        Address address = addressRepository.findOne(county, city, street, number);
         DonationCentre donationCentre = new DonationCentre(address, name, maximumCapacity, openHour, closeHour);
         donationCentreValidator.validateDonationCentre(donationCentre);
         donationCentreRepository.save(donationCentre);
@@ -89,7 +92,7 @@ public class Service implements ServiceInterface {
     }
 
     public void addAppointment(User user, Patient patient, DonationCentre centre, Date date, Time time) {
-        LocalDate localDate = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+        Date localDate = Calendar. getInstance(). getTime();
         System.out.println(appointmentRepository.findAppointmentsByUser(user));
         if (appointmentRepository.findAppointmentsByUser(user).stream().anyMatch(a -> a.getDate().equals(localDate)))
             throw new ServerException("You already have an appointment on this\n day");
@@ -106,11 +109,12 @@ public class Service implements ServiceInterface {
             throw new ServerException("Please select another hour");
         if (appointmentRepository.findNumberAppointmentsAtCenterDateTime(centre, date, time) >= centre.getMaximumCapacity())
             throw new ServerException("Please select another hour");
-        Appointment appointment = new Appointment(user, patient, centre, localDate, time.toLocalTime());
+        Appointment appointment = new Appointment(user, patient, centre, date, time);
         appointmentRepository.save(appointment);
-        if(patient.getBloodQuantityNeeded() < 500)
+        if(patient.getBloodQuantityNeeded() <= 500)
             patient.setBloodQuantityNeeded(0);
-        patient.setBloodQuantityNeeded(patient.getBloodQuantityNeeded() - 500);
+        else
+            patient.setBloodQuantityNeeded(patient.getBloodQuantityNeeded() - 500);
         patientRepository.update(patient);
         user.setPoints(user.getPoints() + 100);
         userRepository.update(user);
@@ -138,9 +142,8 @@ public class Service implements ServiceInterface {
         return appointmentRepository.countFutureAppointmentsByUser(loggedUser);
     }
 
-    @Override
     public void cancelAppointment(Appointment appointment) {
-        appointmentRepository.delete(appointment.getID());
+        appointmentRepository.delete(appointment.getAppointmentId());
     }
 }
 
