@@ -22,11 +22,9 @@ import java.util.logging.Logger;
 
 public class DonationCentreRepository implements DonationCentreRepositoryInterface {
     private SessionFactory sessionFactory;
-    private final AddressRepositoryInterface addressRepository;
     private final Logger logger = Logger.getLogger("logging.txt");
 
-    public DonationCentreRepository(AddressRepositoryInterface addressRepository, SessionFactory sessionFactory) {
-        this.addressRepository = addressRepository;
+    public DonationCentreRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
         logger.info("Initializing DonationCentreRepository");
     }

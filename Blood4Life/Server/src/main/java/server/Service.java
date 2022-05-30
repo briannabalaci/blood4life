@@ -58,6 +58,11 @@ public class Service implements ServiceInterface {
 
     public void addDonationCentre(String county, String city, String street, int number, String name, int maximumCapacity, LocalTime openHour, LocalTime closeHour) {
         Address address = addressRepository.findOne(county, city, street, number);
+        if(null == address) {
+            address = new Address(city, county, street, number);
+            addressRepository.save(address);
+            address = addressRepository.findOne(county, city, street, number);
+        }
         DonationCentre donationCentre = new DonationCentre(address, name, maximumCapacity, openHour, closeHour);
         donationCentreValidator.validateDonationCentre(donationCentre);
         donationCentreRepository.save(donationCentre);

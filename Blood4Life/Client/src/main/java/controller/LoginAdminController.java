@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import service.ServiceInterface;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class LoginAdminController {
     public TextField usernameTextField;
@@ -32,7 +34,7 @@ public class LoginAdminController {
         try {
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
-            service.loginAdmin(username, password);
+            service.loginAdmin(username, encodePassword(password));
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("adminMainPage-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 860, 600);
             AdminMainPageController adminMainPageController = fxmlLoader.getController();
@@ -56,5 +58,26 @@ public class LoginAdminController {
         stage.setTitle("Blood4Life");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private String encodePassword(String password) {
+        String encryptedPassword = null;
+        try
+        {
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.update(password.getBytes());
+            byte[] bytes = m.digest();
+            StringBuilder s = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++)
+            {
+                s.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            encryptedPassword = s.toString();
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+        return encryptedPassword;
     }
 }

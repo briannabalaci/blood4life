@@ -197,9 +197,10 @@ public class AppointmentRepository implements AppointmentRepositoryInterface {
 
     @Override
     public void delete(Long id) {
+        System.out.println(id);
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(id);
+            session.delete(findOne(id));
             session.getTransaction().commit();
         }
     }

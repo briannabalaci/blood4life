@@ -43,6 +43,7 @@ public class SignupUserController implements Initializable {
     public Label bloodTypeErrorLabel;
     public Label genderErrorLabel;
     public Label birthDateErrorLabel;
+    public TextArea errorTextArea;
 
     private ServiceInterface service;
     private Stage root;
@@ -73,6 +74,7 @@ public class SignupUserController implements Initializable {
         rhErrorLabel.setVisible(false);
         bloodTypeErrorLabel.setVisible(false);
         birthDateErrorLabel.setVisible(false);
+        errorTextArea.setVisible(false);
     }
 
     private void setBloodTypes() {
@@ -201,12 +203,6 @@ public class SignupUserController implements Initializable {
         if(countErrors == 0) {
             service.addUser(firstName, lastName, email, cnp, birthdate, gender, bloodType, rh, weight, height);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Blood4Life");
-            alert.setHeaderText("SignUp success");
-            alert.setContentText("Your account has been created. You can login now!");
-            alert.showAndWait();
-
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 660, 500);
             LoginUserController loginUserController = fxmlLoader.getController();
@@ -216,22 +212,13 @@ public class SignupUserController implements Initializable {
             root.setScene(scene);
             root.show();
         }
-        else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Blood4Life");
-            alert.setHeaderText("SignUp failure");
-            alert.setContentText("Verify your information and retry!");
-            alert.showAndWait();
+        else {
+            errorTextArea.setVisible(true);
+            errorTextArea.setText("Verify your information and retry!");
         }
     }
 
     public void onBackButtonClick(ActionEvent actionEvent) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Blood4Life");
-        alert.setHeaderText("Back to Login");
-        alert.setContentText("You will be redirected to the main login page!");
-        alert.showAndWait();
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("loginUser-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 660, 500);
         LoginUserController loginUserController = fxmlLoader.getController();

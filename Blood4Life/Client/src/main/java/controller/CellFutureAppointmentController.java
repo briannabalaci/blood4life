@@ -39,18 +39,12 @@ public class CellFutureAppointmentController implements Initializable {
     }
 
     public void onCancelAppointmentButtonClick(ActionEvent actionEvent) {
-        try{
+        try {
             service.cancelAppointment(appointment);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Blood4Life");
-            alert.setHeaderText("Appointment cancellation");
-            alert.setContentText("Your appointment has been cancelled successfully!");
-            alert.showAndWait();
             cancelButton.setText("Canceled");
             cancelButton.setDisable(true);
-        }
-        catch (ServerException e){
-
+        } catch (ServerException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

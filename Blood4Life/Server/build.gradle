@@ -17,6 +17,8 @@ dependencies {
     implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
     implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
     implementation 'org.javassist:javassist:3.28.0-GA'
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    implementation 'org.springframework:spring-context:5.3.19'
     implementation project(":Service")
     implementation project(":Model")
     implementation project(":Persistence")

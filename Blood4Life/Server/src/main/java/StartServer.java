@@ -3,6 +3,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import repository.*;
 import server.Service;
 import serverUtils.AbstractServer;
@@ -35,14 +37,15 @@ public class StartServer {
 
 
         try {
-            initialize();
-            AddressRepository addressRepository = new AddressRepository(sessionFactory);
-            DonationCentreRepository donationCentreRepository = new DonationCentreRepository(addressRepository, sessionFactory);
-            UserRepository userRepository = new UserRepository(sessionFactory);
-            AdminRepository adminRepository = new AdminRepository(sessionFactory);
-            PatientRepository patientRepository = new PatientRepository(sessionFactory);
-            AppointmentRepository appointmentRepository = new AppointmentRepository(sessionFactory);
-            ServiceInterface service = new Service(userRepository, appointmentRepository, donationCentreRepository, patientRepository, adminRepository, new PatientValidator(), new DonationCentreValidator(new AddressValidator()), addressRepository);
+//            initialize();
+            ApplicationContext context = new AnnotationConfigApplicationContext(Blood4LifeConfig.class);
+//            AddressRepository addressRepository = context.getBean(AddressRepository.class);
+//            DonationCentreRepository donationCentreRepository = context.getBean(DonationCentreRepository.class)
+//            UserRepository userRepository = context.getBean(UserRepository.class);
+//            AdminRepository adminRepository = context.getBean(AdminRepository.class);
+//            PatientRepository patientRepository = context.getBean(PatientRepository.class);
+//            AppointmentRepository appointmentRepository = context.getBean(AppointmentRepository.class);
+            ServiceInterface service = context.getBean(Service.class);
 
             try {
                 int defaultPort = 55555;
@@ -54,9 +57,7 @@ public class StartServer {
                     System.err.println("Using default port " + defaultPort);
                 }
                 System.out.println("Starting server on port: " + serverPort);
-
                 AbstractServer server = new ConcurrentServer(serverPort, service);
-                System.out.println(donationCentreRepository.findOne(1L));
                 try {
                     server.start();
                 } catch (ServerException e) {
@@ -79,18 +80,18 @@ public class StartServer {
         }
     }
 
-    static void initialize() {
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure()
-                .build();
-        try {
-            sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-        }
-        catch(Exception e) {
-            System.err.println("Exception " + e);
-            StandardServiceRegistryBuilder.destroy( registry );
-        }
-    }
+//    static void initialize() {
+//        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+//                .configure()
+//                .build();
+//        try {
+//            sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
+//        }
+//        catch(Exception e) {
+//            System.err.println("Exception " + e);
+//            StandardServiceRegistryBuilder.destroy( registry );
+//        }
+//    }
 
     static void close() {
         if(sessionFactory != null) {
